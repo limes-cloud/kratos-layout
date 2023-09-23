@@ -1,0 +1,37 @@
+server:
+  http:
+    addr: 0.0.0.0:8000
+    timeout: 1s
+  grpc:
+    addr: 0.0.0.0:9000
+    timeout: 1s
+log:
+  level: 0 #日志输出等级
+  output:
+    - stdout # stdout:控制台输出，k8s日志收集
+    - file # file:输出到文件
+  file: #output存在file时此配置才可生效
+    name: ./tmp/runtime/output.log #日志存放地址
+    maxSize: 1 #日志文件最大容量,单位m
+    maxBackup: 5 #日志文件最多保存个数
+    maxAge: 1 #保留就文件的最大天数,单位天
+    compress: false #是否进行压缩归档
+database:
+  system: #数据库实例名称,如有多个数据库可新增
+    enable: false #是否启用数据库
+    drive: mysql #数据库类型
+    dsn: root:root@tcp(127.0.0.1:3306)/operation?charset=utf8mb4&parseTime=True&loc=Local #连接dsn
+    maxLifetime: 2h #最大生存时间
+    maxOpenConn: 10 #最大连接数量
+    maxIdleConn: 10 #最大空闲数量
+    logLevel: 1 #日志等级
+    slowThreshold: 2s #慢sql阈值
+redis:
+  catch: #redis实例名称,如有多个redis可新增
+    enable: false #是否启用redis
+    host: 127.0.0.1:6379 #redis地址
+    username:  #连接账号
+    password:  #连接密码
+#以下存放业务配置
+business:
+  openWeb: false

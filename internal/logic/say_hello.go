@@ -2,7 +2,7 @@ package logic
 
 import (
 	"github.com/limes-cloud/kratos"
-	v1 "github.com/limes-cloud/kratos-layout/api/helloworld/v1"
+	v1 "github.com/limes-cloud/kratos-layout/api/v1"
 )
 
 // SayHello implements helloworld.GreeterServer.
@@ -16,5 +16,5 @@ func (l *Logic) SayHello(ctx kratos.Context, in *v1.HelloRequest) (*v1.HelloRepl
 
 	return &v1.HelloReply{
 		Message: in.Name,
-	}, nil
+	}, v1.ErrorUserNotFound("用户不存在")
 }

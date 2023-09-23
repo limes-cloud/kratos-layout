@@ -5,7 +5,7 @@ import (
 	"github.com/limes-cloud/kratos"
 	"github.com/limes-cloud/kratos-layout/internal/logic"
 
-	v1 "github.com/limes-cloud/kratos-layout/api/helloworld/v1"
+	v1 "github.com/limes-cloud/kratos-layout/api/v1"
 	"github.com/limes-cloud/kratos-layout/config"
 )
 

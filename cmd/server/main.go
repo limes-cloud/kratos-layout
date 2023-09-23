@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/limes-cloud/kratos"
-	v1 "github.com/limes-cloud/kratos-layout/api/helloworld/v1"
+	v1 "github.com/limes-cloud/kratos-layout/api/v1"
 	srcConf "github.com/limes-cloud/kratos-layout/config"
 	"github.com/limes-cloud/kratos/config"
 	"github.com/limes-cloud/kratos/config/file"

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package v1;
+
+option go_package = "./v1;v1";
+
+import "validate/validate.proto";
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1[(validate.rules).string = {min_len: 5, max_len: 100}];
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}

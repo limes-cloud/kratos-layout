@@ -3,7 +3,7 @@ module github.com/limes-cloud/kratos-layout
 go 1.19
 
 require (
-	github.com/google/wire v0.5.0
+	github.com/envoyproxy/protoc-gen-validate v0.10.1
 	github.com/limes-cloud/kratos v0.0.0-20230923023811-1ef6750a9e35
 	go.uber.org/automaxprocs v1.5.1
 	google.golang.org/genproto/googleapis/api v0.0.0-20230629202037-9506855d4529
@@ -45,11 +45,11 @@ require (
 	go.opentelemetry.io/otel/trace v1.16.0 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
 	go.uber.org/zap v1.25.0 // indirect
-	golang.org/x/crypto v0.11.0 // indirect
-	golang.org/x/net v0.13.0 // indirect
+	golang.org/x/crypto v0.13.0 // indirect
+	golang.org/x/net v0.15.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
-	golang.org/x/sys v0.10.0 // indirect
-	golang.org/x/text v0.11.0 // indirect
+	golang.org/x/sys v0.12.0 // indirect
+	golang.org/x/text v0.13.0 // indirect
 	google.golang.org/genproto v0.0.0-20230629202037-9506855d4529 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230629202037-9506855d4529 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
@@ -63,3 +63,5 @@ require (
 	modernc.org/memory v1.5.0 // indirect
 	modernc.org/sqlite v1.23.1 // indirect
 )
+
+replace github.com/limes-cloud/kratos => ../kratos

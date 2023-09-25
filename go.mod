@@ -4,7 +4,8 @@ go 1.19
 
 require (
 	github.com/envoyproxy/protoc-gen-validate v0.10.1
-	github.com/limes-cloud/kratos v0.0.0-20230923023811-1ef6750a9e35
+	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/limes-cloud/kratos v1.1.0
 	go.uber.org/automaxprocs v1.5.1
 	google.golang.org/genproto/googleapis/api v0.0.0-20230629202037-9506855d4529
 	google.golang.org/grpc v1.56.1
@@ -26,6 +27,7 @@ require (
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect
 	github.com/golang-sql/sqlexp v0.1.0 // indirect
+	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
@@ -38,6 +40,8 @@ require (
 	github.com/mattn/go-isatty v0.0.18 // indirect
 	github.com/microsoft/go-mssqldb v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
+	github.com/mojocn/base64Captcha v1.3.5 // indirect
+	github.com/panjf2000/ants/v2 v2.8.2 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
 	go.opentelemetry.io/otel v1.16.0 // indirect
@@ -46,12 +50,15 @@ require (
 	go.uber.org/multierr v1.10.0 // indirect
 	go.uber.org/zap v1.25.0 // indirect
 	golang.org/x/crypto v0.13.0 // indirect
+	golang.org/x/image v0.0.0-20190802002840-cff245a6509b // indirect
 	golang.org/x/net v0.15.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
 	google.golang.org/genproto v0.0.0-20230629202037-9506855d4529 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230629202037-9506855d4529 // indirect
+	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/driver/mysql v1.5.1 // indirect
@@ -64,4 +71,4 @@ require (
 	modernc.org/sqlite v1.23.1 // indirect
 )
 
-replace github.com/limes-cloud/kratos => ../kratos
+//replace github.com/limes-cloud/kratos => ../kratos

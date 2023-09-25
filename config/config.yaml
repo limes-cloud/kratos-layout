@@ -32,6 +32,50 @@ redis:
     host: 127.0.0.1:6379 #redis地址
     username:  #连接账号
     password:  #连接密码
+cert: #证书相关
+  passwordCert:
+    enable: false #是否启用证书
+    path: cert/password.pub #证书路径
+pool: #并非池配置
+  enable: true #是否启用并非池
+  size: 100000 #最大协程数量
+  expiryDuration: 30s #过期时间
+  preAlloc: true #是否预分配
+  maxBlockingTasks: 1000 #最大的并发任务
+  nonblocking: true #设置为true时maxBlockingTasks讲失效，不限制并发任务
+email: # 邮件发送相关配置
+  template: #邮件模板
+    captcha:  #邮件模板名称
+      subject: 验证码发送通知 #邮件模板主题
+      path: static/template/email/default.html #邮件模板路径
+      from: xxx@qq.com
+      type: "text/html" #文本内容格式
+  user: 860808187@qq.com #发送者
+  host: smtp.qq.com:25 #发送host
+  password: ersukmsstobebdef # 发送host密码
+captcha:
+  login:  #验证码名称
+    type: image #验证码类型 目前支持image/email
+    length: 6 #验证码长度
+    expire: 180s #过期时间
+    redis: cache #redis名称
+    height: 80 #图片高度,仅image有效
+    width: 240 #图片宽度,仅image有效
+    skew: 0.7 #验证数字倾斜程度,仅image有效
+    dotCount: 80 #干扰像素点数量,仅image有效
+  changePassword:  #验证码名称
+    type: email #验证码类型
+    length: 6 #验证码长度
+    expire: 180s #过期时间
+    redis: cache #redis名称
+    template: captcha #邮箱模板名称,仅email有效
+jwt:
+  enable: true #是否开启jwt
+  secret: "hello world" #密钥
+  expire: 2h #过期时间
+  whitelist: #忽略token校验以及鉴权的白名单
+    GET:/helloworld/fangweiye: false #仅 http可用 方法名:path
+    v1:Greeter/SayHello: true #http和grpc通用 包名.服务名.函数名 具体可在pb里面查看
 #以下存放业务配置
 business:
   openWeb: false

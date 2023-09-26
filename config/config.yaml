@@ -59,7 +59,7 @@ captcha:
     length: 6 #验证码长度
     expire: 180s #过期时间
     redis: cache #redis名称
-    height: 80 #图片高度,仅image有效
+    height: 801 #图片高度,仅image有效
     width: 240 #图片宽度,仅image有效
     skew: 0.7 #验证数字倾斜程度,仅image有效
     dotCount: 80 #干扰像素点数量,仅image有效

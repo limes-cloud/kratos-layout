@@ -54,7 +54,7 @@ func RegisterServer(hs *http.Server, gs *grpc.Server, c config.Config) {
 		panic("business config format error:" + err.Error())
 	}
 
-	srv := service.NewGreeterService(conf)
-	v1.RegisterGreeterHTTPServer(hs, srv)
-	v1.RegisterGreeterServer(gs, srv)
+	srv := service.New(conf)
+	v1.RegisterServiceHTTPServer(hs, srv)
+	v1.RegisterServiceServer(gs, srv)
 }

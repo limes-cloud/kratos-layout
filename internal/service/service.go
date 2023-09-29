@@ -9,19 +9,19 @@ import (
 	"github.com/limes-cloud/kratos-layout/config"
 )
 
-// GreeterService is a greeter service.
-type GreeterService struct {
-	v1.UnimplementedGreeterServer
+// Service is a greeter service.
+type Service struct {
+	v1.UnsafeServiceServer
 	logic *logic.Logic
 }
 
-func NewGreeterService(conf *config.Config) *GreeterService {
-	return &GreeterService{
+func New(conf *config.Config) *Service {
+	return &Service{
 		logic: logic.NewLogic(conf),
 	}
 }
 
-// SayHello implements helloworld.GreeterServer.
-func (s *GreeterService) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1.HelloReply, error) {
+// SayHello implements helloworld.Server.
+func (s *Service) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1.HelloReply, error) {
 	return s.logic.SayHello(kratos.MustContext(ctx), in)
 }

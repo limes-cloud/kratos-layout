@@ -10,18 +10,8 @@ func (l *Logic) SayHello(ctx kratos.Context, in *v1.HelloRequest) (*v1.HelloRepl
 	if l.conf.OpenWeb {
 		ctx.Logger().Warn("close web")
 	}
-	ctx.Logger().Infof("hello  world")
-	//tstr, err := ctx.JWT().NewToken(map[string]string{
-	//	"user": "fangweiye",
-	//})
-
-	//m := map[string]string{}
-	//err = ctx.JWT().ParseToken(ctx, &m)
-	//fmt.Println(m, err)
-	//user :=  model.User{}
-	//user.Create()
-	ctx.Logger().Warn("test")
+	ctx.Logger().Warn("hello world")
 	return &v1.HelloReply{
-		Message: "11",
+		Message: in.Name,
 	}, nil
 }

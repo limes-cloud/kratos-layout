@@ -11,17 +11,6 @@ func (l *Logic) SayHello(ctx kratos.Context, in *v1.HelloRequest) (*v1.HelloRepl
 		ctx.Logger().Warn("close web")
 	}
 
-	sender, err := ctx.Email()
-	if err != nil {
-		return nil, err
-	}
-	if err = sender.Send("1280291001@qq.com", map[string]interface{}{
-		"name": "方伟业",
-	}); err != nil {
-		return nil, err
-	}
-
-	ctx.Logger().Warn("hello world")
 	return &v1.HelloReply{
 		Message: in.Name,
 	}, nil

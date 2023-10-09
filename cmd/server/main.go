@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/limes-cloud/kratos-layout/internal/service"
+	"github.com/limes-cloud/kratos-layout/internal/handler"
 	"os"
 
 	"github.com/limes-cloud/kratos"
@@ -54,7 +54,7 @@ func RegisterServer(hs *http.Server, gs *grpc.Server, c config.Config) {
 		panic("business config format error:" + err.Error())
 	}
 
-	srv := service.New(conf)
+	srv := handler.New(conf)
 	v1.RegisterServiceHTTPServer(hs, srv)
 	v1.RegisterServiceServer(gs, srv)
 }

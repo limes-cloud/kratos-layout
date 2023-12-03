@@ -1,5 +1,5 @@
 package config
 
 type Config struct {
-	OpenWeb bool
+	SayText string
 }

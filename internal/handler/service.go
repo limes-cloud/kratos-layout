@@ -21,7 +21,6 @@ func New(conf *config.Config) *Service {
 	}
 }
 
-// SayHello implements helloworld.Server.
 func (s *Service) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1.HelloReply, error) {
 	return s.logic.SayHello(kratos.MustContext(ctx), in)
 }

@@ -33,8 +33,6 @@ redis:
     host: 127.0.0.1:6379 #redis地址
     username:  #连接账号
     password:  #连接密码
-#loader: #文件加载器相关
-#  passwordCert: cert/password.pub #证书路径
 pool: #并非池配置
   size: 100000 #最大协程数量
   expiryDuration: 30s #过期时间
@@ -67,13 +65,5 @@ captcha:
     expire: 180s #过期时间
     redis: cache #redis名称
     template: captcha #邮箱模板名称,仅email有效
-#jwt:
-#  enable: true #是否开启jwt
-#  secret: "hello world" #密钥
-#  expire: 2h #过期时间
-#  whitelist: #忽略token校验以及鉴权的白名单
-#    GET:/helloworld/fangweiye: false #仅 http可用 方法名:path
-#    v1:Greeter/SayHello: true #http和grpc通用 包名.服务名.函数名 具体可在pb里面查看
-#以下存放业务配置
 business:
-  openWeb: false
+  sayText: "你好！"

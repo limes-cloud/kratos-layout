@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/limes-cloud/kratos-layout/internal/handler"
+	"github.com/limes-cloud/kratos/contrib/config/configure"
 	"os"
 
 	"github.com/limes-cloud/kratos"
@@ -16,14 +17,10 @@ import (
 	_ "go.uber.org/automaxprocs"
 )
 
-// go build -ldflags "-X main.Version=x.y.z"
 var (
-	// Name is the name of the compiled software.
-	Name string
-	// Version is the version of the compiled software.
-	Version string
-
-	id, _ = os.Hostname()
+	Name    = os.Getenv("AppName")
+	Version = os.Getenv("Version")
+	id, _   = os.Hostname()
 )
 
 func main() {
@@ -32,6 +29,9 @@ func main() {
 		kratos.Name(Name),
 		kratos.Version(Version),
 		kratos.Metadata(map[string]string{}),
+		// 从配置中心加载配置
+		kratos.Config(configure.NewFromEnv()),
+		// 从文件加载配置
 		kratos.Config(file.NewSource("config/config.yaml")),
 		kratos.RegistrarServer(RegisterServer),
 		kratos.LoggerWith(kratos.LogField{

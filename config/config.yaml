@@ -34,7 +34,7 @@ redis:
     username:  #连接账号
     password:  #连接密码
 pool: #并非池配置
-  size: 100000 #最大协程数量
+  size: 10000 #最大协程数量
   expiryDuration: 30s #过期时间
   preAlloc: true #是否预分配
   maxBlockingTasks: 1000 #最大的并发任务

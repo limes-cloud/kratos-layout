@@ -1,9 +1,9 @@
 package logic
 
 import (
-	"github.com/limes-cloud/kratos"
-	v1 "github.com/limes-cloud/kratos-layout/api/v1"
-	"github.com/limes-cloud/kratos-layout/config"
+	v1 "github.com/go-kratos/kratos-layout/api/v1"
+	"github.com/go-kratos/kratos-layout/config"
+	"github.com/limes-cloud/kratosx"
 )
 
 type Logic struct {
@@ -17,8 +17,8 @@ func NewLogic(conf *config.Config) *Logic {
 }
 
 // SayHello implements SayHello
-func (l *Logic) SayHello(ctx kratos.Context, in *v1.HelloRequest) (*v1.HelloReply, error) {
-	ctx.Logger().Info("info", "say hello request")
+func (l *Logic) SayHello(ctx kratosx.Context, in *v1.HelloRequest) (*v1.HelloReply, error) {
+	ctx.Logger().Infow("info", "say hello request")
 	return &v1.HelloReply{
 		Message: l.conf.SayText + ":" + in.Name,
 	}, nil

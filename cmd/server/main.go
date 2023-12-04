@@ -1,60 +1,40 @@
 package main
 
 import (
-	"github.com/limes-cloud/kratos-layout/internal/handler"
-	"github.com/limes-cloud/kratos/contrib/config/configure"
-	"os"
-
-	"github.com/limes-cloud/kratos"
-	v1 "github.com/limes-cloud/kratos-layout/api/v1"
-	srcConf "github.com/limes-cloud/kratos-layout/config"
-	"github.com/limes-cloud/kratos/config"
-	"github.com/limes-cloud/kratos/config/file"
-	"github.com/limes-cloud/kratos/log"
-	"github.com/limes-cloud/kratos/middleware/tracing"
-	"github.com/limes-cloud/kratos/transport/grpc"
-	"github.com/limes-cloud/kratos/transport/http"
+	v1 "github.com/go-kratos/kratos-layout/api/v1"
+	systemConfig "github.com/go-kratos/kratos-layout/config"
+	"github.com/go-kratos/kratos-layout/internal/service"
+	kratosConfig "github.com/go-kratos/kratos/v2/config"
+	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v2/transport/grpc"
+	"github.com/go-kratos/kratos/v2/transport/http"
+	"github.com/limes-cloud/kratosx"
+	"github.com/limes-cloud/kratosx/config"
 	_ "go.uber.org/automaxprocs"
 )
 
-var (
-	Name    = os.Getenv("AppName")
-	Version = os.Getenv("Version")
-	id, _   = os.Hostname()
-)
-
 func main() {
-	app := kratos.New(
-		kratos.ID(id),
-		kratos.Name(Name),
-		kratos.Version(Version),
-		kratos.Metadata(map[string]string{}),
-		// 从配置中心加载配置
-		kratos.Config(configure.NewFromEnv()),
-		// 从文件加载配置
-		kratos.Config(file.NewSource("config/config.yaml")),
-		kratos.RegistrarServer(RegisterServer),
-		kratos.LoggerWith(kratos.LogField{
-			"id":      id,
-			"name":    Name,
-			"version": Version,
-			"trace":   tracing.TraceID(),
-			"span":    tracing.SpanID(),
-		}),
+	app := kratosx.New(
+		kratosx.RegistrarServer(RegisterServer),
 	)
 
 	if err := app.Run(); err != nil {
-		log.Errorf("run service fail: %v", err)
+		log.Fatal(err.Error())
 	}
 }
 
-func RegisterServer(hs *http.Server, gs *grpc.Server, c config.Config) {
-	conf := &srcConf.Config{}
-	if err := c.ScanKey("business", conf); err != nil {
+func RegisterServer(c config.Config, hs *http.Server, gs *grpc.Server) {
+	conf := &systemConfig.Config{}
+	if err := c.Value("business").Scan(conf); err != nil {
 		panic("business config format error:" + err.Error())
 	}
+	c.Watch("business", func(value kratosConfig.Value) {
+		if err := value.Scan(conf); err != nil {
+			log.Error("business 配置变更失败")
+		}
+	})
 
-	srv := handler.New(conf)
+	srv := service.New(conf)
 	v1.RegisterServiceHTTPServer(hs, srv)
 	v1.RegisterServiceServer(gs, srv)
 }

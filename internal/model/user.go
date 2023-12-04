@@ -1,7 +1,5 @@
 package model
 
-import "github.com/limes-cloud/kratos"
-
 type User struct {
 	ID          int64   `json:"id" gorm:"primary_key;autoIncrement;size:32;comment:主键ID"`
 	Name        string  `json:"name" gorm:"not null;size:32;comment:用户姓名"`

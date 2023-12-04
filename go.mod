@@ -1,4 +1,4 @@
-module github.com/limes-cloud/kratos-layout
+module github.com/go-kratos/kratos-layout
 
 go 1.21
 

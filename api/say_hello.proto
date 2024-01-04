@@ -9,6 +9,7 @@ import "validate/validate.proto";
 // The request message containing the user's name.
 message HelloRequest {
   string name = 1[(validate.rules).string = {min_len: 5, max_len: 100}];
+  int64  id =
 }
 
 // The response message containing the greetings

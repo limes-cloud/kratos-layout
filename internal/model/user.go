@@ -19,6 +19,7 @@ type UserClosure struct {
 }
 
 func (u *User) Create(ctx kratosx.Context) error {
+	// read redis
 	return ctx.DB().Create(u).Error
 }
 

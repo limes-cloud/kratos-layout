@@ -1,11 +1,13 @@
 server:
   http:
     addr: 0.0.0.0:9002
-    timeout: 1s
-    formatResponse: true
+    timeout: 10s
+    marshal:
+      emitUnpopulated: true
+      useProtoNames: true
   grpc:
     addr: 0.0.0.0:9003
-    timeout: 1s
+    timeout: 10s
 log:
   level: 0 #日志输出等级
   output:
@@ -37,43 +39,5 @@ database:
       maxIdleConn: 10 #最大空闲数量
       logLevel: 4 #日志等级
       slowThreshold: 2s #慢sql阈值
-redis:
-  catch: #redis实例名称,如有多个redis可新增
-    enable: false #是否启用redis
-    host: 127.0.0.1:6379 #redis地址
-    username:  #连接账号
-    password:  #连接密码
-pool: #并非池配置
-  size: 10000 #最大协程数量
-  expiryDuration: 30s #过期时间
-  preAlloc: true #是否预分配
-  maxBlockingTasks: 1000 #最大的并发任务
-  nonblocking: true #设置为true时maxBlockingTasks讲失效，不限制并发任务
-email: # 邮件发送相关配置
-  template: #邮件模板
-    captcha:  #邮件模板名称
-      subject: 验证码发送通知 #邮件模板主题
-      path: static/template/email/default.html #邮件模板路径
-      from: xxx@qq.com
-      type: "text/html" #文本内容格式
-  user: 860808187@qq.com #发送者
-  host: smtp.qq.com:25 #发送host
-  password: ersukmsstobebdef # 发送host密码
-captcha:
-  login:  #验证码名称
-    type: image #验证码类型 目前支持image/email
-    length: 6 #验证码长度
-    expire: 180s #过期时间
-    redis: cache #redis名称
-    height: 801 #图片高度,仅image有效
-    width: 240 #图片宽度,仅image有效
-    skew: 0.7 #验证数字倾斜程度,仅image有效
-    dotCount: 80 #干扰像素点数量,仅image有效
-  changePassword:  #验证码名称
-    type: email #验证码类型
-    length: 6 #验证码长度
-    expire: 180s #过期时间
-    redis: cache #redis名称
-    template: captcha #邮箱模板名称,仅email有效
 business:
   sayText: "你好！"

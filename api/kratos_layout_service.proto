@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package v1;
+option go_package = "./v1;v1";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "kratos_layout_user.proto";
+
+
+service Service {
+  rpc GetUser (GetUserRequest) returns (GetUserReply) {
+    option (google.api.http) = {
+      get: "/api/v1/user",
+    };
+  }
+
+  rpc PageUser (PageUserRequest) returns (PageUserReply) {
+    option (google.api.http) = {
+      get: "/api/v1/users",
+    };
+  }
+
+  rpc AddUser (AddUserRequest) returns (AddUserReply) {
+    option (google.api.http) = {
+      post: "/api/v1/user",
+      body: "*"
+    };
+  }
+
+  rpc UpdateUser (UpdateUserRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/api/v1/user",
+      body: "*"
+    };
+  }
+
+  rpc DeleteUser (DeleteUserRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/api/v1/user",
+      body: "*"
+    };
+  }
+
+}
+
+

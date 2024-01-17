@@ -19,7 +19,7 @@ func (s *Service) GetUser(ctx context.Context, req *v1.GetUserRequest) (*v1.GetU
 	if err := copier.Copy(&reply, user); err != nil {
 		return nil, v1.TransformErrorFormat(err.Error())
 	}
-	return &v1.GetUserReply{}, nil
+	return &reply, nil
 }
 
 func (s *Service) PageUser(ctx context.Context, req *v1.PageUserRequest) (*v1.PageUserReply, error) {

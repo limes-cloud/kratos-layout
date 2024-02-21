@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package v1;
+package userpb;
 
-option go_package = "./v1;v1";
+option go_package = "./;userpb";
 
 import "validate/validate.proto";
 
@@ -10,7 +10,7 @@ message GetUserRequest {
   uint32 id = 1[(validate.rules).uint32 = {gte:1}];
 }
 
-message GetUserReply {
+message User {
   uint32 id = 1;
   string name = 2;
   string gender = 3;
@@ -24,14 +24,8 @@ message PageUserRequest{
 }
 
 message PageUserReply{
-  message data{
-    uint32 id = 1;
-    string name = 2;
-    string gender = 3;
-    string email = 4;
-  }
   uint32 total = 1;
-  repeated data list = 2;
+  repeated User list = 2;
 }
 
 message AddUserRequest {
@@ -54,4 +48,13 @@ message UpdateUserRequest {
 
 message DeleteUserRequest {
   uint32 id = 1[(validate.rules).uint32 = {gte:1}];
+}
+
+message UserLoginRequest {
+  string email = 1[(validate.rules).string = {email:true}];
+  string password = 2[(validate.rules).string = {min_len:6}];
+}
+
+message UserLoginReply {
+  string token = 1;
 }

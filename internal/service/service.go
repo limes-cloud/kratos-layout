@@ -1,20 +1,20 @@
 package service
 
 import (
-	v1 "github.com/go-kratos/kratos-layout/api/v1"
-	"github.com/go-kratos/kratos-layout/config"
-	"github.com/go-kratos/kratos-layout/internal/biz"
-	"github.com/go-kratos/kratos-layout/internal/data"
+	"github.com/go-kratos/kratos/v2/transport/grpc"
+	"github.com/go-kratos/kratos/v2/transport/http"
+
+	"github.com/go-kratos/kratos-layout/api/noticepb"
+	"github.com/go-kratos/kratos-layout/api/userpb"
+	"github.com/go-kratos/kratos-layout/internal/conf"
 )
 
-// Service is a greeter service.
-type Service struct {
-	v1.UnimplementedServiceServer
-	user *biz.UserUseCase
-}
+func New(c *conf.Config, hs *http.Server, gs *grpc.Server) {
+	userSrv := NewUser(c)
+	userpb.RegisterServiceHTTPServer(hs, userSrv)
+	userpb.RegisterServiceServer(gs, userSrv)
 
-func New(conf *config.Config) *Service {
-	return &Service{
-		user: biz.NewUserUseCase(conf, data.NewUserRepo()),
-	}
+	noticeSrv := NewNotice(c)
+	noticepb.RegisterServiceHTTPServer(hs, noticeSrv)
+	noticepb.RegisterServiceServer(gs, noticeSrv)
 }

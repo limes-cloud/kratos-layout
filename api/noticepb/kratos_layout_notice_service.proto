@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package noticepb;
+option go_package = "./;noticepb";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "kratos_layout_notice.proto";
+
+
+service Service {
+  // GetNotice 获取用户信息
+  rpc GetNotice (GetNoticeRequest) returns (Notice) {
+    option (google.api.http) = {
+      get: "/kratos-layout/notice/api/v1/notice",
+    };
+  }
+
+  rpc PageNotice (PageNoticeRequest) returns (PageNoticeReply) {
+    option (google.api.http) = {
+      get: "/kratos-layout/notice/api/v1/notices",
+    };
+  }
+
+  rpc AddNotice (AddNoticeRequest) returns (AddNoticeReply) {
+    option (google.api.http) = {
+      post: "/kratos-layout/notice/api/v1/notice",
+      body: "*"
+    };
+  }
+
+  rpc UpdateNotice (UpdateNoticeRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/kratos-layout/notice/api/v1/notice",
+      body: "*"
+    };
+  }
+
+  rpc DeleteNotice (DeleteNoticeRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/kratos-layout/notice/api/v1/notice",
+      body: "*"
+    };
+  }
+}
+
+

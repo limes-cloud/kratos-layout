@@ -2,30 +2,45 @@ package service
 
 import (
 	"context"
-	v1 "github.com/go-kratos/kratos-layout/api/v1"
-	"github.com/go-kratos/kratos-layout/internal/biz"
-	"github.com/go-kratos/kratos-layout/internal/biz/types"
+
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/jinzhu/copier"
 	"github.com/limes-cloud/kratosx"
+
+	"github.com/go-kratos/kratos-layout/api/errors"
+	"github.com/go-kratos/kratos-layout/api/userpb"
+	userbiz "github.com/go-kratos/kratos-layout/internal/biz/user"
+	"github.com/go-kratos/kratos-layout/internal/conf"
+	userdata "github.com/go-kratos/kratos-layout/internal/data/user"
 )
 
-func (s *Service) GetUser(ctx context.Context, req *v1.GetUserRequest) (*v1.GetUserReply, error) {
+type UserService struct {
+	userpb.UnimplementedServiceServer
+	user *userbiz.UseCase
+}
+
+func NewUser(conf *conf.Config) *UserService {
+	return &UserService{
+		user: userbiz.NewUseCase(conf, userdata.NewRepo()),
+	}
+}
+
+func (s *UserService) GetUser(ctx context.Context, req *userpb.GetUserRequest) (*userpb.User, error) {
 	user, err := s.user.Get(kratosx.MustContext(ctx), req.Id)
 	if err != nil {
 		return nil, err
 	}
-	reply := v1.GetUserReply{}
+	reply := userpb.User{}
 	if err := copier.Copy(&reply, user); err != nil {
-		return nil, v1.TransformErrorFormat(err.Error())
+		return nil, errors.TransformErrorFormat(err.Error())
 	}
 	return &reply, nil
 }
 
-func (s *Service) PageUser(ctx context.Context, req *v1.PageUserRequest) (*v1.PageUserReply, error) {
-	bizReq := types.PageUserRequest{}
+func (s *UserService) PageUser(ctx context.Context, req *userpb.PageUserRequest) (*userpb.PageUserReply, error) {
+	bizReq := userbiz.PageRequest{}
 	if err := copier.Copy(&bizReq, req); err != nil {
-		return nil, v1.TransformErrorFormat(err.Error())
+		return nil, errors.TransformErrorFormat(err.Error())
 	}
 
 	list, total, err := s.user.Page(kratosx.MustContext(ctx), &bizReq)
@@ -33,18 +48,18 @@ func (s *Service) PageUser(ctx context.Context, req *v1.PageUserRequest) (*v1.Pa
 		return nil, err
 	}
 
-	reply := v1.PageUserReply{Total: total}
+	reply := userpb.PageUserReply{Total: total}
 	if err := copier.Copy(&reply.List, list); err != nil {
-		return nil, v1.TransformErrorFormat(err.Error())
+		return nil, errors.TransformErrorFormat(err.Error())
 	}
 
 	return &reply, nil
 }
 
-func (s *Service) AddUser(ctx context.Context, req *v1.AddUserRequest) (*v1.AddUserReply, error) {
-	bizReq := biz.User{}
+func (s *UserService) AddUser(ctx context.Context, req *userpb.AddUserRequest) (*userpb.AddUserReply, error) {
+	bizReq := userbiz.User{}
 	if err := copier.Copy(&bizReq, req); err != nil {
-		return nil, v1.TransformErrorFormat(err.Error())
+		return nil, errors.TransformErrorFormat(err.Error())
 	}
 
 	id, err := s.user.Add(kratosx.MustContext(ctx), &bizReq)
@@ -52,13 +67,13 @@ func (s *Service) AddUser(ctx context.Context, req *v1.AddUserRequest) (*v1.AddU
 		return nil, err
 	}
 
-	return &v1.AddUserReply{Id: id}, nil
+	return &userpb.AddUserReply{Id: id}, nil
 }
 
-func (s *Service) UpdateUser(ctx context.Context, req *v1.UpdateUserRequest) (*empty.Empty, error) {
-	bizReq := biz.User{}
+func (s *UserService) UpdateUser(ctx context.Context, req *userpb.UpdateUserRequest) (*empty.Empty, error) {
+	bizReq := userbiz.User{}
 	if err := copier.Copy(&bizReq, req); err != nil {
-		return nil, v1.TransformErrorFormat(err.Error())
+		return nil, errors.TransformErrorFormat(err.Error())
 	}
 
 	if err := s.user.Update(kratosx.MustContext(ctx), &bizReq); err != nil {
@@ -68,6 +83,6 @@ func (s *Service) UpdateUser(ctx context.Context, req *v1.UpdateUserRequest) (*e
 	return nil, nil
 }
 
-func (s *Service) DeleteUser(ctx context.Context, req *v1.DeleteUserRequest) (*empty.Empty, error) {
+func (s *UserService) DeleteUser(ctx context.Context, req *userpb.DeleteUserRequest) (*empty.Empty, error) {
 	return nil, s.user.Delete(kratosx.MustContext(ctx), req.Id)
 }

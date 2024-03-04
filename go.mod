@@ -8,7 +8,6 @@ require (
 	github.com/golang/protobuf v1.5.3
 	github.com/jinzhu/copier v0.4.0
 	github.com/limes-cloud/kratosx v1.0.24
-	github.com/limes-cloud/user-center v1.0.3
 	go.uber.org/automaxprocs v1.5.1
 	golang.org/x/crypto v0.18.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20240125205218-1f4bbc51befe
@@ -75,7 +74,7 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.17.5 // indirect
-	github.com/limes-cloud/resource v1.0.2 // indirect
+	github.com/lib/pq v1.10.6 // indirect
 	github.com/lufia/plan9stats v0.0.0-20231016141302-07b5767bb0ed // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect

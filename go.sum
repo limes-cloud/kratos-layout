@@ -1538,12 +1538,8 @@ github.com/lestrrat-go/option v1.0.0/go.mod h1:5ZHFbivi4xwXxhxY9XHDe2FHo6/Z7WWmt
 github.com/lib/pq v1.0.0/go.mod h1:5WUZQaWbwv1U+lTReE5YruASi9Al49XbQIvNi/34Woo=
 github.com/lib/pq v1.10.6 h1:jbk+ZieJ0D7EVGJYpL9QTz7/YW6UHbmdnZWYyK5cdBs=
 github.com/lib/pq v1.10.6/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=
-github.com/limes-cloud/kratosx v1.0.21/go.mod h1:Pv8joM6cDU+TcU8RFbH1taugq2ccok2mAKijdJMG8Ak=
+github.com/limes-cloud/kratosx v1.0.24 h1:PEUYQjznz8CWVEHNBdzmDyxiKxD94PbiTn3rQSLqNhs=
 github.com/limes-cloud/kratosx v1.0.24/go.mod h1:TuRgXXHhhHgOCPJfCw2NRHPpW4F7pVvRkaCfwn7BUbU=
-github.com/limes-cloud/resource v1.0.2 h1:mdwBLTM0JLf8rQ1lBF/VP+ujS4VYGXurzUaeae7T1JU=
-github.com/limes-cloud/resource v1.0.2/go.mod h1:TTUJGAwbkqZmi4h38LKUTYUqgK2gq0zc0z01N1OxmW4=
-github.com/limes-cloud/user-center v1.0.3 h1:9cnkQOUGQ7MoMVCK8lKiUKkkJesBKb3NkG+ZurwZvWU=
-github.com/limes-cloud/user-center v1.0.3/go.mod h1:U6VSgOSNudl1BGlBJwVoJV7rau4eC3Yq7zFDhpDl/8U=
 github.com/linuxkit/virtsock v0.0.0-20201010232012-f8cee7dfc7a3/go.mod h1:3r6x7q95whyfWQpmGZTu3gk3v2YkMi05HEzl7Tf7YEo=
 github.com/lufia/plan9stats v0.0.0-20211012122336-39d0f177ccd0/go.mod h1:zJYVVT2jmtg6P3p1VtQj7WsuWi/y4VnjVBn7F8KPB3I=
 github.com/lufia/plan9stats v0.0.0-20231016141302-07b5767bb0ed h1:036IscGBfJsFIgJQzlui7nK1Ncm0tp2ktmPj8xO4N/0=

@@ -19,7 +19,7 @@ func NewUseCase(config *conf.Config, repo Repo) *UseCase {
 func (u *UseCase) Get(ctx kratosx.Context, id uint32) (*Notice, error) {
 	user, err := u.repo.Get(ctx, id)
 	if err != nil {
-		return nil, errors.NotFoundError()
+		return nil, errors.NotFound()
 	}
 	return user, nil
 }
@@ -27,7 +27,7 @@ func (u *UseCase) Get(ctx kratosx.Context, id uint32) (*Notice, error) {
 func (u *UseCase) Page(ctx kratosx.Context, req *PageRequest) ([]*Notice, uint32, error) {
 	list, total, err := u.repo.Page(ctx, req)
 	if err != nil {
-		return nil, 0, errors.DatabaseError()
+		return nil, 0, errors.Database()
 	}
 	return list, total, nil
 }
@@ -35,21 +35,21 @@ func (u *UseCase) Page(ctx kratosx.Context, req *PageRequest) ([]*Notice, uint32
 func (u *UseCase) Add(ctx kratosx.Context, user *Notice) (uint32, error) {
 	id, err := u.repo.Create(ctx, user)
 	if err != nil {
-		return 0, errors.DatabaseError()
+		return 0, errors.Database()
 	}
 	return id, nil
 }
 
 func (u *UseCase) Update(ctx kratosx.Context, user *Notice) error {
 	if err := u.repo.Update(ctx, user); err != nil {
-		return errors.DatabaseError()
+		return errors.Database()
 	}
 	return nil
 }
 
 func (u *UseCase) Delete(ctx kratosx.Context, id uint32) error {
 	if err := u.repo.Delete(ctx, id); err != nil {
-		return errors.DatabaseError()
+		return errors.Database()
 	}
 	return nil
 }

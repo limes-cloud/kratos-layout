@@ -22,7 +22,7 @@ func NewUseCase(config *conf.Config, repo Repo) *UseCase {
 func (u *UseCase) Get(ctx kratosx.Context, id uint32) (*User, error) {
 	user, err := u.repo.Get(ctx, id)
 	if err != nil {
-		return nil, errors.NotFoundError()
+		return nil, errors.NotFound()
 	}
 	return user, nil
 }
@@ -39,7 +39,7 @@ func (u *UseCase) Page(ctx kratosx.Context, req *PageRequest) ([]*User, uint32, 
 		},
 	})
 	if err != nil {
-		return nil, 0, errors.DatabaseError()
+		return nil, 0, errors.Database()
 	}
 	return list, total, nil
 }
@@ -48,21 +48,21 @@ func (u *UseCase) Add(ctx kratosx.Context, user *User) (uint32, error) {
 	user.Password = util.ParsePwd(user.Password)
 	id, err := u.repo.Create(ctx, user)
 	if err != nil {
-		return 0, errors.DatabaseError()
+		return 0, errors.Database()
 	}
 	return id, nil
 }
 
 func (u *UseCase) Update(ctx kratosx.Context, user *User) error {
 	if err := u.repo.Update(ctx, user); err != nil {
-		return errors.DatabaseError()
+		return errors.Database()
 	}
 	return nil
 }
 
 func (u *UseCase) Delete(ctx kratosx.Context, id uint32) error {
 	if err := u.repo.Delete(ctx, id); err != nil {
-		return errors.DatabaseError()
+		return errors.Database()
 	}
 	return nil
 }

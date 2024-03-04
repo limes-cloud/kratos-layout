@@ -11,50 +11,50 @@ import (
 // is compatible with the kratos package it is being compiled against.
 const _ = errors.SupportPackageIsVersion1
 
-func IsNotFoundError(err error) bool {
+func IsNotFound(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == ErrorReason_NotFoundError.String() && e.Code == 200
+	return e.Reason == ErrorReason_NotFound.String() && e.Code == 200
 }
 
-func NotFoundErrorFormat(format string, args ...any) *errors.Error {
-	return errors.New(200, ErrorReason_NotFoundError.String(), "数据不存在:"+fmt.Sprintf(format, args...))
+func NotFoundFormat(format string, args ...any) *errors.Error {
+	return errors.New(200, ErrorReason_NotFound.String(), "数据不存在:"+fmt.Sprintf(format, args...))
 }
 
-func NotFoundError() *errors.Error {
-	return errors.New(200, ErrorReason_NotFoundError.String(), "数据不存在")
+func NotFound() *errors.Error {
+	return errors.New(200, ErrorReason_NotFound.String(), "数据不存在")
 }
 
-func IsDatabaseError(err error) bool {
+func IsDatabase(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == ErrorReason_DatabaseError.String() && e.Code == 200
+	return e.Reason == ErrorReason_Database.String() && e.Code == 200
 }
 
-func DatabaseErrorFormat(format string, args ...any) *errors.Error {
-	return errors.New(200, ErrorReason_DatabaseError.String(), "数据库错误:"+fmt.Sprintf(format, args...))
+func DatabaseFormat(format string, args ...any) *errors.Error {
+	return errors.New(200, ErrorReason_Database.String(), "数据库错误:"+fmt.Sprintf(format, args...))
 }
 
-func DatabaseError() *errors.Error {
-	return errors.New(200, ErrorReason_DatabaseError.String(), "数据库错误")
+func Database() *errors.Error {
+	return errors.New(200, ErrorReason_Database.String(), "数据库错误")
 }
 
-func IsTransformError(err error) bool {
+func IsTransform(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == ErrorReason_TransformError.String() && e.Code == 200
+	return e.Reason == ErrorReason_Transform.String() && e.Code == 200
 }
 
-func TransformErrorFormat(format string, args ...any) *errors.Error {
-	return errors.New(200, ErrorReason_TransformError.String(), "数据转换失败:"+fmt.Sprintf(format, args...))
+func TransformFormat(format string, args ...any) *errors.Error {
+	return errors.New(200, ErrorReason_Transform.String(), "数据转换失败:"+fmt.Sprintf(format, args...))
 }
 
-func TransformError() *errors.Error {
-	return errors.New(200, ErrorReason_TransformError.String(), "数据转换失败")
+func Transform() *errors.Error {
+	return errors.New(200, ErrorReason_Transform.String(), "数据转换失败")
 }

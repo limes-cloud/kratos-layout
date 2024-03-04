@@ -32,7 +32,7 @@ func (s *NoticeService) GetNotice(ctx context.Context, req *noticepb.GetNoticeRe
 	}
 	reply := noticepb.Notice{}
 	if err := copier.Copy(&reply, user); err != nil {
-		return nil, errors.TransformErrorFormat(err.Error())
+		return nil, errors.TransformFormat(err.Error())
 	}
 	return &reply, nil
 }
@@ -40,7 +40,7 @@ func (s *NoticeService) GetNotice(ctx context.Context, req *noticepb.GetNoticeRe
 func (s *NoticeService) PageNotice(ctx context.Context, req *noticepb.PageNoticeRequest) (*noticepb.PageNoticeReply, error) {
 	bizReq := noticebiz.PageRequest{}
 	if err := copier.Copy(&bizReq, req); err != nil {
-		return nil, errors.TransformErrorFormat(err.Error())
+		return nil, errors.TransformFormat(err.Error())
 	}
 
 	list, total, err := s.notice.Page(kratosx.MustContext(ctx), &bizReq)
@@ -50,7 +50,7 @@ func (s *NoticeService) PageNotice(ctx context.Context, req *noticepb.PageNotice
 
 	reply := noticepb.PageNoticeReply{Total: total}
 	if err := copier.Copy(&reply.List, list); err != nil {
-		return nil, errors.TransformErrorFormat(err.Error())
+		return nil, errors.TransformFormat(err.Error())
 	}
 
 	return &reply, nil
@@ -59,7 +59,7 @@ func (s *NoticeService) PageNotice(ctx context.Context, req *noticepb.PageNotice
 func (s *NoticeService) AddNotice(ctx context.Context, req *noticepb.AddNoticeRequest) (*noticepb.AddNoticeReply, error) {
 	bizReq := noticebiz.Notice{}
 	if err := copier.Copy(&bizReq, req); err != nil {
-		return nil, errors.TransformErrorFormat(err.Error())
+		return nil, errors.TransformFormat(err.Error())
 	}
 
 	id, err := s.notice.Add(kratosx.MustContext(ctx), &bizReq)
@@ -73,7 +73,7 @@ func (s *NoticeService) AddNotice(ctx context.Context, req *noticepb.AddNoticeRe
 func (s *NoticeService) UpdateNotice(ctx context.Context, req *noticepb.UpdateNoticeRequest) (*empty.Empty, error) {
 	bizReq := noticebiz.Notice{}
 	if err := copier.Copy(&bizReq, req); err != nil {
-		return nil, errors.TransformErrorFormat(err.Error())
+		return nil, errors.TransformFormat(err.Error())
 	}
 
 	if err := s.notice.Update(kratosx.MustContext(ctx), &bizReq); err != nil {

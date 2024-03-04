@@ -1,12 +1,17 @@
+name: kratos-layout
 server:
+  count: 2
+  registry: consul://127.0.0.1:8500?datacenter=dc
   http:
-    addr: 0.0.0.0:9002
+    host: 0.0.0.0
+    port: 8110
     timeout: 10s
     marshal:
       emitUnpopulated: true
       useProtoNames: true
   grpc:
-    addr: 0.0.0.0:9003
+    host: 0.0.0.0
+    port: 8120
     timeout: 10s
 log:
   level: 0 #日志输出等级
@@ -19,6 +24,14 @@ log:
     maxBackup: 5 #日志文件最多保存个数
     maxAge: 1 #保留就文件的最大天数,单位天
     compress: false #是否进行压缩归档
+client:
+  - server: UserCenter
+    type: discovery
+#    backends:
+#      - target: direct://127.0.0.1:8004
+#        weight: 10
+#      - target: direct://127.0.0.1:8005
+#        weight: 10
 database:
   system: #数据库实例名称,如有多个数据库可新增
     enable: true #是否启用数据库
@@ -39,5 +52,5 @@ database:
       maxIdleConn: 10 #最大空闲数量
       logLevel: 4 #日志等级
       slowThreshold: 2s #慢sql阈值
-business:
+file:
   sayText: "你好！"

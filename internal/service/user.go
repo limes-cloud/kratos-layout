@@ -32,7 +32,7 @@ func (s *UserService) GetUser(ctx context.Context, req *userpb.GetUserRequest) (
 	}
 	reply := userpb.User{}
 	if err := copier.Copy(&reply, user); err != nil {
-		return nil, errors.TransformErrorFormat(err.Error())
+		return nil, errors.TransformFormat(err.Error())
 	}
 	return &reply, nil
 }
@@ -40,7 +40,7 @@ func (s *UserService) GetUser(ctx context.Context, req *userpb.GetUserRequest) (
 func (s *UserService) PageUser(ctx context.Context, req *userpb.PageUserRequest) (*userpb.PageUserReply, error) {
 	bizReq := userbiz.PageRequest{}
 	if err := copier.Copy(&bizReq, req); err != nil {
-		return nil, errors.TransformErrorFormat(err.Error())
+		return nil, errors.TransformFormat(err.Error())
 	}
 
 	list, total, err := s.user.Page(kratosx.MustContext(ctx), &bizReq)
@@ -50,7 +50,7 @@ func (s *UserService) PageUser(ctx context.Context, req *userpb.PageUserRequest)
 
 	reply := userpb.PageUserReply{Total: total}
 	if err := copier.Copy(&reply.List, list); err != nil {
-		return nil, errors.TransformErrorFormat(err.Error())
+		return nil, errors.TransformFormat(err.Error())
 	}
 
 	return &reply, nil
@@ -59,7 +59,7 @@ func (s *UserService) PageUser(ctx context.Context, req *userpb.PageUserRequest)
 func (s *UserService) AddUser(ctx context.Context, req *userpb.AddUserRequest) (*userpb.AddUserReply, error) {
 	bizReq := userbiz.User{}
 	if err := copier.Copy(&bizReq, req); err != nil {
-		return nil, errors.TransformErrorFormat(err.Error())
+		return nil, errors.TransformFormat(err.Error())
 	}
 
 	id, err := s.user.Add(kratosx.MustContext(ctx), &bizReq)
@@ -73,7 +73,7 @@ func (s *UserService) AddUser(ctx context.Context, req *userpb.AddUserRequest) (
 func (s *UserService) UpdateUser(ctx context.Context, req *userpb.UpdateUserRequest) (*empty.Empty, error) {
 	bizReq := userbiz.User{}
 	if err := copier.Copy(&bizReq, req); err != nil {
-		return nil, errors.TransformErrorFormat(err.Error())
+		return nil, errors.TransformFormat(err.Error())
 	}
 
 	if err := s.user.Update(kratosx.MustContext(ctx), &bizReq); err != nil {

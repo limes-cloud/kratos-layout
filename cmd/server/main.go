@@ -26,12 +26,12 @@ func main() {
 
 func RegisterServer(c config.Config, hs *http.Server, gs *grpc.Server) {
 	conf := &internalconf.Config{}
-	if err := c.Value("file").Scan(conf); err != nil {
-		panic("file config format error:" + err.Error())
+	if err := c.Value("business").Scan(conf); err != nil {
+		panic("business config format error:" + err.Error())
 	}
-	c.Watch("file", func(value config.Value) {
+	c.ScanWatch("business", func(value config.Value) {
 		if err := value.Scan(conf); err != nil {
-			log.Error("file 配置变更失败")
+			log.Error("business 配置变更失败")
 		} else {
 			log.Error("file 配置变更成功")
 		}

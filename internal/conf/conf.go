@@ -1,16 +1,28 @@
 package conf
 
+import "time"
+
 type Config struct {
-	Storage         string
-	Endpoint        string
-	Key             string
-	Secret          string
-	Bucket          string
-	Region          string
-	ServerPath      string
-	LocalDir        string
-	MaxSingularSize int64
-	MaxChunkSize    int64
-	MaxChunkCount   int64
-	AcceptTypes     []string
+	// Secret             string
+	// Expire             time.Duration
+	DefaultMaxSize uint32
+
+	DefaultAcceptTypes []string
+	ChunkSize          uint32
+	Export             struct {
+		ServerURL string
+		LocalDir  string
+		Expire    time.Duration
+	}
+	Storage struct {
+		Type            string
+		Endpoint        string
+		Id              string
+		Secret          string
+		Bucket          string
+		Region          string
+		LocalDir        string
+		ServerURL       string
+		TemporaryExpire time.Duration
+	}
 }

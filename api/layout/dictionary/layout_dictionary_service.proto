@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package layout.api.layout.dictionary.v1;
+
+option go_package = "./v1;v1";
+option java_multiple_files = true;
+option java_package = "layout.api.layout.dictionary.v1";
+option java_outer_classname = "DictionaryV1";
+
+import "api/layout/dictionary/layout_dictionary.proto";
+import "google/api/annotations.proto";
+
+service Dictionary{
+
+  // GetDictionary 获取指定的字典目录
+  rpc GetDictionary (GetDictionaryRequest) returns (GetDictionaryReply) {
+    option (google.api.http) = {
+      get: "/layout/api/v1/dictionary",
+    };
+  }
+
+  // ListDictionary 获取字典目录列表
+  rpc ListDictionary (ListDictionaryRequest) returns (ListDictionaryReply) {
+    option (google.api.http) = {
+      get: "/layout/api/v1/dictionaries",
+    };
+  }
+
+  // CreateDictionary 创建字典目录
+  rpc CreateDictionary (CreateDictionaryRequest) returns (CreateDictionaryReply) {
+    option (google.api.http) = {
+      post: "/layout/api/v1/dictionary",
+      body: "*"
+    };
+  }
+
+  // UpdateDictionary 更新字典目录
+  rpc UpdateDictionary (UpdateDictionaryRequest) returns (UpdateDictionaryReply) {
+    option (google.api.http) = {
+      put: "/layout/api/v1/dictionary",
+      body: "*"
+    };
+  }
+
+  // DeleteDictionary 删除字典目录
+  rpc DeleteDictionary (DeleteDictionaryRequest) returns (DeleteDictionaryReply) {
+    option (google.api.http) = {
+      delete: "/layout/api/v1/dictionary",
+    };
+  }
+
+}

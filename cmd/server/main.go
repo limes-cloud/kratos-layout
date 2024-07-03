@@ -24,9 +24,6 @@ func main() {
 
 func RegisterServer(c config.Config, hs *http.Server, gs *grpc.Server) {
 	cfg := &conf.Config{}
-	if err := c.Value("business").Scan(cfg); err != nil {
-		panic("business config format error:" + err.Error())
-	}
 	c.ScanWatch("business", func(value config.Value) {
 		if err := value.Scan(cfg); err != nil {
 			log.Error("business 配置变更失败")

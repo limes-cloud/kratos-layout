@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package partyaffairs.api.partyaffairs.v1;
+
+option go_package = "./v1;v1";
+
+import "validate/validate.proto";
+
+message Banner{
+  message File {
+    string name = 1;
+    string sha = 2;
+    string url = 3;
+  }
+
+  uint32 id = 1;
+  string title = 2;
+  string src = 3;
+  string path = 4;
+  uint32 weight = 5;
+  uint32 created_at = 6;
+  uint32 updated_at = 7;
+  File resource = 8;
+}
+
+message AllBannerReply{
+  repeated Banner list = 1;
+}
+
+message AddBannerRequest {
+  string title = 1[(validate.rules).string = {min_len: 1}];
+  string src = 2[(validate.rules).string = {min_len: 1}];
+  optional string path = 3;
+}
+
+message UpdateBannerRequest {
+  string title = 1[(validate.rules).string = {min_len: 1}];
+  string src = 2[(validate.rules).string = {min_len: 1}];
+  optional string path = 3;
+  uint32 id = 4[(validate.rules).uint32 = {gt: 0}];
+}
+
+message DeleteBannerRequest{
+  uint32 id = 1[(validate.rules).uint32 = {gt: 0}];
+}
+
+

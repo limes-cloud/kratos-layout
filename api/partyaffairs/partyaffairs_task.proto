@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package partyaffairs.api.partyaffairs.v1;
+option go_package = "./v1;v1";
+
+import "validate/validate.proto";
+
+message Task{
+  uint32 id = 1;
+  string title = 2;
+  string desc = 3;
+  bool is_update = 4;
+  uint32 start = 5;
+  uint32 end = 6;
+  string config = 7;
+  uint32 created_at = 8;
+  uint32 updated_at = 9;
+}
+
+message GetTaskRequest{
+  uint32 id = 1[(validate.rules).uint32 = {gt: 0}];
+}
+
+
+message PageTaskRequest{
+  uint32 page = 1[(validate.rules).uint32 = {gt: 0}];
+  uint32 page_size = 2[(validate.rules).uint32 = {gt: 0,lte:50}];
+  optional string title = 3;
+  optional bool not_finish = 4;
+}
+
+message PageTaskReply{
+  uint32 total = 1;
+  repeated Task list = 2;
+}
+
+message AddTaskRequest {
+  string title = 1[(validate.rules).string = {min_len: 1}];
+  string desc = 2[(validate.rules).string = {min_len: 1}];
+  optional bool is_update = 3;
+  uint32 start = 4[(validate.rules).uint32 = {gt: 1}];
+  uint32 end = 5[(validate.rules).uint32 = {gt: 1}];
+  string config = 6[(validate.rules).string = {min_len: 1}];
+}
+
+message UpdateTaskRequest {
+  string title = 1[(validate.rules).string = {min_len: 1}];
+  string desc = 2[(validate.rules).string = {min_len: 1}];
+  optional  bool is_update = 3;
+  uint32 start = 4[(validate.rules).uint32 = {gt: 1}];
+  uint32 end = 5[(validate.rules).uint32 = {gt: 1}];
+  string config = 6[(validate.rules).string = {min_len: 1}];
+  uint32 id = 7[(validate.rules).uint32 = {gt: 0}];
+}
+
+message DeleteTaskRequest{
+  uint32 id = 1[(validate.rules).uint32 = {gt: 0}];
+}
+
+

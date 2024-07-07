@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package partyaffairs.api.partyaffairs.v1;
+option go_package = "./v1;v1";
+
+import "validate/validate.proto";
+
+
+
+message Notice{
+  uint32 id = 1;
+  string title = 2;
+  string desc = 3;
+  string unit = 4;
+  string content = 5;
+  bool is_top = 6;
+  bool is_read = 7;
+  uint32 created_at = 8;
+  uint32 updated_at = 9;
+}
+
+message PageNoticeRequest{
+  uint32 page = 1[(validate.rules).uint32 = {gt: 0}];
+  uint32 page_size = 2[(validate.rules).uint32 = {gt: 0,lte:50}];
+  optional string title = 3;
+  optional bool not_read = 4;
+}
+
+message PageNoticeUserRequest{
+  uint32 page = 1[(validate.rules).uint32 = {gt: 0}];
+  uint32 page_size = 2[(validate.rules).uint32 = {gt: 0,lte:50}];
+  uint32 notice_id = 3[(validate.rules).uint32 = {gt: 0}];
+  bool is_read = 4;
+}
+
+message PageNoticeUserReply{
+  message User{
+    uint32 id = 1;
+    string nickName = 2;
+    optional string realName = 3;
+    optional string avatarUrl = 4;
+    optional string gender = 5;
+  }
+
+  uint32 total = 1;
+  repeated User list = 2;
+}
+
+message PageNoticeReply{
+  uint32 total = 1;
+  repeated Notice list = 2;
+}
+
+message AddNoticeRequest {
+  string title = 1[(validate.rules).string = {min_len: 1}];
+  string desc = 2[(validate.rules).string = {min_len: 1}];
+  string unit = 3[(validate.rules).string = {min_len: 1}];
+  string content = 4[(validate.rules).string = {min_len: 1}];
+  bool is_send_email = 5;
+  optional bool is_top = 6;
+}
+
+message GetNoticeRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gt: 0}];
+}
+
+message ReadNoticeRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gt: 0}];
+}
+
+message UpdateNoticeRequest {
+  string title = 1[(validate.rules).string = {min_len: 1}];
+  string desc = 2[(validate.rules).string = {min_len: 1}];
+  string unit = 3[(validate.rules).string = {min_len: 1}];
+  string content = 4[(validate.rules).string = {min_len: 1}];
+  bool is_send_email = 5;
+  uint32 id = 6[(validate.rules).uint32 = {gt: 0}];
+  optional bool is_top = 7;
+}
+
+message DeleteNoticeRequest{
+  uint32 id = 1[(validate.rules).uint32 = {gt: 0}];
+}
+
+

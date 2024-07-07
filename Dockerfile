@@ -1,24 +1,20 @@
-FROM golang:1.18 AS builder
+# 构建打包镜像
+FROM golang:alpine AS build
+ENV GOPROXY=https://goproxy.cn,direct
+ENV GO111MODULE on
+WORKDIR /go/cache
+ADD go.mod .
+ADD go.sum .
+RUN go mod download
+WORKDIR /go/build
+ADD . .
+RUN GOOS=linux CGO_ENABLED=0 go build -ldflags="-s -w" -installsuffix cgo -o partyaffairs cmd/partyaffairs/main.go
 
-COPY . /src
-WORKDIR /src
+# 构建执行镜像
+FROM alpine
+WORKDIR /go/build
 
-RUN GOPROXY=https://goproxy.cn make build
-
-FROM debian:stable-slim
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-		ca-certificates  \
-        netbase \
-        && rm -rf /var/lib/apt/lists/ \
-        && apt-get autoremove -y && apt-get autoclean -y
-
-COPY --from=builder /src/bin /app
-
-WORKDIR /app
-
-EXPOSE 8000
-EXPOSE 9000
-VOLUME /data/conf
-
-CMD ["./server", "-conf", "/data/conf"]
+COPY ./deploy/ /go/build/deploy/
+COPY ./static/ /go/build/static/
+COPY --from=build /go/build/partyaffairs /go/build/partyaffairs
+CMD ["./partyaffairs"]

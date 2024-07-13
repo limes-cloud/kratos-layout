@@ -93,6 +93,8 @@ func (s *Service) PageTaskValue(ctx context.Context, in *v1.PageTaskValueRequest
 				RealName:  userReply.RealName,
 				AvatarUrl: userReply.AvatarUrl,
 				Gender:    userReply.Gender,
+				Phone:     userReply.Phone,
+				Email:     userReply.Email,
 			}
 		}
 	}

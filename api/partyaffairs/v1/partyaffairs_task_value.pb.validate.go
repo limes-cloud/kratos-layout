@@ -1212,6 +1212,14 @@ func (m *TaskValue_User) validate(all bool) error {
 		// no validation rules for Gender
 	}
 
+	if m.Phone != nil {
+		// no validation rules for Phone
+	}
+
+	if m.Email != nil {
+		// no validation rules for Email
+	}
+
 	if len(errors) > 0 {
 		return TaskValue_UserMultiError(errors)
 	}

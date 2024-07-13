@@ -14,6 +14,8 @@ message TaskValue{
     optional string realName = 3;
     optional string avatarUrl = 4;
     optional string gender = 5;
+    optional string phone = 6;
+    optional string email = 7;
   }
 
   uint32 id = 1;

@@ -8,16 +8,16 @@ import (
 	"github.com/limes-cloud/kratosx/config"
 	_ "go.uber.org/automaxprocs"
 
+	"layout/internal/app"
 	"layout/internal/conf"
-	"layout/internal/service"
 )
 
 func main() {
-	app := kratosx.New(
+	srv := kratosx.New(
 		kratosx.RegistrarServer(RegisterServer),
 	)
 
-	if err := app.Run(); err != nil {
+	if err := srv.Run(); err != nil {
 		log.Fatal(err.Error())
 	}
 }
@@ -32,5 +32,5 @@ func RegisterServer(c config.Config, hs *http.Server, gs *grpc.Server) {
 		}
 	})
 
-	service.New(cfg, hs, gs)
+	app.Register(cfg, hs, gs)
 }

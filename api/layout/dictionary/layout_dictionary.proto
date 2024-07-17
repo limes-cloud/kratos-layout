@@ -67,10 +67,9 @@ message UpdateDictionaryReply {
 }
 
 message DeleteDictionaryRequest {
-  repeated uint32 ids = 1[(validate.rules).repeated = {min_items: 1, unique:true, max_items:50}];
+  uint32 id = 1[(validate.rules).uint32 = {gte:1}];
 }
 
 message DeleteDictionaryReply {
-  uint32 total = 1;
 }
 

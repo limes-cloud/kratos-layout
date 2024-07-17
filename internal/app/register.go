@@ -1,4 +1,4 @@
-package service
+package app
 
 import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
@@ -15,7 +15,7 @@ func register(fn registryFunc) {
 	registries = append(registries, fn)
 }
 
-func New(c *conf.Config, hs *http.Server, gs *grpc.Server) {
+func Register(c *conf.Config, hs *http.Server, gs *grpc.Server) {
 	for _, registry := range registries {
 		registry(c, hs, gs)
 	}

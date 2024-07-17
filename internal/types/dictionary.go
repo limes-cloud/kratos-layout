@@ -1,4 +1,4 @@
-package dictionary
+package types
 
 type GetDictionaryRequest struct {
 	Id      *uint32 `json:"id"`

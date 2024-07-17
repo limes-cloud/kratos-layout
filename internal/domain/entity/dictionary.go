@@ -1,4 +1,4 @@
-package dictionary
+package entity
 
 type Dictionary struct {
 	Id          uint32  `json:"id"`

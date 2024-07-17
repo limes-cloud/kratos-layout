@@ -5,7 +5,7 @@ go 1.21.1
 require (
 	github.com/envoyproxy/protoc-gen-validate v1.0.4
 	github.com/go-kratos/kratos/v2 v2.7.3
-	github.com/limes-cloud/kratosx v1.0.44
+	github.com/limes-cloud/kratosx v1.0.47
 	go.uber.org/automaxprocs v1.5.3
 	google.golang.org/genproto/googleapis/api v0.0.0-20240520151616-dc85e6b867a5
 	google.golang.org/grpc v1.64.0

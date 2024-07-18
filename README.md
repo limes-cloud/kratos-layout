@@ -39,7 +39,6 @@ DDD领域设计模式需要开发人员熟练掌握其思想，对业务模型�
 ```
 
 #### api目录
-api目录相当于DDD中的接口层，我们在proto中可以直接定义请求参数、返回参数、接口等，并生成service\client。api目录下并不是直接就存放当前系统的proto,而是增加了一层目录结构进行存放，这样的好处时我们可以将当前系统的proto单独抽出去作为大仓模式，也可以引入额外三方的服务的proto生成对应的client代码。
 ```
 ├── api # 接口层
 │   └── layout # layot服务定义
@@ -48,28 +47,154 @@ api目录相当于DDD中的接口层，我们在proto中可以直接定义请求
 │       └── errors # 系统全局error
 │   └── ... # 其他服务
 ```
+api目录相当于DDD中的接口层，我们在proto中可以直接定义请求参数、返回参数、接口等，并生成service\client。api目录下并不是直接就存放当前系统的proto,而是增加了一层目录结构进行存放，这样的好处时我们可以将当前系统的proto单独抽出去作为大仓模式，也可以引入额外三方的服务的proto生成对应的client代码。
+
 
 #### cmd目录
 cmd 目录是启动目录，里面主要是实现了配置的初始化和变更监听，完成了将应用层注册到接口层中。
 
 #### internal目录
-internal目录主要存放不让第三方服务访问的代码，比如我当前项目的配置文件、我当前服务的具体业务逻辑等。
+internal目录主要存放项目内部的核心逻辑代码，不希望能被外部访问引用的代码，比如我当前项目的配置文件、我当前服务的具体业务逻辑等。
+
+为什么要引入internal? 什么时候不需要引入internal? 这其实是大家比较困惑的问题。假如我开发了一个服务是用户中心，属于一个中台服务，很多的外围服务需要通过我来获取用户信息，最理想的情况下是所有的外围服务直接引用我的api中的proto自主进行生成对应的client代码，但是我们想想，用户中心既然为一个中台服务，为什么我不能直接调用用户中心已经通过proto生成的client代码呢（当然这需要外围服务也是使用Golang进行开发的），所以这就造成了一些业务上的代码对外进行了泄漏，因为业务逻辑的变动是必然的，不要因此造成外围服务的一些错误使用。
+
+这里肯定又有人问了，那如果proto也变动了怎么办，两边版本不一致怎么办？其实这个问题很好理解， 实际上我们开发的时候接口的入参和出参是很少进行变动的，即使变动那也要遵循向下兼容原则。即使你不用proto，直接使用接口请求，难道直接变更用户信息字段就不会对下游产生影响了么？我string变int就合理了吗？如果我仅仅是新增字段，即使版本不一致那也毫无影响，对于下游来将，只要当前的返回的字段能够满足业务要求即可，当下游业务需要使用到我新增的字段，那就主动更新版本即可。 即使你直接使用api请求，上游新增字段是，你不也得改对应的代码新增字段来承接解析上游返回的数据，不是么。
+
 
 ##### internal/conf
 主要负责整个内部系统的配置文件，和kratos不一样的是，我采用的是结构体直接定义，而不是使用protoc定义，这样在很大程度上，会更加方便在开发的过程中进行使用。
+
 另外需要注意的是conf定义在internal内是为了防止第三方服务在引用当前服务时，调用到其配置文件。
+
+还有就是conf配置应该被看作是一个基础设施层，伴随着服务的初始化进行注入使用。
 
 ##### internal/app
 app目录充当着系统的应用层，主要负责协议转换（DTO）、权限校验、以及领域编排等。应用层不应该包含业务逻辑，而是进入核心业务逻辑之前的一些准入工作，以及核心逻辑处理完成之后的收尾。
 
+比较基础的表现形式如下：
+```go
+func (s *DictionaryApplication) ListDictionary(c context.Context, req *pb.ListDictionaryRequest) (*pb.ListDictionaryReply, error) {
+	ctx := kratosx.MustContext(c)
+	// dto 转换
+	in := &types.ListDictionaryRequest{
+        Page:     req.Page,
+        PageSize: req.PageSize,
+        Order:    req.Order,
+        OrderBy:  req.OrderBy,
+        Keyword:  req.Keyword,
+        Name:     req.Name,
+	}
+	// 领域编排
+	result, total, err := s.srv.ListDictionary(ctx, in)
+	if err != nil {
+		return nil, err
+	}
 
-##### internal/domain 目录
-领域服务核心能力，提供业务逻辑实现（比如赤字数据生成读取、报表下载、GMV 等)，核心要素包括领域服务 service 、领域实体 entity、仓储接口 repository。其中业务缓存、分布式锁、发送通知等，尽量可以收敛到领域服务之中。
+	// 结果收尾
+	reply := pb.ListDictionaryReply{Total: total}
+	if err = valx.Transform(result, &reply.List); err != nil {
+		ctx.Logger().Warnw("msg", "reply transform err", "err", err.Error())
+		return nil, errors.TransformError()
+	}
 
+	return &reply, nil
+}
+```
+这里面引入了一个types,你可以将它理解层值对象。
+
+##### internal/types目录
+types目录充当着值对象的角色，但是又不是完全是值对象，其实我们在使用proto进行定义的时候，proto中定义的结构也可以是被看作值对象的，但是proto始终是接口层的东西，而proto在大多数公司来说都会被存放在外部仓库中，如果业务强依赖接口层的proto，显然不是一个明智的选择，所以这里新增了types目录，主要是存放了一些必须的请求的参数，和返回参数。
+
+当然不是所有的请求参数、返回参数都需要存放到types中，那怎样的数据需要存放到types目录呢？我们看以下的示例：
+
+我想查询用户的分页数据，参数为page、pageSize。这个要求其实很简单了，这种其实我们就没必要再定义对应的请求参数，因为只有两个参数，我们直接将这两个数据作为函数的参数往下传递即可。最终基础设施层，操作数据库
+``` 
+func (ObjectInfra) ListUser(page int,pageSize int) ([]*User,int64,error){
+// some code
+// db.xxxx
+}
+```
+
+那比如你有一个查询列表的方法，我的基础设施层需要根据你的条件进行查询，比如我想实现一个查询指定分页、够根据我选择的字段排序、也具有通过Name进行查询的功能。那么最终你的请求参数大概是如下：
+``` 
+type ListDictionaryRequest struct {
+	Page     uint32  `json:"page"`
+	PageSize uint32  `json:"pageSize"`
+	Order    *string `json:"order"`
+	OrderBy  *string `json:"orderBy"`
+	Name     *string `json:"name"`
+}
+```
+很显然，通过参数展开传递是一个非常不明智的行为，而是直接传递整个结构体，所以这种情况下，需要你在types中添加对应的结构定义。
 
 #### internal/infra
 实现仓储接口，RPC 具体实现、DB 存储、缓存、消息中间件等，都会去实现领域层定义好的仓储接口。
 
+这里有一个细节我想可以值的提及以下，就是基础设施层我们在初始化的时候，应该返回该结构的引用，而不是返回repo的接口。
+
+``` 
+type DictionaryInfra struct {
+	// db 基础设施中间件
+}
+
+// 直接返回结构定义
+func NewDictionaryInfra() *DictionaryInfra {
+	return &DictionaryInfra{}
+}
+
+// 返回接口定义
+func NewDictionaryInfra() repository.DictionaryRepository {
+	return &DictionaryInfra{}
+}
+
+```
+
+为什么不提倡返回对应的repo接口呢？ 我们在领域服务中基本上会调用repo接口进行业务编排，但是有时候我们在开发的过程中，我们一个领域服务经常会使用到多个repo接口，比我我在实现用户的对应的逻辑时，需要查询角色信息，使用角色的repo，那么用户领域服务的结构大概如下。
+``` 
+type UserService struct{
+    userRepo repository.UserRepository 
+    roleRepo repository.RoleRepository 
+}
+```
+但是这里我仅仅是只用到了查询当前用户的角色这一个功能，而引入整个repository.RoleRepository。RoleRepository中还包含有角色的创建、删除、修改，这是我根本用不上的。所以说，我们在初始化基础设施层时大可不必直接返回对应的repo，而是返回结构体应用，具体的业务代码里面更具需要去定义接口，更加清晰的划定业务界限。
+
+
+
+##### internal/domain目录
+领域服务核心能力，提供业务逻辑实现（比如数据生成读取、报表下载、GMV 等)，核心要素包括领域服务 service 、领域实体 entity、仓储接口 repository。其中业务缓存、分布式锁、发送通知等，尽量可以收敛到领域服务之中。
+
+
+##### internal/domain/entity目录
+entity是定义系统的实体的，在标准的DDD概念中，实体并不是基础设施层直接操作的对象，而是需要将实体转换成PO，这里其实我并不建议这么做，主要是这样的转换造成了大量的性能丢失，每次的查询时，从DB中取出数据了之后，都要进行转换赋值。
+
+在很多的示例中，相信你都会看见如下的类似的代码。
+``` 
+func (r dictionaryRepo) ListDictionary(ctx kratosx.Context, req *types.ListDictionaryRequest) ([]*entity.Dictionary, uint32, error) {
+	// some code 
+	// 查询po 将po转换为entity
+	for _, m := range ms {
+		es = append(es, r.ToDictionaryEntity(m))
+	}
+	return es, uint32(total), nil
+}
+```
+
+还有就是在DDD说明了实体是一个完整的个体，实体和实体之间的相互引用需要使用聚合根，这里的聚合根是什么？说白了就是一个更大的结构体，包含了相互引用的实体。
+
+这样的做法肯定是最好的，那为什么在我的项目目录中并没有聚合根这个目录呢？
+
+聚合根很多人没办法进行良好的的划分、设计，本来是一个解决问题的设计，最终反而因为设计、划分不合理，造成项目反而更加不可维护。当然这只是一部分，另外一部分原因是我们在开发过程中，更多的会使用一些orm框架，或者使用一些关联查询等，这已经破坏了实体的完整性。
+
+比如我要查询用户以及用户的角色信息，在聚合根中的话，会先查询用户信息，在根据用户信息查询角色信息。最终聚合到一起。经常写代码的同学都知道，这种我们会更偏向户去书写一些关联查询的代码，在查询用户的同时，在基础设施层就直接查询出对应的角色信息了，这在性能方面来说，明显是更高效的。
+
+所以我并不建议使用聚合根，即使在设计上，他是最合理的。
+
+
+##### internal/domain/repository目录
+repository目录定义了具体的领域服务中需要操作的基础设施层的接口实现。
+
+##### internal/domain/service目录
+service目录是领域服务目录，主要负责核心逻辑。除此之外值的一提的是出了核心逻辑之外，包含分布式锁、缓存、mq等都应该放到该层。
 
 #### internal/pkg
 主要负责内部系统的一些方法包封装，这里放到internal下时为了防止外部调用。
@@ -84,7 +209,5 @@ app目录充当着系统的应用层，主要负责协议转换（DTO）、权�
 主要存放临时文件，如日志等
 
 
-#### 其他说明
-在这里我像特地说明一下关于服务根据不同的应用领域进行分类的问题，在kratos的官网示例beer-shop中，根据用户端、管理端将对领域又进行了分类为admin/interface...
-admin/interface/..分成了不同的服务进行启动。但是其实无论时管理端还是用户端，在日常的开发中，我们并不会对其进行拆分成多个服务进行运行，因为他们本身就属于同一个领域中，这样太过于细致的划分，会导致服务的数量增加，也增加了维护成本。其次时进行划分会重复定义biz和data，一个数据表的抽象数据结构需要在每个端都定义一遍，也不是一个明智的选择。
-在这里其实我更加主张在通过service中进行实现。我们可以通过接口来进行区分不同的请求端，比如管理端可以用过/admin/xxx 客户端可以通过/client/xxx 这样在配置网关的使用可以通过网关进行较好的接口鉴权。
+### 总结
+最后我还强调说明，并没有完美的设计模式，我们在性能和设计模式上可以自行进行取舍。当然至少在Go开发上，相信你肯定是更在乎其性能的，不必要为了设计而设计，最终却本末倒置了。如何在设计和性能上达到一个平衡点，在既可以简化项目、又能保持性能这我认为是最佳的。

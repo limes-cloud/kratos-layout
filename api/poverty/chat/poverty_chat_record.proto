@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package poverty.api.poverty.chat.v1;
+
+option go_package = "./v1;v1";
+option java_multiple_files = true;
+option java_package = "poverty.api.poverty.chat.v1";
+option java_outer_classname = "ChatV1";
+
+import "validate/validate.proto";
+
+message SendChatMessageRequest {
+  string message = 1[(validate.rules).string = {min_len: 1,max_len:300}];
+  optional string sessionId = 2;
+}
+
+message SendChatMessageReply {
+  string message = 1;
+  string sessionId = 2;
+}
+
+message ListChatRecordRequest {
+  uint32 page = 1[(validate.rules).uint32 = {gte: 1}];
+  uint32 pageSize = 2[(validate.rules).uint32 = {gte: 1,lte:50}];
+  optional string order = 3[(validate.rules).string = {in: ["asc","desc"]}];
+  optional string orderBy = 4[(validate.rules).string = {in: ["id","created_at"]}];
+  optional uint32 userId = 5[(validate.rules).uint32 = {gte: 1}];
+  optional string sessionId = 6[(validate.rules).string = {min_len: 1,max_len: 40}];
+  optional bool distinct = 7;
+  optional string userName = 8[(validate.rules).string = {min_len: 1}];
+
+}
+
+message ListChatRecordReply {
+  message ChatRecord {
+    uint32 id = 1;
+    uint32 userId = 2;
+    string userName = 3;
+    string userAvatar = 4;
+    string sessionId = 5;
+    string message = 6;
+    string type = 7;
+    uint32 createdAt = 8;
+  }
+  uint32 total = 1;
+  repeated ChatRecord list = 2;
+}
+
+
+message DeleteChatRecordRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gte: 1}];
+}
+
+message DeleteChatRecordReply {
+}
+

@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package poverty.api.poverty.information.v1;
+
+option go_package = "./v1;v1";
+option java_multiple_files = true;
+option java_package = "poverty.api.poverty.information.v1";
+option java_outer_classname = "InformationV1";
+
+import "google/api/annotations.proto";
+import "api/poverty/information/poverty_information.proto";
+
+service Information{
+
+  // GetInformation 获取指定的咨询信息
+  rpc GetInformation (GetInformationRequest) returns (GetInformationReply) {
+    option (google.api.http) = {
+      get: "/poverty/api/v1/information",
+      additional_bindings:{
+        get: "/poverty/client/v1/information",
+      }
+    };
+  }
+
+  // ListInformation 获取咨询信息列表
+  rpc ListInformation (ListInformationRequest) returns (ListInformationReply) {
+    option (google.api.http) = {
+      get: "/poverty/api/v1/informations",
+      additional_bindings:{
+        get: "/poverty/client/v1/informations",
+      }
+    };
+  }
+
+  // CreateInformation 创建咨询信息
+  rpc CreateInformation (CreateInformationRequest) returns (CreateInformationReply) {
+    option (google.api.http) = {
+      post: "/poverty/api/v1/information",
+      body: "*"
+    };
+  }
+
+  // UpdateInformation 更新咨询信息
+  rpc UpdateInformation (UpdateInformationRequest) returns (UpdateInformationReply) {
+    option (google.api.http) = {
+      put: "/poverty/api/v1/information",
+      body: "*"
+    };
+  }
+
+  // DeleteInformation 删除咨询信息
+  rpc DeleteInformation (DeleteInformationRequest) returns (DeleteInformationReply) {
+    option (google.api.http) = {
+      delete: "/poverty/api/v1/information",
+    };
+  }
+
+}

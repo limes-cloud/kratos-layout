@@ -156,7 +156,7 @@ type UserService struct{
     roleRepo repository.RoleRepository 
 }
 ```
-但是这里我仅仅是只用到了查询当前用户的角色这一个功能，而引入整个repository.RoleRepository。RoleRepository中还包含有角色的创建、删除、修改，这是我根本用不上的。所以说，我们在初始化基础设施层时大可不必直接返回对应的repo，而是返回结构体应用，具体的业务代码里面更具需要去定义接口，更加清晰的划定业务界限。
+但是这里我仅仅是只用到了查询当前用户的角色这一个功能，而引入整个repository.RoleRepository。RoleRepository中还包含有角色的创建、删除、修改，这是我根本用不上的。所以说，我们在初始化基础设施层时大可不必直接返回对应的repo，而是返回结构体应用，具体的业务代码里面更具需要去定义接口，更加清晰的划定业务界限。当然这取决于你项目中有没有很多的地方使用到对应的基础设施。
 
 
 

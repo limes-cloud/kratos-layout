@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package poverty.api.poverty.chat.v1;
+
+option go_package = "./v1;v1";
+option java_multiple_files = true;
+option java_package = "poverty.api.poverty.chat.v1";
+option java_outer_classname = "ChatV1";
+
+import "validate/validate.proto";
+
+message GetChatSettingRequest {
+}
+
+message GetChatSettingReply {
+  message Guiding{
+    string type = 1;
+    string text = 2;
+    string path = 3;
+  }
+  string name = 1;
+  string logo = 2;
+  string desc = 3;
+  repeated Guiding guiding = 4;
+}

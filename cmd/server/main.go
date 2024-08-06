@@ -8,8 +8,8 @@ import (
 	"github.com/limes-cloud/kratosx/config"
 	_ "go.uber.org/automaxprocs"
 
-	"layout/internal/app"
-	"layout/internal/conf"
+	"poverty/internal/app"
+	"poverty/internal/conf"
 )
 
 func main() {

@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package poverty.api.poverty.chat.v1;
+
+option go_package = "./v1;v1";
+option java_multiple_files = true;
+option java_package = "poverty.api.poverty.chat.v1";
+option java_outer_classname = "ChatV1";
+
+import "google/api/annotations.proto";
+import "api/poverty/chat/poverty_chat_record.proto";
+import "api/poverty/chat/poverty_chat_setting.proto";
+
+service Chat{
+
+  // GetChatSetting 获取chatbot setting
+  rpc GetChatSetting (GetChatSettingRequest) returns (GetChatSettingReply) {
+    option (google.api.http) = {
+      get: "/poverty/client/v1/chat/setting",
+    };
+  }
+
+  // ListChatRecord 获取会话记录信息列表
+  rpc ListChatRecord (ListChatRecordRequest) returns (ListChatRecordReply) {
+    option (google.api.http) = {
+      get: "/poverty/api/v1/chat/records",
+    };
+  }
+
+  // DeleteChatRecord 删除会话记录信息
+  rpc DeleteChatRecord (DeleteChatRecordRequest) returns (DeleteChatRecordReply) {
+    option (google.api.http) = {
+      delete: "/poverty/api/v1/chat/record",
+    };
+  }
+
+}

@@ -6,6 +6,7 @@ require (
 	github.com/baidubce/app-builder/go/appbuilder v0.9.1
 	github.com/envoyproxy/protoc-gen-validate v1.0.4
 	github.com/go-kratos/kratos/v2 v2.7.3
+	github.com/limes-cloud/configure v1.0.39
 	github.com/limes-cloud/kratosx v1.0.51
 	github.com/limes-cloud/resource v1.0.20
 	github.com/limes-cloud/usercenter v1.0.29
@@ -45,7 +46,6 @@ require (
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
-	github.com/go-playground/assert/v2 v2.2.0 // indirect
 	github.com/go-playground/form/v4 v4.2.1 // indirect
 	github.com/go-redis/redis/v8 v8.11.5 // indirect
 	github.com/go-resty/resty/v2 v2.13.1 // indirect

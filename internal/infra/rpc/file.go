@@ -3,6 +3,7 @@ package rpc
 import (
 	"github.com/limes-cloud/kratosx"
 	"poverty/api/poverty/errors"
+	"poverty/internal/domain/entity"
 	"poverty/internal/domain/repository"
 
 	file "github.com/limes-cloud/resource/api/resource/file/v1"
@@ -39,4 +40,21 @@ func (i FileInfra) GetFileURL(ctx kratosx.Context, sha string) string {
 		return ""
 	}
 	return reply.Url
+}
+
+func (i FileInfra) GetFile(ctx kratosx.Context, sha string) (*entity.File, error) {
+	client, err := i.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+	reply, err := client.GetFile(ctx, &file.GetFileRequest{Sha: &sha})
+	if err != nil {
+		return nil, err
+	}
+	return &entity.File{
+		Name: reply.Name,
+		Type: reply.Type,
+		Size: reply.Size,
+		URL:  reply.Url,
+	}, nil
 }

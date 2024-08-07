@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package poverty.api.poverty.resource.v1;
+
+option go_package = "./v1;v1";
+option java_multiple_files = true;
+option java_package = "poverty.api.poverty.resource.v1";
+option java_outer_classname = "ResourceV1";
+
+import "google/api/annotations.proto";
+import "api/poverty/resource/poverty_resource.proto";
+
+service Resource{
+
+  // GetResource 获取指定的文件信息
+  rpc GetResource (GetResourceRequest) returns (GetResourceReply) {
+    option (google.api.http) = {
+      get: "/poverty/api/v1/resource",
+    };
+  }
+
+  // ListResource 获取文件信息列表
+  rpc ListResource (ListResourceRequest) returns (ListResourceReply) {
+    option (google.api.http) = {
+      get: "/poverty/api/v1/resources",
+      additional_bindings:{
+        get: "/poverty/client/v1/resources",
+      }
+    };
+  }
+
+  // CreateResource 创建文件信息
+  rpc CreateResource (CreateResourceRequest) returns (CreateResourceReply) {
+    option (google.api.http) = {
+      post: "/poverty/api/v1/resource",
+      body: "*"
+    };
+  }
+
+  // UpdateResource 更新文件信息
+  rpc UpdateResource (UpdateResourceRequest) returns (UpdateResourceReply) {
+    option (google.api.http) = {
+      put: "/poverty/api/v1/resource",
+      body: "*"
+    };
+  }
+
+  // DeleteResource 删除文件信息
+  rpc DeleteResource (DeleteResourceRequest) returns (DeleteResourceReply) {
+    option (google.api.http) = {
+      delete: "/poverty/api/v1/resource",
+    };
+  }
+
+}

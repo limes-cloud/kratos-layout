@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package poverty.api.poverty.comment.v1;
+
+option go_package = "./v1;v1";
+option java_multiple_files = true;
+option java_package = "poverty.api.poverty.comment.v1";
+option java_outer_classname = "CommentV1";
+
+import "google/api/annotations.proto";
+import "api/poverty/comment/poverty_comment.proto";
+
+service Comment{
+
+  // ListComment 获取留言信息列表
+  rpc ListComment (ListCommentRequest) returns (ListCommentReply) {
+    option (google.api.http) = {
+      get: "/poverty/api/v1/comments",
+      additional_bindings:{
+        get: "/poverty/client/v1/comments",
+      }
+    };
+  }
+
+  // CreateComment 创建留言信息
+  rpc CreateComment (CreateCommentRequest) returns (CreateCommentReply) {
+    option (google.api.http) = {
+      post: "/poverty/client/v1/comment",
+      body: "*"
+    };
+  }
+
+  // DeleteComment 删除留言信息
+  rpc DeleteComment (DeleteCommentRequest) returns (DeleteCommentReply) {
+    option (google.api.http) = {
+      delete: "/poverty/api/v1/comment",
+    };
+  }
+
+}

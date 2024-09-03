@@ -32,7 +32,7 @@ database:
   system:
     enable: true #是否启用数据库
     drive: mysql #数据库类型
-    autoCreate: false #是否自动创建数据库
+    autoCreate: true #是否自动创建数据库
     connect:
       username: root
       password: root
@@ -44,11 +44,11 @@ database:
       transformError:
         enable: true
       initializer:
-        enable: false
+        enable: true
         path: deploy/data.sql
       maxLifetime: 2h #最大生存时间
-      maxOpenConn: 20 #最大连接数量
-      maxIdleConn: 10 #最大空闲数量
+      maxOpenConn: 100 #最大连接数量
+      maxIdleConn: 50 #最大空闲数量
       logLevel: 4 #日志等级
       slowThreshold: 2s #慢sql阈值
 pool: #并非池配置
@@ -61,8 +61,4 @@ business:
   aiBot:
     secret: bce-v3/ALTAK-vXBk2DvNrk0ashSpsZ2jc/ee04a3d76a9dd2325a46e074c5a4c7bc1ebf493d
     appid: 8f0ad162-7cc2-4c5a-8dc8-60434d4a27d9
-    setting:
-      name: 我的AI机器人
-      logo: http://p3-armor.byteimg.com/tos-cn-i-49unhts6dw/dfdba5317c0c20ce20e64fac803d52bc.svg~tplv-49unhts6dw-image.image
-      desc: 你好，同学。我是负责贫困资助的AI助手，请问你有什么想要咨询的问题吗？
-      guiding: [{"type":"question","text":"你好，同学"}]
+    setting: {"name":"我的AI","logo":"http: //p3-armor.byteimg.com/tos-cn-i-49unhts6dw/dfdba5317c0c20ce20e64fac803d52bc.svg~tplv-49unhts6dw-image.image","desc":"你好，同学。我是负责贫困资助的AI助手，请问你有什么想要咨询的问题吗？","guiding":[{"type":"question","text":"你好，同学"}]}

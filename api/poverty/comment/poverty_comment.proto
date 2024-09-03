@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package poverty.api.poverty.comment.v1;
+
+option go_package = "./v1;v1";
+option java_multiple_files = true;
+option java_package = "poverty.api.poverty.comment.v1";
+option java_outer_classname = "CommentV1";
+
+import "validate/validate.proto";
+
+
+message ListCommentRequest {
+  uint32 page = 1[(validate.rules).uint32 = {gte: 1}];
+  uint32 pageSize = 2[(validate.rules).uint32 = {gte: 1,lte:50}];
+  optional string order = 3[(validate.rules).string = {in: ["asc","desc"]}];
+  optional string orderBy = 4[(validate.rules).string = {in: ["id","created_at"]}];
+  optional string userName = 5[(validate.rules).string = {min_len: 1}];
+}
+
+message ListCommentReply {
+  message Comment {
+    uint32 id = 1;
+    uint32 userId = 2;
+    string userName = 3;
+    string userNick = 4;
+    string userAvatar = 5;
+    string content = 6;
+    uint32 createdAt = 7;
+  }
+  uint32 total = 1;
+  repeated Comment list = 2;
+}
+
+message CreateCommentRequest {
+  string content = 1[(validate.rules).string = {min_len: 1}];
+}
+
+message CreateCommentReply {
+  uint32 id = 1;
+}
+
+message DeleteCommentRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gte: 1}];
+}
+
+message DeleteCommentReply {
+}
+

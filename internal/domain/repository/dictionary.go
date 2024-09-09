@@ -7,7 +7,7 @@ import (
 	"layout/internal/types"
 )
 
-type DictionaryRepository interface {
+type Dictionary interface {
 	// GetDictionary 获取指定的字典目录
 	GetDictionary(ctx kratosx.Context, id uint32) (*entity.Dictionary, error)
 

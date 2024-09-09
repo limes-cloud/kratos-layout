@@ -10,16 +10,16 @@ import (
 	"layout/internal/types"
 )
 
-type DictionaryInfra struct {
+type Dictionary struct {
 	// db 基础设施中间件
 }
 
-func NewDictionaryInfra() *DictionaryInfra {
-	return &DictionaryInfra{}
+func NewDictionary() *Dictionary {
+	return &Dictionary{}
 }
 
 // ListDictionary 获取列表
-func (r DictionaryInfra) ListDictionary(ctx kratosx.Context, req *types.ListDictionaryRequest) ([]*entity.Dictionary, uint32, error) {
+func (r Dictionary) ListDictionary(ctx kratosx.Context, req *types.ListDictionaryRequest) ([]*entity.Dictionary, uint32, error) {
 	var (
 		es    []*entity.Dictionary
 		total int64
@@ -54,11 +54,11 @@ func (r DictionaryInfra) ListDictionary(ctx kratosx.Context, req *types.ListDict
 }
 
 // CreateDictionary 创建数据
-func (r DictionaryInfra) CreateDictionary(ctx kratosx.Context, ent *entity.Dictionary) (uint32, error) {
+func (r Dictionary) CreateDictionary(ctx kratosx.Context, ent *entity.Dictionary) (uint32, error) {
 	return ent.Id, ctx.DB().Create(ent).Error
 }
 
-func (r DictionaryInfra) GetDictionaryByKeyword(ctx kratosx.Context, keyword string) (*entity.Dictionary, error) {
+func (r Dictionary) GetDictionaryByKeyword(ctx kratosx.Context, keyword string) (*entity.Dictionary, error) {
 	var (
 		m  = entity.Dictionary{}
 		fs = []string{"*"}
@@ -68,7 +68,7 @@ func (r DictionaryInfra) GetDictionaryByKeyword(ctx kratosx.Context, keyword str
 }
 
 // GetDictionary 获取指定的数据
-func (r DictionaryInfra) GetDictionary(ctx kratosx.Context, id uint32) (*entity.Dictionary, error) {
+func (r Dictionary) GetDictionary(ctx kratosx.Context, id uint32) (*entity.Dictionary, error) {
 	var (
 		m  = entity.Dictionary{}
 		fs = []string{"*"}
@@ -78,11 +78,11 @@ func (r DictionaryInfra) GetDictionary(ctx kratosx.Context, id uint32) (*entity.
 }
 
 // UpdateDictionary 更新数据
-func (r DictionaryInfra) UpdateDictionary(ctx kratosx.Context, req *entity.Dictionary) error {
+func (r Dictionary) UpdateDictionary(ctx kratosx.Context, req *entity.Dictionary) error {
 	return ctx.DB().Updates(req).Error
 }
 
 // DeleteDictionary 删除数据
-func (r DictionaryInfra) DeleteDictionary(ctx kratosx.Context, id uint32) error {
+func (r Dictionary) DeleteDictionary(ctx kratosx.Context, id uint32) error {
 	return ctx.DB().Where("id=?", id).Delete(&entity.Dictionary{}).Error
 }

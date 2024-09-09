@@ -17,27 +17,27 @@ import (
 	"layout/internal/types"
 )
 
-type DictionaryApplication struct {
+type Dictionary struct {
 	pb.UnimplementedDictionaryServer
-	srv *service.DictionaryService
+	srv *service.Dictionary
 }
 
-func NewDictionaryApplication(conf *conf.Config) *DictionaryApplication {
-	return &DictionaryApplication{
-		srv: service.NewDictionaryService(conf, dbs.NewDictionaryInfra()),
+func NewDictionary(conf *conf.Config) *Dictionary {
+	return &Dictionary{
+		srv: service.NewDictionary(conf, dbs.NewDictionary()),
 	}
 }
 
 func init() {
 	register(func(c *conf.Config, hs *http.Server, gs *grpc.Server) {
-		app := NewDictionaryApplication(c)
+		app := NewDictionary(c)
 		pb.RegisterDictionaryHTTPServer(hs, app)
 		pb.RegisterDictionaryServer(gs, app)
 	})
 }
 
 // GetDictionary 获取指定的字典目录
-func (s *DictionaryApplication) GetDictionary(c context.Context, req *pb.GetDictionaryRequest) (*pb.GetDictionaryReply, error) {
+func (s *Dictionary) GetDictionary(c context.Context, req *pb.GetDictionaryRequest) (*pb.GetDictionaryReply, error) {
 	ctx := kratosx.MustContext(c)
 	result, err := s.srv.GetDictionary(ctx, &types.GetDictionaryRequest{
 		Id:      req.Id,
@@ -57,7 +57,7 @@ func (s *DictionaryApplication) GetDictionary(c context.Context, req *pb.GetDict
 }
 
 // ListDictionary 获取字典目录列表
-func (s *DictionaryApplication) ListDictionary(c context.Context, req *pb.ListDictionaryRequest) (*pb.ListDictionaryReply, error) {
+func (s *Dictionary) ListDictionary(c context.Context, req *pb.ListDictionaryRequest) (*pb.ListDictionaryReply, error) {
 	ctx := kratosx.MustContext(c)
 
 	result, total, err := s.srv.ListDictionary(ctx, &types.ListDictionaryRequest{
@@ -82,7 +82,7 @@ func (s *DictionaryApplication) ListDictionary(c context.Context, req *pb.ListDi
 }
 
 // CreateDictionary 创建字典目录
-func (s *DictionaryApplication) CreateDictionary(c context.Context, req *pb.CreateDictionaryRequest) (*pb.CreateDictionaryReply, error) {
+func (s *Dictionary) CreateDictionary(c context.Context, req *pb.CreateDictionaryRequest) (*pb.CreateDictionaryReply, error) {
 	var (
 		ctx = kratosx.MustContext(c)
 		ent = entity.Dictionary{}
@@ -102,7 +102,7 @@ func (s *DictionaryApplication) CreateDictionary(c context.Context, req *pb.Crea
 }
 
 // UpdateDictionary 更新字典目录
-func (s *DictionaryApplication) UpdateDictionary(c context.Context, req *pb.UpdateDictionaryRequest) (*pb.UpdateDictionaryReply, error) {
+func (s *Dictionary) UpdateDictionary(c context.Context, req *pb.UpdateDictionaryRequest) (*pb.UpdateDictionaryReply, error) {
 	var (
 		ctx = kratosx.MustContext(c)
 		ent = entity.Dictionary{}
@@ -121,7 +121,7 @@ func (s *DictionaryApplication) UpdateDictionary(c context.Context, req *pb.Upda
 }
 
 // DeleteDictionary 删除字典目录
-func (s *DictionaryApplication) DeleteDictionary(c context.Context, req *pb.DeleteDictionaryRequest) (*pb.DeleteDictionaryReply, error) {
+func (s *Dictionary) DeleteDictionary(c context.Context, req *pb.DeleteDictionaryRequest) (*pb.DeleteDictionaryReply, error) {
 	err := s.srv.DeleteDictionary(kratosx.MustContext(c), req.Id)
 	if err != nil {
 		return nil, err

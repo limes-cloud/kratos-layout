@@ -37,10 +37,9 @@ func init() {
 // ListTask 获取任务列表
 func (s *Task) ListTask(ctx context.Context, req *pb.ListTaskRequest) (*pb.ListTaskReply, error) {
 	list, total, err := s.srv.ListTask(kratosx.MustContext(ctx), &types.ListTaskRequest{
-		Page:      req.Page,
-		PageSize:  req.PageSize,
-		Title:     req.Title,
-		NotFinish: req.NotFinish,
+		Page:     req.Page,
+		PageSize: req.PageSize,
+		Title:    req.Title,
 	})
 	if err != nil {
 		return nil, err
@@ -48,6 +47,33 @@ func (s *Task) ListTask(ctx context.Context, req *pb.ListTaskRequest) (*pb.ListT
 	reply := pb.ListTaskReply{Total: total}
 	for _, item := range list {
 		reply.List = append(reply.List, &pb.ListTaskReply_Task{
+			Id:          item.Id,
+			Title:       item.Title,
+			Description: item.Description,
+			IsUpdate:    item.IsUpdate,
+			Start:       item.Start,
+			End:         item.End,
+			Config:      item.Config,
+			CreatedAt:   uint32(item.CreatedAt),
+			UpdatedAt:   uint32(item.UpdatedAt),
+		})
+	}
+	return &reply, nil
+}
+
+// ListCurNotFinishTask 获取当前用户未完成的任务列表
+func (s *Task) ListCurNotFinishTask(ctx context.Context, req *pb.ListCurNotFinishTaskRequest) (*pb.ListCurNotFinishTaskReply, error) {
+	list, total, err := s.srv.ListCurNotFinishTask(kratosx.MustContext(ctx), &types.ListTaskRequest{
+		Page:     req.Page,
+		PageSize: req.PageSize,
+		Title:    req.Title,
+	})
+	if err != nil {
+		return nil, err
+	}
+	reply := pb.ListCurNotFinishTaskReply{Total: total}
+	for _, item := range list {
+		reply.List = append(reply.List, &pb.ListCurNotFinishTaskReply_Task{
 			Id:          item.Id,
 			Title:       item.Title,
 			Description: item.Description,

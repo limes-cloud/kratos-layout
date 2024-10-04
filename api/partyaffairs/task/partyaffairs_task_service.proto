@@ -11,9 +11,12 @@ service Task {
   rpc ListTask (ListTaskRequest) returns (ListTaskReply) {
     option (google.api.http) = {
       get: "/partyaffairs/api/v1/tasks",
-      additional_bindings {
-        get: "/partyaffairs/client/v1/tasks"
-      },
+    };
+  }
+
+  rpc ListCurNotFinishTask (ListCurNotFinishTaskRequest) returns (ListCurNotFinishTaskReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/client/v1/tasks",
     };
   }
 

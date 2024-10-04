@@ -531,6 +531,273 @@ var _ interface {
 	ErrorName() string
 } = ListTaskReplyValidationError{}
 
+// Validate checks the field values on ListCurNotFinishTaskRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListCurNotFinishTaskRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListCurNotFinishTaskRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListCurNotFinishTaskRequestMultiError, or nil if none found.
+func (m *ListCurNotFinishTaskRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListCurNotFinishTaskRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetPage() <= 0 {
+		err := ListCurNotFinishTaskRequestValidationError{
+			field:  "Page",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if val := m.GetPageSize(); val <= 0 || val > 50 {
+		err := ListCurNotFinishTaskRequestValidationError{
+			field:  "PageSize",
+			reason: "value must be inside range (0, 50]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.Title != nil {
+		// no validation rules for Title
+	}
+
+	if len(errors) > 0 {
+		return ListCurNotFinishTaskRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListCurNotFinishTaskRequestMultiError is an error wrapping multiple
+// validation errors returned by ListCurNotFinishTaskRequest.ValidateAll() if
+// the designated constraints aren't met.
+type ListCurNotFinishTaskRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListCurNotFinishTaskRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListCurNotFinishTaskRequestMultiError) AllErrors() []error { return m }
+
+// ListCurNotFinishTaskRequestValidationError is the validation error returned
+// by ListCurNotFinishTaskRequest.Validate if the designated constraints
+// aren't met.
+type ListCurNotFinishTaskRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListCurNotFinishTaskRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListCurNotFinishTaskRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListCurNotFinishTaskRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListCurNotFinishTaskRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListCurNotFinishTaskRequestValidationError) ErrorName() string {
+	return "ListCurNotFinishTaskRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListCurNotFinishTaskRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListCurNotFinishTaskRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListCurNotFinishTaskRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListCurNotFinishTaskRequestValidationError{}
+
+// Validate checks the field values on ListCurNotFinishTaskReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListCurNotFinishTaskReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListCurNotFinishTaskReply with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListCurNotFinishTaskReplyMultiError, or nil if none found.
+func (m *ListCurNotFinishTaskReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListCurNotFinishTaskReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Total
+
+	for idx, item := range m.GetList() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListCurNotFinishTaskReplyValidationError{
+						field:  fmt.Sprintf("List[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListCurNotFinishTaskReplyValidationError{
+						field:  fmt.Sprintf("List[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListCurNotFinishTaskReplyValidationError{
+					field:  fmt.Sprintf("List[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ListCurNotFinishTaskReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListCurNotFinishTaskReplyMultiError is an error wrapping multiple validation
+// errors returned by ListCurNotFinishTaskReply.ValidateAll() if the
+// designated constraints aren't met.
+type ListCurNotFinishTaskReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListCurNotFinishTaskReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListCurNotFinishTaskReplyMultiError) AllErrors() []error { return m }
+
+// ListCurNotFinishTaskReplyValidationError is the validation error returned by
+// ListCurNotFinishTaskReply.Validate if the designated constraints aren't met.
+type ListCurNotFinishTaskReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListCurNotFinishTaskReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListCurNotFinishTaskReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListCurNotFinishTaskReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListCurNotFinishTaskReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListCurNotFinishTaskReplyValidationError) ErrorName() string {
+	return "ListCurNotFinishTaskReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListCurNotFinishTaskReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListCurNotFinishTaskReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListCurNotFinishTaskReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListCurNotFinishTaskReplyValidationError{}
+
 // Validate checks the field values on CreateTaskRequest with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
@@ -1355,3 +1622,126 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ListTaskReply_TaskValidationError{}
+
+// Validate checks the field values on ListCurNotFinishTaskReply_Task with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListCurNotFinishTaskReply_Task) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListCurNotFinishTaskReply_Task with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ListCurNotFinishTaskReply_TaskMultiError, or nil if none found.
+func (m *ListCurNotFinishTaskReply_Task) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListCurNotFinishTaskReply_Task) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for Title
+
+	// no validation rules for Description
+
+	// no validation rules for Start
+
+	// no validation rules for End
+
+	// no validation rules for Config
+
+	// no validation rules for CreatedAt
+
+	// no validation rules for UpdatedAt
+
+	if m.IsUpdate != nil {
+		// no validation rules for IsUpdate
+	}
+
+	if len(errors) > 0 {
+		return ListCurNotFinishTaskReply_TaskMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListCurNotFinishTaskReply_TaskMultiError is an error wrapping multiple
+// validation errors returned by ListCurNotFinishTaskReply_Task.ValidateAll()
+// if the designated constraints aren't met.
+type ListCurNotFinishTaskReply_TaskMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListCurNotFinishTaskReply_TaskMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListCurNotFinishTaskReply_TaskMultiError) AllErrors() []error { return m }
+
+// ListCurNotFinishTaskReply_TaskValidationError is the validation error
+// returned by ListCurNotFinishTaskReply_Task.Validate if the designated
+// constraints aren't met.
+type ListCurNotFinishTaskReply_TaskValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListCurNotFinishTaskReply_TaskValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListCurNotFinishTaskReply_TaskValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListCurNotFinishTaskReply_TaskValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListCurNotFinishTaskReply_TaskValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListCurNotFinishTaskReply_TaskValidationError) ErrorName() string {
+	return "ListCurNotFinishTaskReply_TaskValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListCurNotFinishTaskReply_TaskValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListCurNotFinishTaskReply_Task.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListCurNotFinishTaskReply_TaskValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListCurNotFinishTaskReply_TaskValidationError{}

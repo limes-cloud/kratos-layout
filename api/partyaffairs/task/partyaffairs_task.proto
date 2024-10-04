@@ -44,6 +44,28 @@ message ListTaskReply{
   repeated Task list = 2;
 }
 
+message ListCurNotFinishTaskRequest{
+  uint32 page = 1[(validate.rules).uint32 = {gt: 0}];
+  uint32 pageSize = 2[(validate.rules).uint32 = {gt: 0,lte:50}];
+  optional string title = 3;
+}
+
+message ListCurNotFinishTaskReply{
+  message Task{
+    uint32 id = 1;
+    string title = 2;
+    string description = 3;
+    optional bool isUpdate = 4;
+    uint32 start = 5;
+    uint32 end = 6;
+    string config = 7;
+    uint32 createdAt = 8;
+    uint32 updatedAt = 9;
+  }
+  uint32 total = 1;
+  repeated Task list = 2;
+}
+
 message CreateTaskRequest {
   string title = 1[(validate.rules).string = {min_len: 1}];
   string description = 2[(validate.rules).string = {min_len: 1}];

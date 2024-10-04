@@ -31,6 +31,9 @@ func (u *Task) ListTask(ctx kratosx.Context, req *types.ListTaskRequest) ([]*ent
 	if req.Title != nil {
 		db.Where("title like ?", *req.Title+"%")
 	}
+	if req.UserId != nil && req.NotFinish {
+		db = db.Joins("TaskValue", ctx.DB().Where("user_id=?", req.UserId)).Where("user_id is null")
+	}
 
 	if err := db.Count(&total).Error; err != nil {
 		return nil, uint32(total), err

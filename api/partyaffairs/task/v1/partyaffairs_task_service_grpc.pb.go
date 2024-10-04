@@ -19,18 +19,19 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Task_ListTask_FullMethodName        = "/partyaffairs.api.partyaffairs.task.v1.Task/ListTask"
-	Task_GetTask_FullMethodName         = "/partyaffairs.api.partyaffairs.task.v1.Task/GetTask"
-	Task_CreateTask_FullMethodName      = "/partyaffairs.api.partyaffairs.task.v1.Task/CreateTask"
-	Task_UpdateTask_FullMethodName      = "/partyaffairs.api.partyaffairs.task.v1.Task/UpdateTask"
-	Task_DeleteTask_FullMethodName      = "/partyaffairs.api.partyaffairs.task.v1.Task/DeleteTask"
-	Task_ListTaskValue_FullMethodName   = "/partyaffairs.api.partyaffairs.task.v1.Task/ListTaskValue"
-	Task_GetTaskValue_FullMethodName    = "/partyaffairs.api.partyaffairs.task.v1.Task/GetTaskValue"
-	Task_ExportTaskValue_FullMethodName = "/partyaffairs.api.partyaffairs.task.v1.Task/ExportTaskValue"
-	Task_GetCurTaskValue_FullMethodName = "/partyaffairs.api.partyaffairs.task.v1.Task/GetCurTaskValue"
-	Task_CreateTaskValue_FullMethodName = "/partyaffairs.api.partyaffairs.task.v1.Task/CreateTaskValue"
-	Task_UpdateTaskValue_FullMethodName = "/partyaffairs.api.partyaffairs.task.v1.Task/UpdateTaskValue"
-	Task_DeleteTaskValue_FullMethodName = "/partyaffairs.api.partyaffairs.task.v1.Task/DeleteTaskValue"
+	Task_ListTask_FullMethodName             = "/partyaffairs.api.partyaffairs.task.v1.Task/ListTask"
+	Task_ListCurNotFinishTask_FullMethodName = "/partyaffairs.api.partyaffairs.task.v1.Task/ListCurNotFinishTask"
+	Task_GetTask_FullMethodName              = "/partyaffairs.api.partyaffairs.task.v1.Task/GetTask"
+	Task_CreateTask_FullMethodName           = "/partyaffairs.api.partyaffairs.task.v1.Task/CreateTask"
+	Task_UpdateTask_FullMethodName           = "/partyaffairs.api.partyaffairs.task.v1.Task/UpdateTask"
+	Task_DeleteTask_FullMethodName           = "/partyaffairs.api.partyaffairs.task.v1.Task/DeleteTask"
+	Task_ListTaskValue_FullMethodName        = "/partyaffairs.api.partyaffairs.task.v1.Task/ListTaskValue"
+	Task_GetTaskValue_FullMethodName         = "/partyaffairs.api.partyaffairs.task.v1.Task/GetTaskValue"
+	Task_ExportTaskValue_FullMethodName      = "/partyaffairs.api.partyaffairs.task.v1.Task/ExportTaskValue"
+	Task_GetCurTaskValue_FullMethodName      = "/partyaffairs.api.partyaffairs.task.v1.Task/GetCurTaskValue"
+	Task_CreateTaskValue_FullMethodName      = "/partyaffairs.api.partyaffairs.task.v1.Task/CreateTaskValue"
+	Task_UpdateTaskValue_FullMethodName      = "/partyaffairs.api.partyaffairs.task.v1.Task/UpdateTaskValue"
+	Task_DeleteTaskValue_FullMethodName      = "/partyaffairs.api.partyaffairs.task.v1.Task/DeleteTaskValue"
 )
 
 // TaskClient is the client API for Task service.
@@ -38,6 +39,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TaskClient interface {
 	ListTask(ctx context.Context, in *ListTaskRequest, opts ...grpc.CallOption) (*ListTaskReply, error)
+	ListCurNotFinishTask(ctx context.Context, in *ListCurNotFinishTaskRequest, opts ...grpc.CallOption) (*ListCurNotFinishTaskReply, error)
 	GetTask(ctx context.Context, in *GetTaskRequest, opts ...grpc.CallOption) (*GetTaskReply, error)
 	CreateTask(ctx context.Context, in *CreateTaskRequest, opts ...grpc.CallOption) (*CreateTaskReply, error)
 	UpdateTask(ctx context.Context, in *UpdateTaskRequest, opts ...grpc.CallOption) (*UpdateTaskReply, error)
@@ -62,6 +64,15 @@ func NewTaskClient(cc grpc.ClientConnInterface) TaskClient {
 func (c *taskClient) ListTask(ctx context.Context, in *ListTaskRequest, opts ...grpc.CallOption) (*ListTaskReply, error) {
 	out := new(ListTaskReply)
 	err := c.cc.Invoke(ctx, Task_ListTask_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taskClient) ListCurNotFinishTask(ctx context.Context, in *ListCurNotFinishTaskRequest, opts ...grpc.CallOption) (*ListCurNotFinishTaskReply, error) {
+	out := new(ListCurNotFinishTaskReply)
+	err := c.cc.Invoke(ctx, Task_ListCurNotFinishTask_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -172,6 +183,7 @@ func (c *taskClient) DeleteTaskValue(ctx context.Context, in *DeleteTaskValueReq
 // for forward compatibility
 type TaskServer interface {
 	ListTask(context.Context, *ListTaskRequest) (*ListTaskReply, error)
+	ListCurNotFinishTask(context.Context, *ListCurNotFinishTaskRequest) (*ListCurNotFinishTaskReply, error)
 	GetTask(context.Context, *GetTaskRequest) (*GetTaskReply, error)
 	CreateTask(context.Context, *CreateTaskRequest) (*CreateTaskReply, error)
 	UpdateTask(context.Context, *UpdateTaskRequest) (*UpdateTaskReply, error)
@@ -192,6 +204,9 @@ type UnimplementedTaskServer struct {
 
 func (UnimplementedTaskServer) ListTask(context.Context, *ListTaskRequest) (*ListTaskReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListTask not implemented")
+}
+func (UnimplementedTaskServer) ListCurNotFinishTask(context.Context, *ListCurNotFinishTaskRequest) (*ListCurNotFinishTaskReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListCurNotFinishTask not implemented")
 }
 func (UnimplementedTaskServer) GetTask(context.Context, *GetTaskRequest) (*GetTaskReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTask not implemented")
@@ -253,6 +268,24 @@ func _Task_ListTask_Handler(srv interface{}, ctx context.Context, dec func(inter
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TaskServer).ListTask(ctx, req.(*ListTaskRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Task_ListCurNotFinishTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListCurNotFinishTaskRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaskServer).ListCurNotFinishTask(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Task_ListCurNotFinishTask_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaskServer).ListCurNotFinishTask(ctx, req.(*ListCurNotFinishTaskRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -465,6 +498,10 @@ var Task_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListTask",
 			Handler:    _Task_ListTask_Handler,
+		},
+		{
+			MethodName: "ListCurNotFinishTask",
+			Handler:    _Task_ListCurNotFinishTask_Handler,
 		},
 		{
 			MethodName: "GetTask",

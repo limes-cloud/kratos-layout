@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package partyaffairs.api.partyaffairs.information.v1;
+
+option go_package = "./v1;v1";
+option java_multiple_files = true;
+option java_package = "partyaffairs.api.server.partyaffairs.classify.v1";
+option java_outer_classname = "ClassifyV1";
+
+import "validate/validate.proto";
+
+message ListInformationClassifyRequest {
+}
+
+message ListInformationClassifyReply {
+  message InformationClassify {
+    uint32 id = 1;
+    string name = 2;
+    uint32 weight = 3;
+    uint32 createdAt = 4;
+    uint32 updatedAt = 5;
+  }
+
+  repeated InformationClassify list = 2;
+}
+
+message CreateInformationClassifyRequest {
+  string name = 1[(validate.rules).string = {min_len: 1}];
+  uint32 weight = 2;
+}
+
+message CreateInformationClassifyReply {
+  uint32 id = 1;
+}
+
+message UpdateInformationClassifyRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gt: 0}];
+  string name = 2[(validate.rules).string = {min_len: 1}];
+  uint32 weight = 3;
+}
+
+message UpdateInformationClassifyReply {
+}
+
+message DeleteInformationClassifyRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gte:0}];
+}
+
+message DeleteInformationClassifyReply {
+}
+

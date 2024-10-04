@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+package partyaffairs.api.partyaffairs.task.v1;
+
+option go_package = "./v1;v1";
+
+import "validate/validate.proto";
+
+
+
+message GetCurTaskValueRequest{
+  uint32 taskId = 1[(validate.rules).uint32 = {gte: 1}];
+}
+
+message GetCurTaskValueReply{
+  uint32 id = 1;
+  uint32 taskId = 2;
+  uint32 userId = 3;
+  string value = 4;
+  uint32 createdAt = 5;
+  uint32 updatedAt = 6;
+}
+
+message GetTaskValueRequest{
+  uint32 taskId = 1[(validate.rules).uint32 = {gte: 1}];
+  uint32 userId = 2[(validate.rules).uint32 = {gte: 1}];
+}
+
+message GetTaskValueReply{
+  message User{
+    uint32 id = 1;
+    string nickName = 2;
+    optional string realName = 3;
+    optional string avatarUrl = 4;
+    optional string phone = 5;
+    optional string email = 6;
+  }
+
+  uint32 id = 1;
+  uint32 taskId = 2;
+  uint32 userId = 3;
+  string value = 4;
+  uint32 createdAt = 5;
+  uint32 updatedAt = 6;
+  User user = 7;
+}
+
+message ListTaskValueRequest{
+  uint32 page = 1[(validate.rules).uint32 = {gte: 1}];
+  uint32 pageSize = 2[(validate.rules).uint32 = {gte: 1,lte:50}];
+  uint32 taskId = 3[(validate.rules).uint32 = {gte: 1}];
+  optional uint32 userId = 4[(validate.rules).uint32 = {gte: 1}];
+  optional bool finish = 5;
+}
+
+message ListTaskValueReply{
+  message Value{
+    message User{
+      uint32 id = 1;
+      string nickName = 2;
+      optional string realName = 3;
+      optional string avatarUrl = 4;
+      optional string phone = 5;
+      optional string email = 6;
+    }
+
+    uint32 id = 1;
+    uint32 taskId = 2;
+    uint32 userId = 3;
+    string value = 4;
+    uint32 createdAt = 5;
+    uint32 updatedAt = 6;
+    User user = 7;
+  }
+  uint32 total = 1;
+  repeated Value list = 2;
+}
+
+message ExportTaskValueRequest{
+  uint32 taskId = 1[(validate.rules).uint32 = {gte: 1}];
+}
+
+message ExportTaskValueReply{}
+
+message CreateTaskValueRequest {
+  uint32 taskId = 1[(validate.rules).uint32 = {gte: 1}];
+  string value = 2[(validate.rules).string = {min_len: 1}];
+}
+
+message CreateTaskValueReply{
+  uint32 id = 1;
+}
+
+message UpdateTaskValueRequest {
+  uint32 taskId = 1[(validate.rules).uint32 = {gte: 1}];
+  string value = 2[(validate.rules).string = {min_len: 1}];
+}
+
+message UpdateTaskValueReply{}
+
+message DeleteTaskValueRequest{
+  uint32 id = 1[(validate.rules).uint32 = {gte: 1}];
+}
+
+message DeleteTaskValueReply{}
+

@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package partyaffairs.api.partyaffairs.banner.v1;
+
+option go_package = "./v1;v1";
+option java_multiple_files = true;
+option java_package = "partyaffairs.api.partyaffairs.banner.v1";
+option java_outer_classname = "BannerV1";
+
+import "google/api/annotations.proto";
+import "api/partyaffairs/banner/partyaffairs_banner.proto";
+
+service Banner{
+  // ListBanner 获取轮播图信息列表
+  rpc ListBanner (ListBannerRequest) returns (ListBannerReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/banners",
+      additional_bindings:{
+        get: "/partyaffairs/client/v1/banners",
+      }
+    };
+  }
+
+  // CreateBanner 创建轮播图信息
+  rpc CreateBanner (CreateBannerRequest) returns (CreateBannerReply) {
+    option (google.api.http) = {
+      post: "/partyaffairs/api/v1/banner",
+      body: "*"
+    };
+  }
+
+  // UpdateBanner 更新轮播图信息
+  rpc UpdateBanner (UpdateBannerRequest) returns (UpdateBannerReply) {
+    option (google.api.http) = {
+      put: "/partyaffairs/api/v1/banner",
+      body: "*"
+    };
+  }
+
+  // DeleteBanner 删除轮播图信息
+  rpc DeleteBanner (DeleteBannerRequest) returns (DeleteBannerReply) {
+    option (google.api.http) = {
+      delete: "/partyaffairs/api/v1/banner",
+    };
+  }
+
+}

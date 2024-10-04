@@ -1,0 +1,519 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: Resource API
+    version: 0.0.1
+paths:
+    /partyaffairs/api/v1/resource:
+        get:
+            tags:
+                - Resource
+            description: GetResource 获取指定的咨询信息
+            operationId: Resource_GetResource
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetResourceReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        put:
+            tags:
+                - Resource
+            description: UpdateResource 更新咨询信息
+            operationId: Resource_UpdateResource
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateResourceRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UpdateResourceReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        post:
+            tags:
+                - Resource
+            description: CreateResource 创建咨询信息
+            operationId: Resource_CreateResource
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateResourceRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateResourceReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        delete:
+            tags:
+                - Resource
+            description: DeleteResource 删除咨询信息
+            operationId: Resource_DeleteResource
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteResourceReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /partyaffairs/api/v1/resource/classifies:
+        get:
+            tags:
+                - Resource
+            description: ListResourceClassify 获取资料分组列表
+            operationId: Resource_ListResourceClassify
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListResourceClassifyReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /partyaffairs/api/v1/resource/classify:
+        put:
+            tags:
+                - Resource
+            description: UpdateResourceClassify 更新资料分组
+            operationId: Resource_UpdateResourceClassify
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateResourceClassifyRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UpdateResourceClassifyReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        post:
+            tags:
+                - Resource
+            description: CreateResourceClassify 创建资料分组
+            operationId: Resource_CreateResourceClassify
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateResourceClassifyRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateResourceClassifyReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        delete:
+            tags:
+                - Resource
+            description: DeleteResourceClassify 删除资料分组
+            operationId: Resource_DeleteResourceClassify
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteResourceClassifyReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /partyaffairs/api/v1/resources:
+        get:
+            tags:
+                - Resource
+            description: ListResource 获取咨询信息列表
+            operationId: Resource_ListResource
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: title
+                  in: query
+                  schema:
+                    type: string
+                - name: classifyId
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListResourceReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /partyaffairs/client/v1/resource:
+        get:
+            tags:
+                - Resource
+            description: GetResource 获取指定的咨询信息
+            operationId: Resource_GetResource
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetResourceReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /partyaffairs/client/v1/resource/classifies:
+        get:
+            tags:
+                - Resource
+            description: ListResourceClassify 获取资料分组列表
+            operationId: Resource_ListResourceClassify
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListResourceClassifyReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /partyaffairs/client/v1/resources:
+        get:
+            tags:
+                - Resource
+            description: ListResource 获取咨询信息列表
+            operationId: Resource_ListResource
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: title
+                  in: query
+                  schema:
+                    type: string
+                - name: classifyId
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListResourceReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+components:
+    schemas:
+        CreateResourceClassifyReply:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: uint32
+        CreateResourceClassifyRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                weight:
+                    type: integer
+                    format: uint32
+        CreateResourceReply:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: uint32
+        CreateResourceRequest:
+            type: object
+            properties:
+                title:
+                    type: string
+                description:
+                    type: string
+                url:
+                    type: string
+                classifyId:
+                    type: integer
+                    format: uint32
+        DeleteResourceClassifyReply:
+            type: object
+            properties: {}
+        DeleteResourceReply:
+            type: object
+            properties: {}
+        GetResourceReply:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: uint32
+                classifyId:
+                    type: integer
+                    format: uint32
+                title:
+                    type: string
+                description:
+                    type: string
+                url:
+                    type: string
+                downloadCount:
+                    type: integer
+                    format: uint32
+                classify:
+                    $ref: '#/components/schemas/GetResourceReply_Classify'
+                createdAt:
+                    type: integer
+                    format: uint32
+                updatedAt:
+                    type: integer
+                    format: uint32
+        GetResourceReply_Classify:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: uint32
+                name:
+                    type: string
+        GoogleProtobufAny:
+            type: object
+            properties:
+                '@type':
+                    type: string
+                    description: The type of the serialized message.
+            additionalProperties: true
+            description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+        ListResourceClassifyReply:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ListResourceClassifyReply_ResourceClassify'
+        ListResourceClassifyReply_ResourceClassify:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: uint32
+                name:
+                    type: string
+                weight:
+                    type: integer
+                    format: uint32
+                createdAt:
+                    type: integer
+                    format: uint32
+                updatedAt:
+                    type: integer
+                    format: uint32
+        ListResourceReply:
+            type: object
+            properties:
+                total:
+                    type: integer
+                    format: uint32
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ListResourceReply_Resource'
+        ListResourceReply_Classify:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: uint32
+                name:
+                    type: string
+        ListResourceReply_Resource:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: uint32
+                classifyId:
+                    type: integer
+                    format: uint32
+                title:
+                    type: string
+                description:
+                    type: string
+                url:
+                    type: string
+                downloadCount:
+                    type: integer
+                    format: uint32
+                classify:
+                    $ref: '#/components/schemas/ListResourceReply_Classify'
+                createdAt:
+                    type: integer
+                    format: uint32
+                updatedAt:
+                    type: integer
+                    format: uint32
+        Status:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+                    format: int32
+                message:
+                    type: string
+                    description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+                details:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/GoogleProtobufAny'
+                    description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
+            description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
+        UpdateResourceClassifyReply:
+            type: object
+            properties: {}
+        UpdateResourceClassifyRequest:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: uint32
+                name:
+                    type: string
+                weight:
+                    type: integer
+                    format: uint32
+        UpdateResourceReply:
+            type: object
+            properties: {}
+        UpdateResourceRequest:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: uint32
+                title:
+                    type: string
+                description:
+                    type: string
+                url:
+                    type: string
+                classifyId:
+                    type: integer
+                    format: uint32
+tags:
+    - name: Resource

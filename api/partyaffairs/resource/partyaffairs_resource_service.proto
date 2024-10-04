@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+package partyaffairs.api.partyaffairs.resource.v1;
+
+option go_package = "./v1;v1";
+option java_multiple_files = true;
+option java_package = "partyaffairs.api.partyaffairs.resource.v1";
+option java_outer_classname = "ResourceV1";
+
+import "google/api/annotations.proto";
+import "api/partyaffairs/resource/partyaffairs_resource.proto";
+import "api/partyaffairs/resource/partyaffairs_resource_classify.proto";
+
+service Resource{
+
+  // ListResourceClassify 获取资料分组列表
+  rpc ListResourceClassify (ListResourceClassifyRequest) returns (ListResourceClassifyReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/resource/classifies",
+      additional_bindings:{
+        get: "/partyaffairs/client/v1/resource/classifies",
+      }
+    };
+  }
+
+  // CreateResourceClassify 创建资料分组
+  rpc CreateResourceClassify (CreateResourceClassifyRequest) returns (CreateResourceClassifyReply) {
+    option (google.api.http) = {
+      post: "/partyaffairs/api/v1/resource/classify",
+      body: "*"
+    };
+  }
+
+  // UpdateResourceClassify 更新资料分组
+  rpc UpdateResourceClassify (UpdateResourceClassifyRequest) returns (UpdateResourceClassifyReply) {
+    option (google.api.http) = {
+      put: "/partyaffairs/api/v1/resource/classify",
+      body: "*"
+    };
+  }
+
+  // DeleteResourceClassify 删除资料分组
+  rpc DeleteResourceClassify (DeleteResourceClassifyRequest) returns (DeleteResourceClassifyReply) {
+    option (google.api.http) = {
+      delete: "/partyaffairs/api/v1/resource/classify",
+    };
+  }
+  
+  // GetResource 获取指定的咨询信息
+  rpc GetResource (GetResourceRequest) returns (GetResourceReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/resource",
+      additional_bindings:{
+        get: "/partyaffairs/client/v1/resource",
+      }
+    };
+  }
+
+  // ListResource 获取咨询信息列表
+  rpc ListResource (ListResourceRequest) returns (ListResourceReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/resources",
+      additional_bindings:{
+        get: "/partyaffairs/client/v1/resources",
+      }
+    };
+  }
+
+  // CreateResource 创建咨询信息
+  rpc CreateResource (CreateResourceRequest) returns (CreateResourceReply) {
+    option (google.api.http) = {
+      post: "/partyaffairs/api/v1/resource",
+      body: "*"
+    };
+  }
+
+  // UpdateResource 更新咨询信息
+  rpc UpdateResource (UpdateResourceRequest) returns (UpdateResourceReply) {
+    option (google.api.http) = {
+      put: "/partyaffairs/api/v1/resource",
+      body: "*"
+    };
+  }
+
+  // DeleteResource 删除咨询信息
+  rpc DeleteResource (DeleteResourceRequest) returns (DeleteResourceReply) {
+    option (google.api.http) = {
+      delete: "/partyaffairs/api/v1/resource",
+    };
+  }
+
+}

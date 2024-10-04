@@ -1,0 +1,93 @@
+package partyaffairs.api.partyaffairs.task.v1;
+option go_package = "./v1;v1";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+import "api/partyaffairs/task/partyaffairs_task.proto";
+import "api/partyaffairs/task/partyaffairs_task_value.proto";
+
+service Task {
+  rpc ListTask (ListTaskRequest) returns (ListTaskReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/tasks",
+      additional_bindings {
+        get: "/partyaffairs/client/v1/tasks"
+      },
+    };
+  }
+
+  rpc GetTask (GetTaskRequest) returns (GetTaskReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/task",
+      additional_bindings {
+        get: "/partyaffairs/client/v1/task",
+      },
+    };
+  }
+
+  rpc CreateTask (CreateTaskRequest) returns (CreateTaskReply) {
+    option (google.api.http) = {
+      post: "/partyaffairs/api/v1/task",
+      body: "*"
+    };
+  }
+
+  rpc UpdateTask (UpdateTaskRequest) returns (UpdateTaskReply) {
+    option (google.api.http) = {
+      put: "/partyaffairs/api/v1/task",
+      body: "*"
+    };
+  }
+
+  rpc DeleteTask (DeleteTaskRequest) returns (DeleteTaskReply) {
+    option (google.api.http) = {
+      delete: "/partyaffairs/api/v1/task"
+    };
+  }
+
+  rpc ListTaskValue (ListTaskValueRequest) returns (ListTaskValueReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/task/values",
+    };
+  }
+
+  rpc GetTaskValue (GetTaskValueRequest) returns (GetTaskValueReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/task/value",
+    };
+  }
+
+  rpc ExportTaskValue (ExportTaskValueRequest) returns (ExportTaskValueReply) {
+    option (google.api.http) = {
+      post: "/partyaffairs/api/v1/task/values",
+      body: "*"
+    };
+  }
+
+  rpc GetCurTaskValue (GetCurTaskValueRequest) returns (GetCurTaskValueReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/client/v1/task/value",
+    };
+  }
+
+  rpc CreateTaskValue (CreateTaskValueRequest) returns (CreateTaskValueReply) {
+    option (google.api.http) = {
+      post: "/partyaffairs/client/v1/task/value",
+      body: "*"
+    };
+  }
+
+  rpc UpdateTaskValue (UpdateTaskValueRequest) returns (UpdateTaskValueReply) {
+    option (google.api.http) = {
+      put: "/partyaffairs/client/v1/task/value",
+      body: "*"
+    };
+  }
+
+  rpc DeleteTaskValue (DeleteTaskValueRequest) returns (DeleteTaskValueReply) {
+    option (google.api.http) = {
+      delete: "/partyaffairs/api/v1/task/value"
+    };
+  }
+}

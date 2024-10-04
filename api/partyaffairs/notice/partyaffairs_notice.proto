@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package partyaffairs.api.partyaffairs.notice.v1;
+
+option go_package = "./v1;v1";
+option java_multiple_files = true;
+option java_package = "partyaffairs.api.partyaffairs.notice.v1";
+option java_outer_classname = "NoticeV1";
+
+import "validate/validate.proto";
+
+message GetNoticeRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gte: 1}];
+}
+
+message GetNoticeReply {
+  uint32 id = 1;
+  string title = 2;
+  string description = 3;
+  string unit = 4;
+  string content = 5;
+  optional bool isTop = 6;
+  optional bool status = 7;
+  uint32 createdAt = 8;
+  uint32 updatedAt = 9;
+}
+
+message ListNoticeRequest {
+  uint32 page = 1[(validate.rules).uint32 = {gte: 1}];
+  uint32 pageSize = 2[(validate.rules).uint32 = {gte: 1,lte:50}];
+  optional string title = 5[(validate.rules).string = {max_len: 40,min_len: 1}];
+  optional bool isTop = 6;
+  optional bool status = 7;
+}
+
+message ListNoticeReply {
+  message Notice {
+    uint32 id = 1;
+    string title = 2;
+    string description = 3;
+    string unit = 4;
+    optional bool isTop = 5;
+    optional bool status = 6;
+    uint32 createdAt = 7;
+    uint32 updatedAt = 8;
+  }
+  uint32 total = 1;
+  repeated Notice list = 2;
+}
+
+message CreateNoticeRequest {
+  string title = 1[(validate.rules).string = {min_len: 1,max_len: 40}];
+  string description = 2[(validate.rules).string = {min_len: 1}];
+  string unit = 3[(validate.rules).string = {min_len: 1}];
+  string content = 4;
+  optional bool isTop = 5;
+  optional bool status = 6;
+}
+
+message CreateNoticeReply {
+  uint32 id = 1;
+}
+
+message PushNoticeRequest {
+  uint32 id = 1;
+}
+
+message PushNoticeReply{}
+
+message UpdateNoticeRequest {
+  uint32 id = 1;
+  string title = 2;
+  string description = 3;
+  string unit = 4;
+  string content = 5;
+  optional bool isTop = 6;
+  optional bool status = 7;
+}
+
+message UpdateNoticeReply {
+}
+
+message DeleteNoticeRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gte: 1}];
+}
+
+message DeleteNoticeReply {
+}
+

@@ -237,10 +237,6 @@ paths:
                   in: query
                   schema:
                     type: string
-                - name: notFinish
-                  in: query
-                  schema:
-                    type: boolean
             responses:
                 "200":
                     description: OK
@@ -352,7 +348,7 @@ paths:
         get:
             tags:
                 - Task
-            operationId: Task_ListCurNotFinishTask
+            operationId: Task_ListClientTask
             parameters:
                 - name: page
                   in: query
@@ -368,13 +364,17 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: notFinish
+                  in: query
+                  schema:
+                    type: boolean
             responses:
                 "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/ListCurNotFinishTaskReply'
+                                $ref: '#/components/schemas/ListClientTaskReply'
                 default:
                     description: Default error response
                     content:
@@ -527,7 +527,7 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-        ListCurNotFinishTaskReply:
+        ListClientTaskReply:
             type: object
             properties:
                 total:
@@ -536,8 +536,8 @@ components:
                 list:
                     type: array
                     items:
-                        $ref: '#/components/schemas/ListCurNotFinishTaskReply_Task'
-        ListCurNotFinishTaskReply_Task:
+                        $ref: '#/components/schemas/ListClientTaskReply_Task'
+        ListClientTaskReply_Task:
             type: object
             properties:
                 id:

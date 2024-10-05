@@ -5,7 +5,7 @@ type ListTaskRequest struct {
 	PageSize  uint32  `json:"pageSize"`
 	Title     *string `json:"title"`
 	UserId    *uint32 `json:"userId"`
-	NotFinish bool    `json:"notFinish"`
+	NotFinish *bool   `json:"notFinish"`
 }
 
 type ListTaskValueRequest struct {

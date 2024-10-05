@@ -27,7 +27,7 @@ const OperationTaskExportTaskValue = "/partyaffairs.api.partyaffairs.task.v1.Tas
 const OperationTaskGetCurTaskValue = "/partyaffairs.api.partyaffairs.task.v1.Task/GetCurTaskValue"
 const OperationTaskGetTask = "/partyaffairs.api.partyaffairs.task.v1.Task/GetTask"
 const OperationTaskGetTaskValue = "/partyaffairs.api.partyaffairs.task.v1.Task/GetTaskValue"
-const OperationTaskListCurNotFinishTask = "/partyaffairs.api.partyaffairs.task.v1.Task/ListCurNotFinishTask"
+const OperationTaskListClientTask = "/partyaffairs.api.partyaffairs.task.v1.Task/ListClientTask"
 const OperationTaskListTask = "/partyaffairs.api.partyaffairs.task.v1.Task/ListTask"
 const OperationTaskListTaskValue = "/partyaffairs.api.partyaffairs.task.v1.Task/ListTaskValue"
 const OperationTaskUpdateTask = "/partyaffairs.api.partyaffairs.task.v1.Task/UpdateTask"
@@ -42,7 +42,7 @@ type TaskHTTPServer interface {
 	GetCurTaskValue(context.Context, *GetCurTaskValueRequest) (*GetCurTaskValueReply, error)
 	GetTask(context.Context, *GetTaskRequest) (*GetTaskReply, error)
 	GetTaskValue(context.Context, *GetTaskValueRequest) (*GetTaskValueReply, error)
-	ListCurNotFinishTask(context.Context, *ListCurNotFinishTaskRequest) (*ListCurNotFinishTaskReply, error)
+	ListClientTask(context.Context, *ListClientTaskRequest) (*ListClientTaskReply, error)
 	ListTask(context.Context, *ListTaskRequest) (*ListTaskReply, error)
 	ListTaskValue(context.Context, *ListTaskValueRequest) (*ListTaskValueReply, error)
 	UpdateTask(context.Context, *UpdateTaskRequest) (*UpdateTaskReply, error)
@@ -52,7 +52,7 @@ type TaskHTTPServer interface {
 func RegisterTaskHTTPServer(s *http.Server, srv TaskHTTPServer) {
 	r := s.Route("/")
 	r.GET("/partyaffairs/api/v1/tasks", _Task_ListTask0_HTTP_Handler(srv))
-	r.GET("/partyaffairs/client/v1/tasks", _Task_ListCurNotFinishTask0_HTTP_Handler(srv))
+	r.GET("/partyaffairs/client/v1/tasks", _Task_ListClientTask0_HTTP_Handler(srv))
 	r.GET("/partyaffairs/client/v1/task", _Task_GetTask0_HTTP_Handler(srv))
 	r.GET("/partyaffairs/api/v1/task", _Task_GetTask1_HTTP_Handler(srv))
 	r.POST("/partyaffairs/api/v1/task", _Task_CreateTask0_HTTP_Handler(srv))
@@ -86,21 +86,21 @@ func _Task_ListTask0_HTTP_Handler(srv TaskHTTPServer) func(ctx http.Context) err
 	}
 }
 
-func _Task_ListCurNotFinishTask0_HTTP_Handler(srv TaskHTTPServer) func(ctx http.Context) error {
+func _Task_ListClientTask0_HTTP_Handler(srv TaskHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in ListCurNotFinishTaskRequest
+		var in ListClientTaskRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationTaskListCurNotFinishTask)
+		http.SetOperation(ctx, OperationTaskListClientTask)
 		h := ctx.Middleware(func(ctx context.Context, req any) (any, error) {
-			return srv.ListCurNotFinishTask(ctx, req.(*ListCurNotFinishTaskRequest))
+			return srv.ListClientTask(ctx, req.(*ListClientTaskRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*ListCurNotFinishTaskReply)
+		reply := out.(*ListClientTaskReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -357,7 +357,7 @@ type TaskHTTPClient interface {
 	GetCurTaskValue(ctx context.Context, req *GetCurTaskValueRequest, opts ...http.CallOption) (rsp *GetCurTaskValueReply, err error)
 	GetTask(ctx context.Context, req *GetTaskRequest, opts ...http.CallOption) (rsp *GetTaskReply, err error)
 	GetTaskValue(ctx context.Context, req *GetTaskValueRequest, opts ...http.CallOption) (rsp *GetTaskValueReply, err error)
-	ListCurNotFinishTask(ctx context.Context, req *ListCurNotFinishTaskRequest, opts ...http.CallOption) (rsp *ListCurNotFinishTaskReply, err error)
+	ListClientTask(ctx context.Context, req *ListClientTaskRequest, opts ...http.CallOption) (rsp *ListClientTaskReply, err error)
 	ListTask(ctx context.Context, req *ListTaskRequest, opts ...http.CallOption) (rsp *ListTaskReply, err error)
 	ListTaskValue(ctx context.Context, req *ListTaskValueRequest, opts ...http.CallOption) (rsp *ListTaskValueReply, err error)
 	UpdateTask(ctx context.Context, req *UpdateTaskRequest, opts ...http.CallOption) (rsp *UpdateTaskReply, err error)
@@ -476,11 +476,11 @@ func (c *TaskHTTPClientImpl) GetTaskValue(ctx context.Context, in *GetTaskValueR
 	return &out, err
 }
 
-func (c *TaskHTTPClientImpl) ListCurNotFinishTask(ctx context.Context, in *ListCurNotFinishTaskRequest, opts ...http.CallOption) (*ListCurNotFinishTaskReply, error) {
-	var out ListCurNotFinishTaskReply
+func (c *TaskHTTPClientImpl) ListClientTask(ctx context.Context, in *ListClientTaskRequest, opts ...http.CallOption) (*ListClientTaskReply, error) {
+	var out ListClientTaskReply
 	pattern := "/partyaffairs/client/v1/tasks"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationTaskListCurNotFinishTask))
+	opts = append(opts, http.Operation(OperationTaskListClientTask))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

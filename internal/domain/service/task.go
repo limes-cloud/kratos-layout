@@ -40,14 +40,13 @@ func (u *TaskService) ListTask(ctx kratosx.Context, req *types.ListTaskRequest) 
 	return task, total, nil
 }
 
-// ListCurNotFinishTask 获取分页任务
-func (u *TaskService) ListCurNotFinishTask(ctx kratosx.Context, req *types.ListTaskRequest) ([]*entity.Task, uint32, error) {
+// ListClientTask 获取分页任务
+func (u *TaskService) ListClientTask(ctx kratosx.Context, req *types.ListTaskRequest) ([]*entity.Task, uint32, error) {
 	md, err := auth.Get(ctx)
 	if err != nil {
 		return nil, 0, errors.SystemError()
 	}
 	req.UserId = &md.UserId
-	req.NotFinish = true
 	task, total, err := u.repo.ListTask(ctx, req)
 	if err != nil {
 		return nil, total, errors.DatabaseError()

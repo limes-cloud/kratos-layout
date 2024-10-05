@@ -313,10 +313,6 @@ func (m *ListTaskRequest) validate(all bool) error {
 		// no validation rules for Title
 	}
 
-	if m.NotFinish != nil {
-		// no validation rules for NotFinish
-	}
-
 	if len(errors) > 0 {
 		return ListTaskRequestMultiError(errors)
 	}
@@ -531,22 +527,22 @@ var _ interface {
 	ErrorName() string
 } = ListTaskReplyValidationError{}
 
-// Validate checks the field values on ListCurNotFinishTaskRequest with the
-// rules defined in the proto definition for this message. If any rules are
+// Validate checks the field values on ListClientTaskRequest with the rules
+// defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ListCurNotFinishTaskRequest) Validate() error {
+func (m *ListClientTaskRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ListCurNotFinishTaskRequest with the
-// rules defined in the proto definition for this message. If any rules are
+// ValidateAll checks the field values on ListClientTaskRequest with the rules
+// defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// ListCurNotFinishTaskRequestMultiError, or nil if none found.
-func (m *ListCurNotFinishTaskRequest) ValidateAll() error {
+// ListClientTaskRequestMultiError, or nil if none found.
+func (m *ListClientTaskRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ListCurNotFinishTaskRequest) validate(all bool) error {
+func (m *ListClientTaskRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -554,7 +550,7 @@ func (m *ListCurNotFinishTaskRequest) validate(all bool) error {
 	var errors []error
 
 	if m.GetPage() <= 0 {
-		err := ListCurNotFinishTaskRequestValidationError{
+		err := ListClientTaskRequestValidationError{
 			field:  "Page",
 			reason: "value must be greater than 0",
 		}
@@ -565,7 +561,7 @@ func (m *ListCurNotFinishTaskRequest) validate(all bool) error {
 	}
 
 	if val := m.GetPageSize(); val <= 0 || val > 50 {
-		err := ListCurNotFinishTaskRequestValidationError{
+		err := ListClientTaskRequestValidationError{
 			field:  "PageSize",
 			reason: "value must be inside range (0, 50]",
 		}
@@ -579,20 +575,24 @@ func (m *ListCurNotFinishTaskRequest) validate(all bool) error {
 		// no validation rules for Title
 	}
 
+	if m.NotFinish != nil {
+		// no validation rules for NotFinish
+	}
+
 	if len(errors) > 0 {
-		return ListCurNotFinishTaskRequestMultiError(errors)
+		return ListClientTaskRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// ListCurNotFinishTaskRequestMultiError is an error wrapping multiple
-// validation errors returned by ListCurNotFinishTaskRequest.ValidateAll() if
-// the designated constraints aren't met.
-type ListCurNotFinishTaskRequestMultiError []error
+// ListClientTaskRequestMultiError is an error wrapping multiple validation
+// errors returned by ListClientTaskRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ListClientTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ListCurNotFinishTaskRequestMultiError) Error() string {
+func (m ListClientTaskRequestMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -601,12 +601,11 @@ func (m ListCurNotFinishTaskRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ListCurNotFinishTaskRequestMultiError) AllErrors() []error { return m }
+func (m ListClientTaskRequestMultiError) AllErrors() []error { return m }
 
-// ListCurNotFinishTaskRequestValidationError is the validation error returned
-// by ListCurNotFinishTaskRequest.Validate if the designated constraints
-// aren't met.
-type ListCurNotFinishTaskRequestValidationError struct {
+// ListClientTaskRequestValidationError is the validation error returned by
+// ListClientTaskRequest.Validate if the designated constraints aren't met.
+type ListClientTaskRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -614,24 +613,24 @@ type ListCurNotFinishTaskRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e ListCurNotFinishTaskRequestValidationError) Field() string { return e.field }
+func (e ListClientTaskRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ListCurNotFinishTaskRequestValidationError) Reason() string { return e.reason }
+func (e ListClientTaskRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ListCurNotFinishTaskRequestValidationError) Cause() error { return e.cause }
+func (e ListClientTaskRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ListCurNotFinishTaskRequestValidationError) Key() bool { return e.key }
+func (e ListClientTaskRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ListCurNotFinishTaskRequestValidationError) ErrorName() string {
-	return "ListCurNotFinishTaskRequestValidationError"
+func (e ListClientTaskRequestValidationError) ErrorName() string {
+	return "ListClientTaskRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e ListCurNotFinishTaskRequestValidationError) Error() string {
+func (e ListClientTaskRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -643,14 +642,14 @@ func (e ListCurNotFinishTaskRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sListCurNotFinishTaskRequest.%s: %s%s",
+		"invalid %sListClientTaskRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ListCurNotFinishTaskRequestValidationError{}
+var _ error = ListClientTaskRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -658,24 +657,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ListCurNotFinishTaskRequestValidationError{}
+} = ListClientTaskRequestValidationError{}
 
-// Validate checks the field values on ListCurNotFinishTaskReply with the rules
+// Validate checks the field values on ListClientTaskReply with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ListCurNotFinishTaskReply) Validate() error {
+func (m *ListClientTaskReply) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ListCurNotFinishTaskReply with the
-// rules defined in the proto definition for this message. If any rules are
+// ValidateAll checks the field values on ListClientTaskReply with the rules
+// defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// ListCurNotFinishTaskReplyMultiError, or nil if none found.
-func (m *ListCurNotFinishTaskReply) ValidateAll() error {
+// ListClientTaskReplyMultiError, or nil if none found.
+func (m *ListClientTaskReply) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ListCurNotFinishTaskReply) validate(all bool) error {
+func (m *ListClientTaskReply) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -691,7 +690,7 @@ func (m *ListCurNotFinishTaskReply) validate(all bool) error {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ListCurNotFinishTaskReplyValidationError{
+					errors = append(errors, ListClientTaskReplyValidationError{
 						field:  fmt.Sprintf("List[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -699,7 +698,7 @@ func (m *ListCurNotFinishTaskReply) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ListCurNotFinishTaskReplyValidationError{
+					errors = append(errors, ListClientTaskReplyValidationError{
 						field:  fmt.Sprintf("List[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -708,7 +707,7 @@ func (m *ListCurNotFinishTaskReply) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ListCurNotFinishTaskReplyValidationError{
+				return ListClientTaskReplyValidationError{
 					field:  fmt.Sprintf("List[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -719,19 +718,19 @@ func (m *ListCurNotFinishTaskReply) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return ListCurNotFinishTaskReplyMultiError(errors)
+		return ListClientTaskReplyMultiError(errors)
 	}
 
 	return nil
 }
 
-// ListCurNotFinishTaskReplyMultiError is an error wrapping multiple validation
-// errors returned by ListCurNotFinishTaskReply.ValidateAll() if the
-// designated constraints aren't met.
-type ListCurNotFinishTaskReplyMultiError []error
+// ListClientTaskReplyMultiError is an error wrapping multiple validation
+// errors returned by ListClientTaskReply.ValidateAll() if the designated
+// constraints aren't met.
+type ListClientTaskReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ListCurNotFinishTaskReplyMultiError) Error() string {
+func (m ListClientTaskReplyMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -740,11 +739,11 @@ func (m ListCurNotFinishTaskReplyMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ListCurNotFinishTaskReplyMultiError) AllErrors() []error { return m }
+func (m ListClientTaskReplyMultiError) AllErrors() []error { return m }
 
-// ListCurNotFinishTaskReplyValidationError is the validation error returned by
-// ListCurNotFinishTaskReply.Validate if the designated constraints aren't met.
-type ListCurNotFinishTaskReplyValidationError struct {
+// ListClientTaskReplyValidationError is the validation error returned by
+// ListClientTaskReply.Validate if the designated constraints aren't met.
+type ListClientTaskReplyValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -752,24 +751,24 @@ type ListCurNotFinishTaskReplyValidationError struct {
 }
 
 // Field function returns field value.
-func (e ListCurNotFinishTaskReplyValidationError) Field() string { return e.field }
+func (e ListClientTaskReplyValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ListCurNotFinishTaskReplyValidationError) Reason() string { return e.reason }
+func (e ListClientTaskReplyValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ListCurNotFinishTaskReplyValidationError) Cause() error { return e.cause }
+func (e ListClientTaskReplyValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ListCurNotFinishTaskReplyValidationError) Key() bool { return e.key }
+func (e ListClientTaskReplyValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ListCurNotFinishTaskReplyValidationError) ErrorName() string {
-	return "ListCurNotFinishTaskReplyValidationError"
+func (e ListClientTaskReplyValidationError) ErrorName() string {
+	return "ListClientTaskReplyValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e ListCurNotFinishTaskReplyValidationError) Error() string {
+func (e ListClientTaskReplyValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -781,14 +780,14 @@ func (e ListCurNotFinishTaskReplyValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sListCurNotFinishTaskReply.%s: %s%s",
+		"invalid %sListClientTaskReply.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ListCurNotFinishTaskReplyValidationError{}
+var _ error = ListClientTaskReplyValidationError{}
 
 var _ interface {
 	Field() string
@@ -796,7 +795,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ListCurNotFinishTaskReplyValidationError{}
+} = ListClientTaskReplyValidationError{}
 
 // Validate checks the field values on CreateTaskRequest with the rules defined
 // in the proto definition for this message. If any rules are violated, the
@@ -1623,22 +1622,22 @@ var _ interface {
 	ErrorName() string
 } = ListTaskReply_TaskValidationError{}
 
-// Validate checks the field values on ListCurNotFinishTaskReply_Task with the
-// rules defined in the proto definition for this message. If any rules are
+// Validate checks the field values on ListClientTaskReply_Task with the rules
+// defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ListCurNotFinishTaskReply_Task) Validate() error {
+func (m *ListClientTaskReply_Task) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ListCurNotFinishTaskReply_Task with
-// the rules defined in the proto definition for this message. If any rules
-// are violated, the result is a list of violation errors wrapped in
-// ListCurNotFinishTaskReply_TaskMultiError, or nil if none found.
-func (m *ListCurNotFinishTaskReply_Task) ValidateAll() error {
+// ValidateAll checks the field values on ListClientTaskReply_Task with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListClientTaskReply_TaskMultiError, or nil if none found.
+func (m *ListClientTaskReply_Task) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ListCurNotFinishTaskReply_Task) validate(all bool) error {
+func (m *ListClientTaskReply_Task) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -1666,19 +1665,19 @@ func (m *ListCurNotFinishTaskReply_Task) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return ListCurNotFinishTaskReply_TaskMultiError(errors)
+		return ListClientTaskReply_TaskMultiError(errors)
 	}
 
 	return nil
 }
 
-// ListCurNotFinishTaskReply_TaskMultiError is an error wrapping multiple
-// validation errors returned by ListCurNotFinishTaskReply_Task.ValidateAll()
-// if the designated constraints aren't met.
-type ListCurNotFinishTaskReply_TaskMultiError []error
+// ListClientTaskReply_TaskMultiError is an error wrapping multiple validation
+// errors returned by ListClientTaskReply_Task.ValidateAll() if the designated
+// constraints aren't met.
+type ListClientTaskReply_TaskMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ListCurNotFinishTaskReply_TaskMultiError) Error() string {
+func (m ListClientTaskReply_TaskMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1687,12 +1686,11 @@ func (m ListCurNotFinishTaskReply_TaskMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ListCurNotFinishTaskReply_TaskMultiError) AllErrors() []error { return m }
+func (m ListClientTaskReply_TaskMultiError) AllErrors() []error { return m }
 
-// ListCurNotFinishTaskReply_TaskValidationError is the validation error
-// returned by ListCurNotFinishTaskReply_Task.Validate if the designated
-// constraints aren't met.
-type ListCurNotFinishTaskReply_TaskValidationError struct {
+// ListClientTaskReply_TaskValidationError is the validation error returned by
+// ListClientTaskReply_Task.Validate if the designated constraints aren't met.
+type ListClientTaskReply_TaskValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1700,24 +1698,24 @@ type ListCurNotFinishTaskReply_TaskValidationError struct {
 }
 
 // Field function returns field value.
-func (e ListCurNotFinishTaskReply_TaskValidationError) Field() string { return e.field }
+func (e ListClientTaskReply_TaskValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ListCurNotFinishTaskReply_TaskValidationError) Reason() string { return e.reason }
+func (e ListClientTaskReply_TaskValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ListCurNotFinishTaskReply_TaskValidationError) Cause() error { return e.cause }
+func (e ListClientTaskReply_TaskValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ListCurNotFinishTaskReply_TaskValidationError) Key() bool { return e.key }
+func (e ListClientTaskReply_TaskValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ListCurNotFinishTaskReply_TaskValidationError) ErrorName() string {
-	return "ListCurNotFinishTaskReply_TaskValidationError"
+func (e ListClientTaskReply_TaskValidationError) ErrorName() string {
+	return "ListClientTaskReply_TaskValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e ListCurNotFinishTaskReply_TaskValidationError) Error() string {
+func (e ListClientTaskReply_TaskValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1729,14 +1727,14 @@ func (e ListCurNotFinishTaskReply_TaskValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sListCurNotFinishTaskReply_Task.%s: %s%s",
+		"invalid %sListClientTaskReply_Task.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ListCurNotFinishTaskReply_TaskValidationError{}
+var _ error = ListClientTaskReply_TaskValidationError{}
 
 var _ interface {
 	Field() string
@@ -1744,4 +1742,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ListCurNotFinishTaskReply_TaskValidationError{}
+} = ListClientTaskReply_TaskValidationError{}

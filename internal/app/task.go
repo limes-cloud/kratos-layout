@@ -61,19 +61,20 @@ func (s *Task) ListTask(ctx context.Context, req *pb.ListTaskRequest) (*pb.ListT
 	return &reply, nil
 }
 
-// ListCurNotFinishTask 获取当前用户未完成的任务列表
-func (s *Task) ListCurNotFinishTask(ctx context.Context, req *pb.ListCurNotFinishTaskRequest) (*pb.ListCurNotFinishTaskReply, error) {
-	list, total, err := s.srv.ListCurNotFinishTask(kratosx.MustContext(ctx), &types.ListTaskRequest{
-		Page:     req.Page,
-		PageSize: req.PageSize,
-		Title:    req.Title,
+// ListClientTask 获取当前用户未完成的任务列表
+func (s *Task) ListClientTask(ctx context.Context, req *pb.ListClientTaskRequest) (*pb.ListClientTaskReply, error) {
+	list, total, err := s.srv.ListClientTask(kratosx.MustContext(ctx), &types.ListTaskRequest{
+		Page:      req.Page,
+		PageSize:  req.PageSize,
+		Title:     req.Title,
+		NotFinish: req.NotFinish,
 	})
 	if err != nil {
 		return nil, err
 	}
-	reply := pb.ListCurNotFinishTaskReply{Total: total}
+	reply := pb.ListClientTaskReply{Total: total}
 	for _, item := range list {
-		reply.List = append(reply.List, &pb.ListCurNotFinishTaskReply_Task{
+		reply.List = append(reply.List, &pb.ListClientTaskReply_Task{
 			Id:          item.Id,
 			Title:       item.Title,
 			Description: item.Description,

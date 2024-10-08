@@ -157,8 +157,15 @@ func (u *TaskService) ExportValue(ctx kratosx.Context, id uint32) error {
 	//	return errors.DatabaseError(err.Error())
 	// }
 	//
+	// cfg := []struct {
+	//	Type   string `json:"type"`
+	//	Field  string `json:"field"`
+	//	Config struct {
+	//		Label string `json:"label"`
+	//	} `json:"config"`
+	// }{{}}
+	//
 	// var (
-	//	cfg     []configure
 	//	tps     = make(map[string]string)
 	//	headCol []*exportv1.ExportExcelRequest_Col
 	// )
@@ -188,7 +195,7 @@ func (u *TaskService) ExportValue(ctx kratosx.Context, id uint32) error {
 	// if err != nil {
 	//	return errors.ResourceServiceError()
 	// }
-
+	//
 	// uc, err := service.NewUser(ctx)
 	// if err != nil {
 	//	return errors.ResourceServiceError()
@@ -201,19 +208,19 @@ func (u *TaskService) ExportValue(ctx kratosx.Context, id uint32) error {
 	//
 	// list, err := u.repo.AllValueByTaskId(ctx, id)
 	// for _, item := range list {
-	// var (
-	//	value = make(map[string]string)
-	//	cols  []*exportv1.ExportExcelRequest_Col
-	// )
-	// if err := json.Unmarshal([]byte(item.Value), &value); err != nil {
-	//	continue
-	// }
+	//	var (
+	//		value = make(map[string]string)
+	//		cols  []*exportv1.ExportExcelRequest_Col
+	//	)
+	//	if err := json.Unmarshal([]byte(item.Value), &value); err != nil {
+	//		continue
+	//	}
 	//
-	// user, err := uc.GetUser(ctx, &userV1.GetUserRequest{Id: &item.UserID})
-	// if err != nil {
-	//	return err
-	// }
-	// cols = append(cols, &exportv1.ExportExcelRequest_Col{
+	//	user, err := uc.GetUser(ctx, &userV1.GetUserRequest{Id: &item.UserID})
+	//	if err != nil {
+	//		return err
+	//	}
+	//	cols = append(cols, &exportv1.ExportExcelRequest_Col{
 	//		Type:  "string",
 	//		Value: *user.RealName,
 	//	})

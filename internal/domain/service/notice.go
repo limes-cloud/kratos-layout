@@ -1,6 +1,9 @@
 package service
 
 import (
+	"strings"
+
+	"github.com/PuerkitoBio/goquery"
 	"github.com/limes-cloud/kratosx"
 
 	"poverty/api/poverty/errors"
@@ -13,10 +16,11 @@ import (
 type NoticeService struct {
 	conf *conf.Config
 	repo repository.NoticeRepository
+	file repository.FileRepository
 }
 
-func NewNoticeService(conf *conf.Config, repo repository.NoticeRepository) *NoticeService {
-	return &NoticeService{conf: conf, repo: repo}
+func NewNoticeService(conf *conf.Config, repo repository.NoticeRepository, file repository.FileRepository) *NoticeService {
+	return &NoticeService{conf: conf, repo: repo, file: file}
 }
 
 // GetNotice 获取指定的通知信息
@@ -25,6 +29,31 @@ func (srv *NoticeService) GetNotice(ctx kratosx.Context, id uint32) (*entity.Not
 	if err != nil {
 		return nil, errors.GetError(err.Error())
 	}
+	// 获取通知内容，判断是否具有图片
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(ent.Content))
+	if err != nil {
+		return nil, errors.GetError(err.Error())
+	}
+	doc.Find("img").Each(func(i int, selection *goquery.Selection) {
+		origin, _ := selection.Attr("data-origin")
+		md5, _ := selection.Attr("data-md5")
+		if origin == "resource" && md5 != "" {
+			// 获取图片连接地址
+			src := srv.file.GetFileURL(ctx, md5)
+			if src == "" {
+				selection.Remove()
+			} else {
+				selection.SetAttr("src", src)
+			}
+		}
+	})
+
+	out, err := doc.Find("body").Html()
+	if err != nil {
+		return nil, errors.GetError(err.Error())
+	}
+	ent.Content = out
+
 	return ent, nil
 }
 

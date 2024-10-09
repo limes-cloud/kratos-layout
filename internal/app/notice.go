@@ -14,6 +14,7 @@ import (
 	"poverty/internal/domain/entity"
 	"poverty/internal/domain/service"
 	"poverty/internal/infra/dbs"
+	"poverty/internal/infra/rpc"
 	"poverty/internal/types"
 )
 
@@ -24,7 +25,7 @@ type NoticeApp struct {
 
 func NewNoticeApp(conf *conf.Config) *NoticeApp {
 	return &NoticeApp{
-		srv: service.NewNoticeService(conf, dbs.NewNoticeInfra()),
+		srv: service.NewNoticeService(conf, dbs.NewNoticeInfra(), rpc.NewFileInfra()),
 	}
 }
 

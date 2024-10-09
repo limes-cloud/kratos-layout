@@ -4,6 +4,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	"github.com/limes-cloud/configure/api/configure/client"
 	"github.com/limes-cloud/kratosx"
 	"github.com/limes-cloud/kratosx/config"
 	_ "go.uber.org/automaxprocs"
@@ -14,10 +15,9 @@ import (
 
 func main() {
 	srv := kratosx.New(
-		//kratosx.Config(client.NewFromEnv()),
+		kratosx.Config(client.NewFromEnv()),
 		kratosx.RegistrarServer(RegisterServer),
 	)
-
 	if err := srv.Run(); err != nil {
 		log.Fatal(err.Error())
 	}
@@ -32,6 +32,5 @@ func RegisterServer(c config.Config, hs *http.Server, gs *grpc.Server) {
 			log.Error("file 配置变更成功")
 		}
 	})
-
 	app.Register(cfg, hs, gs)
 }

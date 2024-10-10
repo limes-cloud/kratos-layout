@@ -80,7 +80,9 @@ message ExportTaskValueRequest{
   uint32 taskId = 1[(validate.rules).uint32 = {gte: 1}];
 }
 
-message ExportTaskValueReply{}
+message ExportTaskValueReply{
+  uint32 id = 1;
+}
 
 message CreateTaskValueRequest {
   uint32 taskId = 1[(validate.rules).uint32 = {gte: 1}];

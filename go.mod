@@ -9,9 +9,10 @@ require (
 	github.com/envoyproxy/protoc-gen-validate v1.0.4
 	github.com/go-kratos/kratos/v2 v2.7.3
 	github.com/limes-cloud/application v1.0.32
-	github.com/limes-cloud/configure v1.0.48
-	github.com/limes-cloud/kratosx v1.0.55
-	github.com/limes-cloud/resource v1.0.22
+	github.com/limes-cloud/configure v1.0.49
+	github.com/limes-cloud/kratosx v1.0.56
+	github.com/limes-cloud/manager v1.0.27
+	github.com/limes-cloud/resource v1.0.26
 	go.uber.org/automaxprocs v1.5.3
 	google.golang.org/genproto/googleapis/api v0.0.0-20240429193739-8cf5692501f6
 	google.golang.org/grpc v1.63.2

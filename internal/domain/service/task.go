@@ -1,14 +1,22 @@
 package service
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/limes-cloud/application/api/application/auth"
 	"github.com/limes-cloud/kratosx"
+	mauth "github.com/limes-cloud/manager/api/manager/auth"
 
 	"partyaffairs/api/partyaffairs/errors"
 	"partyaffairs/internal/conf"
 	"partyaffairs/internal/domain/entity"
 	"partyaffairs/internal/domain/repository"
 	"partyaffairs/internal/types"
+)
+
+const (
+	exportScene = "party-affairs-task"
 )
 
 type TaskService struct {
@@ -151,98 +159,111 @@ func (u *TaskService) CreateTaskValue(ctx kratosx.Context, task *entity.TaskValu
 }
 
 // ExportValue 导出任务信息
-func (u *TaskService) ExportValue(ctx kratosx.Context, id uint32) error {
-	// task, err := u.repo.GetTask(ctx, id)
-	// if err != nil {
-	//	return errors.DatabaseError(err.Error())
-	// }
-	//
-	// cfg := []struct {
-	//	Type   string `json:"type"`
-	//	Field  string `json:"field"`
-	//	Config struct {
-	//		Label string `json:"label"`
-	//	} `json:"config"`
-	// }{{}}
-	//
-	// var (
-	//	tps     = make(map[string]string)
-	//	headCol []*exportv1.ExportExcelRequest_Col
-	// )
-	// if err := json.Unmarshal([]byte(task.Config), &cfg); err != nil {
-	//	return errors.TransformError()
-	// }
-	//
-	// // 假如用户姓名
-	// headCol = append(headCol, &exportv1.ExportExcelRequest_Col{
-	//	Type:  "string",
-	//	Value: "姓名",
-	// })
-	//
-	// for _, item := range cfg {
-	//	tp := "string"
-	//	if item.Type == "upload" {
-	//		tp = "image"
-	//	}
-	//	tps[item.Field] = tp
-	//	headCol = append(headCol, &exportv1.ExportExcelRequest_Col{
-	//		Type:  "string",
-	//		Value: item.Config.Label,
-	//	})
-	// }
-	//
-	// rc, err := service.NewResourceExport(ctx)
-	// if err != nil {
-	//	return errors.ResourceServiceError()
-	// }
-	//
-	// uc, err := service.NewUser(ctx)
-	// if err != nil {
-	//	return errors.ResourceServiceError()
-	// }
-	//
-	// var rows []*exportv1.ExportExcelRequest_Row
-	// rows = append(rows, &exportv1.ExportExcelRequest_Row{
-	//	Cols: headCol,
-	// })
-	//
-	// list, err := u.repo.AllValueByTaskId(ctx, id)
-	// for _, item := range list {
-	//	var (
-	//		value = make(map[string]string)
-	//		cols  []*exportv1.ExportExcelRequest_Col
-	//	)
-	//	if err := json.Unmarshal([]byte(item.Value), &value); err != nil {
-	//		continue
-	//	}
-	//
-	//	user, err := uc.GetUser(ctx, &userV1.GetUserRequest{Id: &item.UserID})
-	//	if err != nil {
-	//		return err
-	//	}
-	//	cols = append(cols, &exportv1.ExportExcelRequest_Col{
-	//		Type:  "string",
-	//		Value: *user.RealName,
-	//	})
-	//
-	//	for _, ite := range cfg {
-	//		cols = append(cols, &exportv1.ExportExcelRequest_Col{
-	//			Type:  tps[ite.Field],
-	//			Value: value[ite.Field],
-	//		})
-	//	}
-	//
-	//	rows = append(rows, &exportv1.ExportExcelRequest_Row{
-	//		Cols: cols,
-	//	})
-	// }
-	//
-	// _, err = rc.ExportExcel(ctx, &exportv1.ExportExcelRequest{
-	//	Name: task.Title,
-	//	Rows: rows,
-	// })
-	// return err
-	return nil
+func (u *TaskService) ExportValue(ctx kratosx.Context, id uint32) (uint32, error) {
+	// 获取当前用户信息
+	info, err := mauth.GetAuthInfo(ctx)
+	if err != nil {
+		return 0, errors.SystemError()
+	}
+
+	task, err := u.repo.GetTask(ctx, id)
+	if err != nil {
+		return 0, errors.DatabaseError(err.Error())
+	}
+
+	cfg := []struct {
+		Type   string `json:"type"`
+		Field  string `json:"field"`
+		Config struct {
+			Label string `json:"label"`
+		} `json:"config"`
+	}{{}}
+
+	// 查询表头
+	if err := json.Unmarshal([]byte(task.Config), &cfg); err != nil {
+		return 0, errors.TransformError()
+	}
+
+	var (
+		tps     = map[string]string{}
+		headers = []string{"用户ID", "用户名"}
+		dirs    = map[string]string{}
+		files   []*types.ExportFileItem
+		rows    [][]*types.ExportExcelCol
+	)
+	for _, item := range cfg {
+		tp := "string"
+		if item.Type == "upload" {
+			tp = "file"
+			dirs[item.Field] = item.Config.Label
+		} else {
+			headers = append(headers, item.Config.Label)
+		}
+		tps[item.Field] = tp
+	}
+
+	// 获取数据
+	list, err := u.repo.AllTaskValueByTaskId(ctx, id)
+	for _, item := range list {
+		var (
+			value = make(map[string]string)
+			cols  []*types.ExportExcelCol
+		)
+		if err := json.Unmarshal([]byte(item.Value), &value); err != nil {
+			continue
+		}
+
+		user, err := u.user.GetUser(ctx, item.UserId)
+		if err != nil {
+			return 0, err
+		}
+
+		// 写入用户信息
+		cols = append(cols, []*types.ExportExcelCol{
+			{
+				Type:  "string",
+				Value: fmt.Sprint(user.Id),
+			},
+			{
+				Type:  "string",
+				Value: user.GetName(),
+			},
+		}...)
+
+		// 写入表格数据
+		for _, ite := range cfg {
+			if tps[ite.Field] == "file" {
+				files = append(files, &types.ExportFileItem{
+					Rename: fmt.Sprintf("%s/%s-%d", dirs[ite.Field], user.GetName(), user.Id),
+					Value:  value[ite.Field],
+				})
+			} else {
+				cols = append(cols, &types.ExportExcelCol{
+					Type:  tps[ite.Field],
+					Value: value[ite.Field],
+				})
+			}
+		}
+
+		// 追加进入行数据
+		rows = append(rows, cols)
+	}
+
+	id, err = u.file.ExportExcel(ctx, &types.ExportExcelRequest{
+		UserId:       info.UserId,
+		DepartmentId: info.DepartmentId,
+		Scene:        exportScene,
+		Name:         task.Title,
+		Rows:         rows,
+		Files:        files,
+		Headers:      headers,
+	})
+
+	if err != nil {
+		return 0, err
+	}
+
+	return id, nil
 }
 
 // UpdateTaskValue 更新任务信息

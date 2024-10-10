@@ -224,7 +224,11 @@ func (s *Task) CreateTaskValue(ctx context.Context, req *pb.CreateTaskValueReque
 }
 
 func (s *Task) ExportTaskValue(ctx context.Context, in *pb.ExportTaskValueRequest) (*pb.ExportTaskValueReply, error) {
-	return &pb.ExportTaskValueReply{}, s.srv.ExportValue(kratosx.MustContext(ctx), in.TaskId)
+	id, err := s.srv.ExportValue(kratosx.MustContext(ctx), in.TaskId)
+	if err != nil {
+		return &pb.ExportTaskValueReply{}, err
+	}
+	return &pb.ExportTaskValueReply{Id: id}, nil
 }
 
 func (s *Task) UpdateTaskValue(ctx context.Context, req *pb.UpdateTaskValueRequest) (*pb.UpdateTaskValueReply, error) {

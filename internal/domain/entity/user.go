@@ -10,3 +10,10 @@ type User struct {
 	Avatar    *string `json:"avatar,omitempty"`
 	AvatarUrl *string `json:"avatarUrl,omitempty"`
 }
+
+func (u *User) GetName() string {
+	if u.RealName != nil {
+		return *u.RealName
+	}
+	return u.NickName
+}

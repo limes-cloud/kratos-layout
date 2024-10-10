@@ -4,6 +4,7 @@ import (
 	"github.com/limes-cloud/kratosx"
 
 	"partyaffairs/internal/domain/entity"
+	"partyaffairs/internal/types"
 )
 
 type FileRepository interface {
@@ -12,4 +13,7 @@ type FileRepository interface {
 
 	// GetFile 获取指定文件信息
 	GetFile(ctx kratosx.Context, sha string) (*entity.File, error)
+
+	// ExportExcel 导出excel
+	ExportExcel(ctx kratosx.Context, req *types.ExportExcelRequest) (uint32, error)
 }

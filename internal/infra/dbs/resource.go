@@ -69,6 +69,7 @@ func (r *Resource) ListResource(ctx kratosx.Context, req *types.ListResourceRequ
 	if err := db.Count(&total).Error; err != nil {
 		return nil, 0, err
 	}
+
 	db = db.Offset(int((req.Page - 1) * req.PageSize)).Limit(int(req.PageSize))
 
 	return list, uint32(total), db.Find(&list).Error

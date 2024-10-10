@@ -48,6 +48,8 @@ func (r *Notice) ListNotice(ctx kratosx.Context, req *types.ListNoticeRequest) (
 	if err := db.Count(&total).Error; err != nil {
 		return nil, 0, err
 	}
+
+	db = db.Order("is_top desc, id desc")
 	db = db.Offset(int((req.Page - 1) * req.PageSize)).Limit(int(req.PageSize))
 
 	return list, uint32(total), db.Find(&list).Error

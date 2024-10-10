@@ -39,6 +39,7 @@ func (u *Task) ListTask(ctx kratosx.Context, req *types.ListTaskRequest) ([]*ent
 		return nil, uint32(total), err
 	}
 
+	db = db.Order("id desc")
 	db = db.Offset(int((req.Page - 1) * req.PageSize)).Limit(int(req.PageSize))
 
 	return list, uint32(total), db.Find(&list).Error

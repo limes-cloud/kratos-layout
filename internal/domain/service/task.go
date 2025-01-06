@@ -203,7 +203,7 @@ func (u *TaskService) ExportValue(ctx kratosx.Context, id uint32) (uint32, error
 	}
 
 	// 获取数据
-	list, err := u.repo.AllTaskValueByTaskId(ctx, id)
+	list, _ := u.repo.AllTaskValueByTaskId(ctx, id)
 	for _, item := range list {
 		var (
 			value = make(map[string]string)

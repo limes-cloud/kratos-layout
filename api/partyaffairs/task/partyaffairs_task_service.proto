@@ -18,7 +18,7 @@ service Task {
     option (google.api.http) = {
       get: "/partyaffairs/client/v1/tasks",
     };
-  }
+  }   
 
   rpc GetTask (GetTaskRequest) returns (GetTaskReply) {
     option (google.api.http) = {

@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package partyaffairs.api.activity;
+option go_package = "kratos-layout/api/activity;activity";
+option java_multiple_files = true;
+option java_package = "partyaffairs.api.activity";
+
+import "google/api/annotations.proto";
+import "api/activity/proto/activity.proto";
+
+service Activity{
+
+  // GetActivity 获取指定的活动信息
+  rpc GetActivity (GetActivityRequest) returns (GetActivityReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/activity"
+    };
+  }
+
+  // ListActivity 获取活动信息列表
+  rpc ListActivity (ListActivityRequest) returns (ListActivityReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/activities",
+      additional_bindings:{
+        get: "/partyaffairs/client/v1/activities",
+      }
+    };
+  }
+
+  // CreateActivity 创建活动信息
+  rpc CreateActivity (CreateActivityRequest) returns (CreateActivityReply) {
+    option (google.api.http) = {
+      post: "/partyaffairs/api/v1/activity",
+      body: "*"
+    };
+  }
+
+  // UpdateActivity 更新活动信息
+  rpc UpdateActivity (UpdateActivityRequest) returns (UpdateActivityReply) {
+    option (google.api.http) = {
+      put: "/partyaffairs/api/v1/activity",
+      body: "*"
+    };
+  }
+
+  // DeleteActivity 删除活动信息
+  rpc DeleteActivity (DeleteActivityRequest) returns (DeleteActivityReply) {
+    option (google.api.http) = {
+      delete: "/partyaffairs/api/v1/activity",
+    };
+  }
+
+}

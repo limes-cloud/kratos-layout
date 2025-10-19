@@ -1,22 +1,14 @@
 package rpc
 
 import (
-	user "github.com/limes-cloud/application/api/application/user/v1"
-	"github.com/limes-cloud/kratosx"
-	"github.com/limes-cloud/kratosx/pkg/valx"
+	"github.com/limes-cloud/kratosx/pkg/value"
+	"github.com/limes-cloud/manager/api/user"
 	"google.golang.org/protobuf/proto"
+	"partyaffairs/internal/core"
 
-	"partyaffairs/api/partyaffairs/errors"
+	"partyaffairs/api/errors"
 	"partyaffairs/internal/domain/entity"
 	"partyaffairs/internal/types"
-)
-
-const (
-	Application = "Application"
-)
-
-var (
-	ClientApp = "PartyAffairs"
 )
 
 type User struct {
@@ -26,15 +18,15 @@ func NewUser() *User {
 	return &User{}
 }
 
-func (i User) client(ctx kratosx.Context) (user.UserClient, error) {
-	conn, err := kratosx.MustContext(ctx).GrpcConn(Application)
+func (i User) client(ctx core.Context) (user.UserClient, error) {
+	conn, err := core.MustContext(ctx).GrpcConn("Manager")
 	if err != nil {
 		return nil, errors.ResourceServerError()
 	}
 	return user.NewUserClient(conn), nil
 }
 
-func (i User) GetUser(ctx kratosx.Context, id uint32) (*entity.User, error) {
+func (i User) GetUser(ctx core.Context, id uint32) (*entity.User, error) {
 	client, err := i.client(ctx)
 	if err != nil {
 		return nil, err
@@ -44,18 +36,14 @@ func (i User) GetUser(ctx kratosx.Context, id uint32) (*entity.User, error) {
 		return nil, err
 	}
 	return &entity.User{
-		Id:        reply.Id,
-		Phone:     reply.Phone,
-		Email:     reply.Email,
-		Username:  reply.Username,
-		NickName:  reply.NickName,
-		RealName:  reply.RealName,
-		Avatar:    reply.Avatar,
-		AvatarUrl: reply.AvatarUrl,
+		Id:       reply.Id,
+		Username: reply.Username,
+		Nickname: reply.Nickname,
+		Avatar:   reply.Avatar,
 	}, nil
 }
 
-func (i User) ListUser(ctx kratosx.Context, req *types.ListUserRequest) ([]*entity.User, uint32, error) {
+func (i User) ListUser(ctx core.Context, req *types.ListUserRequest) ([]*entity.User, uint32, error) {
 	client, err := i.client(ctx)
 	if err != nil {
 		return nil, 0, err
@@ -64,15 +52,26 @@ func (i User) ListUser(ctx kratosx.Context, req *types.ListUserRequest) ([]*enti
 		Page:     req.Page,
 		PageSize: req.PageSize,
 		Status:   proto.Bool(true),
-		App:      &ClientApp,
-		NotInIds: req.NotIn,
+		InIds:    req.In,
 	})
 	if err != nil {
 		return nil, 0, err
 	}
 	var ents []*entity.User
-	if err := valx.Transform(reply.List, &ents); err != nil {
+	if err := value.Transform(reply.List, &ents); err != nil {
 		return nil, 0, err
 	}
 	return ents, reply.Total, nil
+}
+
+func (i User) ListUserMap(ctx core.Context, req *types.ListUserRequest) (map[uint32]*entity.User, error) {
+	list, _, err := i.ListUser(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	var m = make(map[uint32]*entity.User, len(list))
+	for _, v := range list {
+		m[v.Id] = v
+	}
+	return m, nil
 }

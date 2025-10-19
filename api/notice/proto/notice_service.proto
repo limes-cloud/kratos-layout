@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package partyaffairs.api.notice;
+option go_package = "kratos-layout/api/notice;notice";
+option java_multiple_files = true;
+option java_package = "partyaffairs.api.notice";
+option java_outer_classname = "NoticeV1";
+
+import "google/api/annotations.proto";
+import "api/notice/proto/notice.proto";
+
+service Notice{
+  // GetNotice 获取指定的通知信息
+  rpc GetNotice (GetNoticeRequest) returns (GetNoticeReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/notice",
+    };
+  }
+
+  // ListNotice 获取通知信息列表
+  rpc ListNotice (ListNoticeRequest) returns (ListNoticeReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/notices",
+    };
+  }
+
+  // ListNotice 获取通知信息列表
+  rpc ListVisibleNotice (ListNoticeRequest) returns (ListNoticeReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/visible-notices",
+    };
+  }
+
+  // CreateNotice 创建通知信息
+  rpc CreateNotice (CreateNoticeRequest) returns (CreateNoticeReply) {
+    option (google.api.http) = {
+      post: "/partyaffairs/api/v1/notice",
+      body: "*"
+    };
+  }
+
+  // PushNotice 推送通知信息
+  rpc PushNotice (PushNoticeRequest) returns (PushNoticeReply) {
+    option (google.api.http) = {
+      post: "/partyaffairs/api/v1/notice/push",
+      body: "*"
+    };
+  }
+
+  // UpdateNotice 更新通知信息
+  rpc UpdateNotice (UpdateNoticeRequest) returns (UpdateNoticeReply) {
+    option (google.api.http) = {
+      put: "/partyaffairs/api/v1/notice",
+      body: "*"
+    };
+  }
+
+  // DeleteNotice 删除通知信息
+  rpc DeleteNotice (DeleteNoticeRequest) returns (DeleteNoticeReply) {
+    option (google.api.http) = {
+      delete: "/partyaffairs/api/v1/notice",
+    };
+  }
+
+}

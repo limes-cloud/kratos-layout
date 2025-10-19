@@ -1,0 +1,82 @@
+server:
+  http:
+    host: 127.0.0.1
+    port: 7100
+    timeout: 1s
+    marshal:
+      emitUnpopulated: true
+      useProtoNames: true
+  grpc:
+    host: 127.0.0.1
+    port: 8100
+    timeout: 1s
+log:
+  level: 0 #日志输出等级
+  output:
+    - stdout # stdout:控制台输出，k8s日志收集
+    - file # file:输出到文件
+  file: #output存在file时此配置才可生效
+    name: ./tmp/runtime/output.log #日志存放地址
+    maxSize: 1 #日志文件最大容量,单位m
+    maxBackup: 5 #日志文件最多保存个数
+    maxAge: 1 #保留就文件的最大天数,单位天
+    compress: false #是否进行压缩归档
+database:
+  - name: system #数据库实例名称,如有多个数据库可新增
+    enable: true #是否启用数据库
+    drive: mysql #数据库类型
+    autoCreate: true #是否自动创建数据库
+    connect:
+      username: root
+      password: root
+      host: 127.0.0.1
+      port: 3306
+      dbName: party_affairs
+      option: ?charset=utf8mb4&parseTime=True&loc=Local
+    config:
+      transformError:
+        enable: true
+      maxLifetime: 2h #最大生存时间
+      maxOpenConn: 10 #最大连接数量
+      maxIdleConn: 10 #最大空闲数量
+      logLevel: 4 #日志等级
+      slowThreshold: 2s #慢sql阈值
+redis:
+  - name: cache #redis实例名称,如有多个redis可新增
+    enable: true #是否启用redis
+    host: 127.0.0.1:6379 #redis地址
+client:
+  - server: Manager
+    type: direct
+    backends:
+      - target: 127.0.0.1:8010
+email: # 邮件发送相关配置
+  template: #邮件模板
+    captcha:  #邮件模板名称
+      subject: 账号绑定验证码发送通知 #邮件模板主题
+      path: static/template/email/default.html #邮件模板路径
+      from: lime@qq.com
+      type: "text/html" #文本内容格式
+  name: 青柠校园
+  user: 860808187@qq.com #发送者
+  host: smtp.qq.com #发送host
+  port: 25
+  password: fyudafdzqmhwbfbd # 发送host密码
+captcha:
+  bind:  #验证码名称
+    type: email #验证码类型
+    length: 6 #验证码长度
+    expire: 180s #过期时间
+    redis: cache #redis名称
+    template: captcha #邮箱模板名称,仅email有效
+pool: #并非池配置
+  size: 1000 #最大协程数量
+  expiryDuration: 30s #过期时间
+  preAlloc: true #是否预分配
+  maxBlockingTasks: 1000 #最大的并发任务
+  nonblocking: true
+business:
+  aiBot:
+    secret: bce-v3/ALTAK-vXBk2DvNrk0ashSpsZ2jc/ee04a3d76a9dd2325a46e074c5a4c7bc1ebf493d
+    appid: 3c1f9bab-c352-43f9-a0a6-cad16c66c9b1
+    setting: { "name": "资助党建咨询AI助手","logo": "https://gimg3.baidu.com/topone/src=https%3A%2F%2Fbkimg.cdn.bcebos.com%2Fsmart%2F8326cffc1e178a82b90138118155648da97739124271-bkimg-process%2Cv_1%2Crw_1%2Crh_1%2Cmaxl_800%2Cpad_1%3Fx-bce-process%3Dimage%2Fresize%2Cm_pad%2Cw_348%2Ch_348%2Ccolor_ffffff\u0026refer=http%3A%2F%2Fwww.baidu.com\u0026app=2011\u0026size=w931\u0026n=0\u0026g=0n\u0026er=404\u0026q=75\u0026fmt=auto\u0026maxorilen2heic=2000000?sec=1728666000\u0026t=fe09e144ea94ccedec88400db060be55","desc": "你好同学，我是负责党建咨询的AI助手，请问有什么可以帮您？","guiding": [ { "type": "question","text": "你好，同学" } ] }

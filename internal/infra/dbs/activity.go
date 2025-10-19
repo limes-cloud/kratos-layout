@@ -1,8 +1,7 @@
 package dbs
 
 import (
-	"github.com/limes-cloud/kratosx"
-
+	"partyaffairs/internal/core"
 	"partyaffairs/internal/domain/entity"
 	"partyaffairs/internal/types"
 )
@@ -15,7 +14,7 @@ func NewActivity() *Activity {
 }
 
 // GetActivity 获取指定的活动信息数据
-func (r *Activity) GetActivity(ctx kratosx.Context, id uint32) (*entity.Activity, error) {
+func (r *Activity) GetActivity(ctx core.Context, id uint32) (*entity.Activity, error) {
 	var (
 		ent = entity.Activity{}
 		fs  = []string{"*"}
@@ -25,7 +24,7 @@ func (r *Activity) GetActivity(ctx kratosx.Context, id uint32) (*entity.Activity
 }
 
 // ListActivity 获取活动信息列表
-func (r *Activity) ListActivity(ctx kratosx.Context, req *types.ListActivityRequest) ([]*entity.Activity, uint32, error) {
+func (r *Activity) ListActivity(ctx core.Context, req *types.ListActivityRequest) ([]*entity.Activity, uint32, error) {
 	var (
 		list  []*entity.Activity
 		fs    = []string{"*"}
@@ -56,16 +55,16 @@ func (r *Activity) ListActivity(ctx kratosx.Context, req *types.ListActivityRequ
 }
 
 // CreateActivity 创建活动信息数据
-func (r *Activity) CreateActivity(ctx kratosx.Context, ent *entity.Activity) (uint32, error) {
+func (r *Activity) CreateActivity(ctx core.Context, ent *entity.Activity) (uint32, error) {
 	return ent.Id, ctx.DB().Create(ent).Error
 }
 
 // UpdateActivity 更新活动信息数据
-func (r *Activity) UpdateActivity(ctx kratosx.Context, ent *entity.Activity) error {
+func (r *Activity) UpdateActivity(ctx core.Context, ent *entity.Activity) error {
 	return ctx.DB().Updates(ent).Error
 }
 
 // DeleteActivity 删除活动信息数据
-func (r *Activity) DeleteActivity(ctx kratosx.Context, id uint32) error {
+func (r *Activity) DeleteActivity(ctx core.Context, id uint32) error {
 	return ctx.DB().Delete(&entity.Activity{}, id).Error
 }

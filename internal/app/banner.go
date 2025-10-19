@@ -2,55 +2,76 @@ package app
 
 import (
 	"context"
+	"github.com/limes-cloud/kratosx/model"
+	"github.com/limes-cloud/kratosx/model/page"
+	"google.golang.org/protobuf/types/known/emptypb"
+	"partyaffairs/api/banner"
+	"partyaffairs/internal/core"
 
 	"github.com/go-kratos/kratos/v2/transport/http"
-	"github.com/limes-cloud/kratosx"
-	"github.com/limes-cloud/kratosx/pkg/valx"
-	ktypes "github.com/limes-cloud/kratosx/types"
+	"github.com/limes-cloud/kratosx/pkg/value"
 
-	pb "partyaffairs/api/partyaffairs/banner/v1"
-	"partyaffairs/api/partyaffairs/errors"
-	"partyaffairs/internal/conf"
+	"partyaffairs/api/errors"
 	"partyaffairs/internal/domain/entity"
 	"partyaffairs/internal/domain/service"
 	"partyaffairs/internal/infra/dbs"
-	"partyaffairs/internal/infra/rpc"
 	"partyaffairs/internal/types"
 )
 
 type Banner struct {
-	pb.UnimplementedBannerServer
+	banner.UnimplementedBannerServer
 	srv *service.BannerService
 }
 
-func NewBanner(conf *conf.Config) *Banner {
+func NewBanner() *Banner {
 	return &Banner{
-		srv: service.NewBannerService(conf, dbs.NewBanner(), rpc.NewFile()),
+		srv: service.NewBannerService(dbs.NewBanner()),
 	}
 }
 
 func init() {
-	register(func(c *conf.Config, hs *http.Server) {
-		srv := NewBanner(c)
-		pb.RegisterBannerHTTPServer(hs, srv)
+	register(func(hs *http.Server) {
+		srv := NewBanner()
+		banner.RegisterBannerHTTPServer(hs, srv)
 	})
 }
 
-// ListBanner 获取轮播图信息列表
-func (s *Banner) ListBanner(c context.Context, req *pb.ListBannerRequest) (*pb.ListBannerReply, error) {
-	var ctx = kratosx.MustContext(c)
+// ListVisibleBanner 获取客户端可见的轮播图信息列表
+func (s *Banner) ListVisibleBanner(c context.Context, _ *emptypb.Empty) (*banner.ListBannerReply, error) {
+	var ctx = core.MustContext(c)
 	result, total, err := s.srv.ListBanner(ctx, &types.ListBannerRequest{
-		Page:     req.Page,
-		PageSize: req.PageSize,
-		Title:    req.Title,
-		Status:   req.Status,
+		Status: value.Pointer(true),
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	reply := pb.ListBannerReply{Total: total}
-	if err := valx.Transform(result, &reply.List); err != nil {
+	reply := banner.ListBannerReply{Total: total}
+	if err := value.Transform(result, &reply.List); err != nil {
+		ctx.Logger().Warnw("msg", "reply transform err", "err", err.Error())
+		return nil, errors.TransformError()
+	}
+
+	return &reply, nil
+}
+
+// ListBanner 获取轮播图信息列表
+func (s *Banner) ListBanner(c context.Context, req *banner.ListBannerRequest) (*banner.ListBannerReply, error) {
+	var ctx = core.MustContext(c)
+	result, total, err := s.srv.ListBanner(ctx, &types.ListBannerRequest{
+		Search: &page.Search{
+			Page:     req.Page,
+			PageSize: req.PageSize,
+		},
+		Title:  req.Title,
+		Status: req.Status,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	reply := banner.ListBannerReply{Total: total}
+	if err := value.Transform(result, &reply.List); err != nil {
 		ctx.Logger().Warnw("msg", "reply transform err", "err", err.Error())
 		return nil, errors.TransformError()
 	}
@@ -59,10 +80,10 @@ func (s *Banner) ListBanner(c context.Context, req *pb.ListBannerRequest) (*pb.L
 }
 
 // CreateBanner 创建轮播图信息
-func (s *Banner) CreateBanner(c context.Context, req *pb.CreateBannerRequest) (*pb.CreateBannerReply, error) {
-	id, err := s.srv.CreateBanner(kratosx.MustContext(c), &entity.Banner{
+func (s *Banner) CreateBanner(c context.Context, req *banner.CreateBannerRequest) (*banner.CreateBannerReply, error) {
+	id, err := s.srv.CreateBanner(core.MustContext(c), &entity.Banner{
 		Title:  req.Title,
-		Src:    req.Src,
+		Key:    req.Key,
 		Path:   req.Path,
 		Weight: req.Weight,
 		Status: req.Status,
@@ -70,25 +91,25 @@ func (s *Banner) CreateBanner(c context.Context, req *pb.CreateBannerRequest) (*
 	if err != nil {
 		return nil, err
 	}
-	return &pb.CreateBannerReply{Id: id}, nil
+	return &banner.CreateBannerReply{Id: id}, nil
 }
 
 // UpdateBanner 更新轮播图信息
-func (s *Banner) UpdateBanner(c context.Context, req *pb.UpdateBannerRequest) (*pb.UpdateBannerReply, error) {
-	if err := s.srv.UpdateBanner(kratosx.MustContext(c), &entity.Banner{
-		BaseModel: ktypes.BaseModel{Id: req.Id},
-		Title:     req.Title,
-		Src:       req.Src,
-		Path:      req.Path,
-		Weight:    req.Weight,
-		Status:    req.Status,
+func (s *Banner) UpdateBanner(c context.Context, req *banner.UpdateBannerRequest) (*banner.UpdateBannerReply, error) {
+	if err := s.srv.UpdateBanner(core.MustContext(c), &entity.Banner{
+		BaseTenantModel: model.BaseTenantModel{Id: req.Id},
+		Title:           req.Title,
+		Key:             req.Key,
+		Path:            req.Path,
+		Weight:          req.Weight,
+		Status:          req.Status,
 	}); err != nil {
 		return nil, err
 	}
-	return &pb.UpdateBannerReply{}, nil
+	return &banner.UpdateBannerReply{}, nil
 }
 
 // DeleteBanner 删除轮播图信息
-func (s *Banner) DeleteBanner(c context.Context, req *pb.DeleteBannerRequest) (*pb.DeleteBannerReply, error) {
-	return &pb.DeleteBannerReply{}, s.srv.DeleteBanner(kratosx.MustContext(c), req.Id)
+func (s *Banner) DeleteBanner(c context.Context, req *banner.DeleteBannerRequest) (*banner.DeleteBannerReply, error) {
+	return &banner.DeleteBannerReply{}, s.srv.DeleteBanner(core.MustContext(c), req.Id)
 }

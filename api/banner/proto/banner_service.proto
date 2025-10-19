@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package partyaffairs.api.banner;
+option go_package = "kratos-layout/api/banner;banner";
+option java_multiple_files = true;
+option java_package = "partyaffairs.api.banner";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "api/banner/proto/banner.proto";
+
+service Banner{
+  // ListVisibleBanner 获取可见轮播图信息列表
+  rpc ListVisibleBanner (google.protobuf.Empty) returns (ListBannerReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/visible-banners"
+    };
+  }
+
+  // ListBanner 获取轮播图信息列表
+  rpc ListBanner (ListBannerRequest) returns (ListBannerReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/banners"
+    };
+  }
+
+  // CreateBanner 创建轮播图信息
+  rpc CreateBanner (CreateBannerRequest) returns (CreateBannerReply) {
+    option (google.api.http) = {
+      post: "/partyaffairs/api/v1/banner",
+      body: "*"
+    };
+  }
+
+  // UpdateBanner 更新轮播图信息
+  rpc UpdateBanner (UpdateBannerRequest) returns (UpdateBannerReply) {
+    option (google.api.http) = {
+      put: "/partyaffairs/api/v1/banner",
+      body: "*"
+    };
+  }
+
+  // DeleteBanner 删除轮播图信息
+  rpc DeleteBanner (DeleteBannerRequest) returns (DeleteBannerReply) {
+    option (google.api.http) = {
+      delete: "/partyaffairs/api/v1/banner",
+    };
+  }
+
+}

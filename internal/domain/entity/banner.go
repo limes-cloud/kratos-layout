@@ -1,11 +1,11 @@
 package entity
 
-import "github.com/limes-cloud/kratosx/types"
+import "github.com/limes-cloud/kratosx/model"
 
 type Banner struct {
-	types.BaseModel
+	model.BaseTenantModel
 	Title  string  `gorm:"column:title" json:"title"`   // 轮播标题
-	Src    string  `gorm:"column:src" json:"src"`       // 轮播url
+	Key    string  `gorm:"column:key" json:"key"`       // 轮播key
 	Path   *string `gorm:"column:path" json:"path"`     // 跳转路径
 	Weight *int32  `gorm:"column:weight" json:"weight"` // 权重
 	Status *bool   `gorm:"column:status" json:"status"` // 状态

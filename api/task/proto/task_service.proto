@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package partyaffairs.api.task;
+option go_package = "kratos-layout/api/task;task";
+option java_multiple_files = true;
+option java_package = "partyaffairs.api.task";
+
+
+import "api/task/proto/task.proto";
+import "api/task/proto/task_value.proto";
+
+import "google/api/annotations.proto";
+
+
+service Task {
+  rpc ListTask (ListTaskRequest) returns (ListTaskReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/tasks",
+    };
+  }
+
+  rpc ListClientTask (ListClientTaskRequest) returns (ListClientTaskReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/client/v1/tasks",
+    };
+  }   
+
+  rpc GetTask (GetTaskRequest) returns (GetTaskReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/task",
+      additional_bindings {
+        get: "/partyaffairs/client/v1/task",
+      },
+    };
+  }
+
+  rpc CreateTask (CreateTaskRequest) returns (CreateTaskReply) {
+    option (google.api.http) = {
+      post: "/partyaffairs/api/v1/task",
+      body: "*"
+    };
+  }
+
+  rpc UpdateTask (UpdateTaskRequest) returns (UpdateTaskReply) {
+    option (google.api.http) = {
+      put: "/partyaffairs/api/v1/task",
+      body: "*"
+    };
+  }
+
+  rpc DeleteTask (DeleteTaskRequest) returns (DeleteTaskReply) {
+    option (google.api.http) = {
+      delete: "/partyaffairs/api/v1/task"
+    };
+  }
+
+  rpc ListTaskValue (ListTaskValueRequest) returns (ListTaskValueReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/task/values",
+    };
+  }
+
+  rpc GetTaskValue (GetTaskValueRequest) returns (GetTaskValueReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/task/value",
+    };
+  }
+
+  rpc ExportTaskValue (ExportTaskValueRequest) returns (ExportTaskValueReply) {
+    option (google.api.http) = {
+      post: "/partyaffairs/api/v1/task/values",
+      body: "*"
+    };
+  }
+
+  rpc GetCurTaskValue (GetCurTaskValueRequest) returns (GetCurTaskValueReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/task/current/value",
+    };
+  }
+
+  rpc CreateTaskValue (CreateTaskValueRequest) returns (CreateTaskValueReply) {
+    option (google.api.http) = {
+      post: "/partyaffairs/api/v1/task/value",
+      body: "*"
+    };
+  }
+
+  rpc UpdateTaskValue (UpdateTaskValueRequest) returns (UpdateTaskValueReply) {
+    option (google.api.http) = {
+      put: "/partyaffairs/api/v1/task/value",
+      body: "*"
+    };
+  }
+
+  rpc DeleteTaskValue (DeleteTaskValueRequest) returns (DeleteTaskValueReply) {
+    option (google.api.http) = {
+      delete: "/partyaffairs/api/v1/task/value"
+    };
+  }
+}

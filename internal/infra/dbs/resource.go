@@ -1,8 +1,7 @@
 package dbs
 
 import (
-	"github.com/limes-cloud/kratosx"
-
+	"partyaffairs/internal/core"
 	"partyaffairs/internal/domain/entity"
 	"partyaffairs/internal/types"
 )
@@ -15,7 +14,7 @@ func NewResource() *Resource {
 }
 
 // ListResourceClassify 获取列表
-func (t *Resource) ListResourceClassify(ctx kratosx.Context) ([]*entity.ResourceClassify, error) {
+func (t *Resource) ListResourceClassify(ctx core.Context) ([]*entity.ResourceClassify, error) {
 	var (
 		list []*entity.ResourceClassify
 		fs   = []string{"*"}
@@ -24,22 +23,22 @@ func (t *Resource) ListResourceClassify(ctx kratosx.Context) ([]*entity.Resource
 }
 
 // CreateResourceClassify 创建数据
-func (t *Resource) CreateResourceClassify(ctx kratosx.Context, tg *entity.ResourceClassify) (uint32, error) {
+func (t *Resource) CreateResourceClassify(ctx core.Context, tg *entity.ResourceClassify) (uint32, error) {
 	return tg.Id, ctx.DB().Create(tg).Error
 }
 
 // UpdateResourceClassify 更新数据
-func (t *Resource) UpdateResourceClassify(ctx kratosx.Context, tg *entity.ResourceClassify) error {
+func (t *Resource) UpdateResourceClassify(ctx core.Context, tg *entity.ResourceClassify) error {
 	return ctx.DB().Updates(tg).Error
 }
 
 // DeleteResourceClassify 删除数据
-func (t *Resource) DeleteResourceClassify(ctx kratosx.Context, id uint32) error {
+func (t *Resource) DeleteResourceClassify(ctx core.Context, id uint32) error {
 	return ctx.DB().Where("id = ?", id).Delete(&entity.ResourceClassify{}).Error
 }
 
 // GetResource 获取指定的资讯信息数据
-func (r *Resource) GetResource(ctx kratosx.Context, id uint32) (*entity.Resource, error) {
+func (r *Resource) GetResource(ctx core.Context, id uint32) (*entity.Resource, error) {
 	var (
 		ent = entity.Resource{}
 		fs  = []string{"*"}
@@ -49,7 +48,7 @@ func (r *Resource) GetResource(ctx kratosx.Context, id uint32) (*entity.Resource
 }
 
 // ListResource 获取资讯信息列表
-func (r *Resource) ListResource(ctx kratosx.Context, req *types.ListResourceRequest) ([]*entity.Resource, uint32, error) {
+func (r *Resource) ListResource(ctx core.Context, req *types.ListResourceRequest) ([]*entity.Resource, uint32, error) {
 	var (
 		list  []*entity.Resource
 		fs    = []string{"*"}
@@ -76,16 +75,16 @@ func (r *Resource) ListResource(ctx kratosx.Context, req *types.ListResourceRequ
 }
 
 // CreateResource 创建资讯信息数据
-func (r *Resource) CreateResource(ctx kratosx.Context, ent *entity.Resource) (uint32, error) {
+func (r *Resource) CreateResource(ctx core.Context, ent *entity.Resource) (uint32, error) {
 	return ent.Id, ctx.DB().Create(ent).Error
 }
 
 // UpdateResource 更新资讯信息数据
-func (r *Resource) UpdateResource(ctx kratosx.Context, ent *entity.Resource) error {
+func (r *Resource) UpdateResource(ctx core.Context, ent *entity.Resource) error {
 	return ctx.DB().Updates(ent).Error
 }
 
 // DeleteResource 删除资讯信息数据
-func (r *Resource) DeleteResource(ctx kratosx.Context, id uint32) error {
+func (r *Resource) DeleteResource(ctx core.Context, id uint32) error {
 	return ctx.DB().Delete(&entity.Resource{}, id).Error
 }

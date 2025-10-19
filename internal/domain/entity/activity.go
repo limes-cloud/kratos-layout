@@ -1,11 +1,9 @@
 package entity
 
-import (
-	"github.com/limes-cloud/kratosx/types"
-)
+import "github.com/limes-cloud/kratosx/model"
 
 type Activity struct {
-	types.BaseModel
+	model.BaseTenantModel
 	Title       string `gorm:"column:title" json:"title"`             // 活动标题
 	Description string `gorm:"column:description" json:"description"` // 活动简介
 	Cover       string `gorm:"column:cover" json:"cover"`             // 活动封面

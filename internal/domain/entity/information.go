@@ -1,17 +1,15 @@
 package entity
 
-import (
-	"github.com/limes-cloud/kratosx/types"
-)
+import "github.com/limes-cloud/kratosx/model"
 
 type InformationClassify struct {
 	Name   string `json:"name" gorm:"column:name"`
 	Weight uint32 `json:"weight" gorm:"column:weight"`
-	types.BaseModel
+	model.BaseTenantModel
 }
 
 type Information struct {
-	types.BaseModel
+	model.BaseTenantModel
 	ClassifyId  uint32               `gorm:"column:classify_id" json:"classifyId"`
 	Title       string               `gorm:"column:title" json:"title"`             // 资讯标题
 	Description string               `gorm:"column:description" json:"description"` // 资讯简介

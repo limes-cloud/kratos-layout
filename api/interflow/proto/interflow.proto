@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package partyaffairs.api.interflow;
+option go_package = "kratos-layout/api/interflow;interflow";
+option java_multiple_files = true;
+option java_package = "partyaffairs.api.interflow";
+option java_outer_classname = "InterflowV1";
+
+import "validate/validate.proto";
+
+
+message ListInterflowPersonRequest {
+}
+
+message ListInterflowPersonReply {
+  message User{
+    uint32 id = 1;
+    string username =2;
+    string avatar = 3;
+    string nickname = 4;
+  }
+  repeated User list = 1;
+}
+
+message CreateInterflowPersonRequest {
+  uint32 userId = 1[(validate.rules).uint32 = {gte: 1}];
+}
+
+message CreateInterflowPersonReply {
+  uint32 id = 1;
+}
+
+message DeleteInterflowPersonRequest {
+  uint32 userId = 1[(validate.rules).uint32 = {gte: 1}];
+}
+
+message DeleteInterflowPersonReply{
+}
+
+
+message ListInterflowRequest {
+  uint32 page = 1[(validate.rules).uint32 = {gte: 1}];
+  uint32 pageSize = 2[(validate.rules).uint32 = {gte: 1,lte:50}];
+  optional uint32 fromUserId = 3[(validate.rules).uint32 = {gte: 1}];
+  optional uint32 toUserId = 4[(validate.rules).uint32 = {gte: 1}];
+  bool fromCur = 5;
+}
+
+message ListInterflowReply {
+  message User{
+    uint32 id = 1;
+    string username =2;
+    string avatar = 3;
+    string nickname = 4;
+  }
+
+
+  message Interflow {
+    uint32 id = 1;
+    uint32 fromUserId = 2;
+    uint32 toUserId = 3;
+    string content = 4;
+    string type = 5;
+    uint32 createdAt = 6;
+  }
+  uint32 total = 1;
+  User fromUser = 2;
+  User toUser = 3;
+  repeated Interflow list = 4;
+}
+
+message CreateInterflowRequest {
+  uint32 toUserId = 1[(validate.rules).uint32 = {gte: 1}];
+  string content = 2[(validate.rules).string = {min_len: 1}];
+  string type = 3[(validate.rules).string = {min_len: 1}];
+}
+
+message CreateInterflowReply {
+  uint32 id = 1;
+}
+
+

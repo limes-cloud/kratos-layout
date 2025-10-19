@@ -1,9 +1,11 @@
 package types
 
+import "github.com/limes-cloud/kratosx/model/page"
+
 type ListNoticeRequest struct {
-	Page     uint32  `json:"page"`
-	PageSize uint32  `json:"pageSize"`
-	Title    *string `json:"title"`
-	IsTop    *bool   `json:"isTop"`
-	Status   *bool   `json:"status"`
+	*page.Search
+	Title   *string `json:"title"`
+	IsTop   *bool   `json:"isTop"`
+	Status  *bool   `json:"status"`
+	NotRead *bool   `json:"notRead"`
 }

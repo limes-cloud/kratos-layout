@@ -3,13 +3,10 @@ package service
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/limes-cloud/kratosx/pkg/value"
+	"partyaffairs/internal/core"
 
-	"github.com/limes-cloud/application/api/application/auth"
-	"github.com/limes-cloud/kratosx"
-	mauth "github.com/limes-cloud/manager/api/manager/auth"
-
-	"partyaffairs/api/partyaffairs/errors"
-	"partyaffairs/internal/conf"
+	"partyaffairs/api/errors"
 	"partyaffairs/internal/domain/entity"
 	"partyaffairs/internal/domain/repository"
 	"partyaffairs/internal/types"
@@ -20,18 +17,17 @@ const (
 )
 
 type TaskService struct {
-	conf *conf.Config
 	repo repository.TaskRepository
 	file repository.FileRepository
 	user repository.UserRepository
 }
 
-func NewTaskService(conf *conf.Config, repo repository.TaskRepository, file repository.FileRepository, user repository.UserRepository) *TaskService {
-	return &TaskService{conf: conf, repo: repo, file: file, user: user}
+func NewTaskService(repo repository.TaskRepository, file repository.FileRepository, user repository.UserRepository) *TaskService {
+	return &TaskService{repo: repo, file: file, user: user}
 }
 
 // GetTask 获取指定的公告
-func (u *TaskService) GetTask(ctx kratosx.Context, id uint32) (*entity.Task, error) {
+func (u *TaskService) GetTask(ctx core.Context, id uint32) (*entity.Task, error) {
 	task, err := u.repo.GetTask(ctx, id)
 	if err != nil {
 		return nil, errors.GetError(err.Error())
@@ -40,7 +36,7 @@ func (u *TaskService) GetTask(ctx kratosx.Context, id uint32) (*entity.Task, err
 }
 
 // ListTask 获取分页任务
-func (u *TaskService) ListTask(ctx kratosx.Context, req *types.ListTaskRequest) ([]*entity.Task, uint32, error) {
+func (u *TaskService) ListTask(ctx core.Context, req *types.ListTaskRequest) ([]*entity.Task, uint32, error) {
 	task, total, err := u.repo.ListTask(ctx, req)
 	if err != nil {
 		return nil, total, errors.DatabaseError()
@@ -49,12 +45,8 @@ func (u *TaskService) ListTask(ctx kratosx.Context, req *types.ListTaskRequest) 
 }
 
 // ListClientTask 获取分页任务
-func (u *TaskService) ListClientTask(ctx kratosx.Context, req *types.ListTaskRequest) ([]*entity.Task, uint32, error) {
-	md, err := auth.Get(ctx)
-	if err != nil {
-		return nil, 0, errors.SystemError()
-	}
-	req.UserId = &md.UserId
+func (u *TaskService) ListClientTask(ctx core.Context, req *types.ListTaskRequest) ([]*entity.Task, uint32, error) {
+	req.UserId = value.Pointer(ctx.Auth().UserId)
 	task, total, err := u.repo.ListTask(ctx, req)
 	if err != nil {
 		return nil, total, errors.DatabaseError()
@@ -63,7 +55,7 @@ func (u *TaskService) ListClientTask(ctx kratosx.Context, req *types.ListTaskReq
 }
 
 // CreateTask 添加任务信息
-func (u *TaskService) CreateTask(ctx kratosx.Context, task *entity.Task) (uint32, error) {
+func (u *TaskService) CreateTask(ctx core.Context, task *entity.Task) (uint32, error) {
 	id, err := u.repo.CreateTask(ctx, task)
 	if err != nil {
 		return 0, errors.CreateError(err.Error())
@@ -72,7 +64,7 @@ func (u *TaskService) CreateTask(ctx kratosx.Context, task *entity.Task) (uint32
 }
 
 // UpdateTask 更新任务信息
-func (u *TaskService) UpdateTask(ctx kratosx.Context, task *entity.Task) error {
+func (u *TaskService) UpdateTask(ctx core.Context, task *entity.Task) error {
 	if err := u.repo.UpdateTask(ctx, task); err != nil {
 		return errors.UpdateError(err.Error())
 	}
@@ -80,7 +72,7 @@ func (u *TaskService) UpdateTask(ctx kratosx.Context, task *entity.Task) error {
 }
 
 // DeleteTask 删除任务信息
-func (u *TaskService) DeleteTask(ctx kratosx.Context, id uint32) error {
+func (u *TaskService) DeleteTask(ctx core.Context, id uint32) error {
 	if err := u.repo.DeleteTask(ctx, id); err != nil {
 		return errors.DatabaseError(err.Error())
 	}
@@ -88,23 +80,19 @@ func (u *TaskService) DeleteTask(ctx kratosx.Context, id uint32) error {
 }
 
 // GetTaskValue 获取指定的值
-func (u *TaskService) GetTaskValue(ctx kratosx.Context, taskId, userId uint32) (*entity.TaskValue, error) {
+func (u *TaskService) GetTaskValue(ctx core.Context, taskId, userId uint32) (*entity.TaskValue, error) {
 	task, _ := u.repo.GetTaskValue(ctx, taskId, userId)
 	return task, nil
 }
 
 // GetCurTaskValue 获取指定的值
-func (u *TaskService) GetCurTaskValue(ctx kratosx.Context, taskId uint32) (*entity.TaskValue, error) {
-	md, err := auth.Get(ctx)
-	if err != nil {
-		return nil, errors.SystemError()
-	}
-	task, _ := u.repo.GetTaskValue(ctx, taskId, md.UserId)
+func (u *TaskService) GetCurTaskValue(ctx core.Context, taskId uint32) (*entity.TaskValue, error) {
+	task, _ := u.repo.GetTaskValue(ctx, taskId, ctx.Auth().UserId)
 	return task, nil
 }
 
 // ListTaskValue 获取分页任务
-func (u *TaskService) ListTaskValue(ctx kratosx.Context, req *types.ListTaskValueRequest) ([]*entity.TaskValue, uint32, error) {
+func (u *TaskService) ListTaskValue(ctx core.Context, req *types.ListTaskValueRequest) ([]*entity.TaskValue, uint32, error) {
 	if req.Finish != nil && !*req.Finish {
 		// 获取已经填写完成的用户id列表
 		ids, err := u.repo.FinishTaskValueUsers(ctx, req.TaskId)
@@ -125,8 +113,8 @@ func (u *TaskService) ListTaskValue(ctx kratosx.Context, req *types.ListTaskValu
 		for _, user := range users {
 			values = append(values, &entity.TaskValue{
 				TaskId: req.TaskId,
-				UserId: user.Id,
-				User:   user,
+				//UserId: user.Id,
+				User: user,
 			})
 		}
 		return values, total, nil
@@ -144,13 +132,8 @@ func (u *TaskService) ListTaskValue(ctx kratosx.Context, req *types.ListTaskValu
 }
 
 // CreateTaskValue 添加任务信息
-func (u *TaskService) CreateTaskValue(ctx kratosx.Context, task *entity.TaskValue) (uint32, error) {
-	md, err := auth.Get(ctx)
-	if err != nil {
-		return 0, errors.SystemError()
-	}
-	task.UserId = md.UserId
-
+func (u *TaskService) CreateTaskValue(ctx core.Context, task *entity.TaskValue) (uint32, error) {
+	task.UserId = ctx.Auth().UserId
 	id, err := u.repo.CreateTaskValue(ctx, task)
 	if err != nil {
 		return 0, errors.DatabaseError(err.Error())
@@ -159,12 +142,7 @@ func (u *TaskService) CreateTaskValue(ctx kratosx.Context, task *entity.TaskValu
 }
 
 // ExportValue 导出任务信息
-func (u *TaskService) ExportValue(ctx kratosx.Context, id uint32) (uint32, error) {
-	// 获取当前用户信息
-	info, err := mauth.GetAuthInfo(ctx)
-	if err != nil {
-		return 0, errors.SystemError()
-	}
+func (u *TaskService) ExportValue(ctx core.Context, id uint32) (uint32, error) {
 
 	task, err := u.repo.GetTask(ctx, id)
 	if err != nil {
@@ -226,7 +204,7 @@ func (u *TaskService) ExportValue(ctx kratosx.Context, id uint32) (uint32, error
 			},
 			{
 				Type:  "string",
-				Value: user.GetName(),
+				Value: user.Username,
 			},
 		}...)
 
@@ -234,7 +212,7 @@ func (u *TaskService) ExportValue(ctx kratosx.Context, id uint32) (uint32, error
 		for _, ite := range cfg {
 			if tps[ite.Field] == "file" {
 				files = append(files, &types.ExportFileItem{
-					Rename: fmt.Sprintf("%s/%s-%d", dirs[ite.Field], user.GetName(), user.Id),
+					Rename: fmt.Sprintf("%s/%s-%d", dirs[ite.Field], user.Username, user.Id),
 					Value:  value[ite.Field],
 				})
 			} else {
@@ -250,13 +228,11 @@ func (u *TaskService) ExportValue(ctx kratosx.Context, id uint32) (uint32, error
 	}
 
 	id, err = u.file.ExportExcel(ctx, &types.ExportExcelRequest{
-		UserId:       info.UserId,
-		DepartmentId: info.DepartmentId,
-		Scene:        exportScene,
-		Name:         task.Title,
-		Rows:         rows,
-		Files:        files,
-		Headers:      headers,
+		Scene:   exportScene,
+		Name:    task.Title,
+		Rows:    rows,
+		Files:   files,
+		Headers: headers,
 	})
 
 	if err != nil {
@@ -267,13 +243,8 @@ func (u *TaskService) ExportValue(ctx kratosx.Context, id uint32) (uint32, error
 }
 
 // UpdateTaskValue 更新任务信息
-func (u *TaskService) UpdateTaskValue(ctx kratosx.Context, task *entity.TaskValue) error {
-	md, err := auth.Get(ctx)
-	if err != nil {
-		return errors.SystemError()
-	}
-
-	task.UserId = md.UserId
+func (u *TaskService) UpdateTaskValue(ctx core.Context, task *entity.TaskValue) error {
+	task.UserId = ctx.Auth().UserId
 	if err := u.repo.UpdateTaskValue(ctx, task); err != nil {
 		return errors.UpdateError(err.Error())
 	}
@@ -281,7 +252,7 @@ func (u *TaskService) UpdateTaskValue(ctx kratosx.Context, task *entity.TaskValu
 }
 
 // DeleteValue 删除任务信息
-func (u *TaskService) DeleteValue(ctx kratosx.Context, id uint32) error {
+func (u *TaskService) DeleteValue(ctx core.Context, id uint32) error {
 	if err := u.repo.DeleteTaskValue(ctx, id); err != nil {
 		return errors.DeleteError(err.Error())
 	}

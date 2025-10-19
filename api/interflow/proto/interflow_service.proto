@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package partyaffairs.api.interflow;
+option go_package = "kratos-layout/api/interflow;interflow";
+option java_multiple_files = true;
+option java_package = "partyaffairs.api.interflow";
+option java_outer_classname = "InterflowV1";
+
+import "google/api/annotations.proto";
+import "api/interflow/proto/interflow.proto";
+
+service Interflow{
+
+  // ListInterflowPerson 获取资料分组列表
+  rpc ListInterflowPerson (ListInterflowPersonRequest) returns (ListInterflowPersonReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/interflow/persons",
+    };
+  }
+
+  // CreateInterflowPerson 创建资料分组
+  rpc CreateInterflowPerson (CreateInterflowPersonRequest) returns (CreateInterflowPersonReply) {
+    option (google.api.http) = {
+      post: "/partyaffairs/api/v1/interflow/person",
+      body: "*"
+    };
+  }
+
+
+  // DeleteInterflowPerson 删除资料分组
+  rpc DeleteInterflowPerson (DeleteInterflowPersonRequest) returns (DeleteInterflowPersonReply) {
+    option (google.api.http) = {
+      delete: "/partyaffairs/api/v1/interflow/person",
+    };
+  }
+
+  // ListInterflow 获取咨询信息列表
+  rpc ListInterflow (ListInterflowRequest) returns (ListInterflowReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/interflows",
+    };
+  }
+
+  // CreateInterflow 创建咨询信息
+  rpc CreateInterflow (CreateInterflowRequest) returns (CreateInterflowReply) {
+    option (google.api.http) = {
+      post: "/partyaffairs/api/v1/interflow",
+      body: "*"
+    };
+  }
+
+}

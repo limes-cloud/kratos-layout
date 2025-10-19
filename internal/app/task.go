@@ -2,13 +2,11 @@ package app
 
 import (
 	"context"
+	"github.com/limes-cloud/kratosx/model"
+	"partyaffairs/api/task"
+	"partyaffairs/internal/core"
 
 	"github.com/go-kratos/kratos/v2/transport/http"
-	"github.com/limes-cloud/kratosx"
-	ktypes "github.com/limes-cloud/kratosx/types"
-
-	pb "partyaffairs/api/partyaffairs/task/v1"
-	"partyaffairs/internal/conf"
 	"partyaffairs/internal/domain/entity"
 	"partyaffairs/internal/domain/service"
 	"partyaffairs/internal/infra/dbs"
@@ -17,26 +15,26 @@ import (
 )
 
 type Task struct {
-	pb.UnimplementedTaskServer
+	task.UnimplementedTaskServer
 	srv *service.TaskService
 }
 
-func NewTask(conf *conf.Config) *Task {
+func NewTask() *Task {
 	return &Task{
-		srv: service.NewTaskService(conf, dbs.NewTask(), rpc.NewFile(), rpc.NewUser()),
+		srv: service.NewTaskService(dbs.NewTask(), rpc.NewFile(), rpc.NewUser()),
 	}
 }
 
 func init() {
-	register(func(c *conf.Config, hs *http.Server) {
-		srv := NewTask(c)
-		pb.RegisterTaskHTTPServer(hs, srv)
+	register(func(hs *http.Server) {
+		srv := NewTask()
+		task.RegisterTaskHTTPServer(hs, srv)
 	})
 }
 
 // ListTask 获取任务列表
-func (s *Task) ListTask(ctx context.Context, req *pb.ListTaskRequest) (*pb.ListTaskReply, error) {
-	list, total, err := s.srv.ListTask(kratosx.MustContext(ctx), &types.ListTaskRequest{
+func (s *Task) ListTask(ctx context.Context, req *task.ListTaskRequest) (*task.ListTaskReply, error) {
+	list, total, err := s.srv.ListTask(core.MustContext(ctx), &types.ListTaskRequest{
 		Page:     req.Page,
 		PageSize: req.PageSize,
 		Title:    req.Title,
@@ -44,9 +42,9 @@ func (s *Task) ListTask(ctx context.Context, req *pb.ListTaskRequest) (*pb.ListT
 	if err != nil {
 		return nil, err
 	}
-	reply := pb.ListTaskReply{Total: total}
+	reply := task.ListTaskReply{Total: total}
 	for _, item := range list {
-		reply.List = append(reply.List, &pb.ListTaskReply_Task{
+		reply.List = append(reply.List, &task.ListTaskReply_Task{
 			Id:          item.Id,
 			Title:       item.Title,
 			Description: item.Description,
@@ -62,8 +60,8 @@ func (s *Task) ListTask(ctx context.Context, req *pb.ListTaskRequest) (*pb.ListT
 }
 
 // ListClientTask 获取当前用户未完成的任务列表
-func (s *Task) ListClientTask(ctx context.Context, req *pb.ListClientTaskRequest) (*pb.ListClientTaskReply, error) {
-	list, total, err := s.srv.ListClientTask(kratosx.MustContext(ctx), &types.ListTaskRequest{
+func (s *Task) ListClientTask(ctx context.Context, req *task.ListClientTaskRequest) (*task.ListClientTaskReply, error) {
+	list, total, err := s.srv.ListClientTask(core.MustContext(ctx), &types.ListTaskRequest{
 		Page:      req.Page,
 		PageSize:  req.PageSize,
 		Title:     req.Title,
@@ -72,9 +70,9 @@ func (s *Task) ListClientTask(ctx context.Context, req *pb.ListClientTaskRequest
 	if err != nil {
 		return nil, err
 	}
-	reply := pb.ListClientTaskReply{Total: total}
+	reply := task.ListClientTaskReply{Total: total}
 	for _, item := range list {
-		reply.List = append(reply.List, &pb.ListClientTaskReply_Task{
+		reply.List = append(reply.List, &task.ListClientTaskReply_Task{
 			Id:          item.Id,
 			Title:       item.Title,
 			Description: item.Description,
@@ -90,27 +88,27 @@ func (s *Task) ListClientTask(ctx context.Context, req *pb.ListClientTaskRequest
 }
 
 // GetTask 获取指定任务
-func (s *Task) GetTask(ctx context.Context, in *pb.GetTaskRequest) (*pb.GetTaskReply, error) {
-	task, err := s.srv.GetTask(kratosx.MustContext(ctx), in.Id)
+func (s *Task) GetTask(ctx context.Context, in *task.GetTaskRequest) (*task.GetTaskReply, error) {
+	res, err := s.srv.GetTask(core.MustContext(ctx), in.Id)
 	if err != nil {
 		return nil, err
 	}
 
-	return &pb.GetTaskReply{
-		Id:          task.Id,
-		Title:       task.Title,
-		Description: task.Description,
-		IsUpdate:    task.IsUpdate,
-		Start:       task.Start,
-		End:         task.End,
-		Config:      task.Config,
-		CreatedAt:   uint32(task.CreatedAt),
-		UpdatedAt:   uint32(task.UpdatedAt),
+	return &task.GetTaskReply{
+		Id:          res.Id,
+		Title:       res.Title,
+		Description: res.Description,
+		IsUpdate:    res.IsUpdate,
+		Start:       res.Start,
+		End:         res.End,
+		Config:      res.Config,
+		CreatedAt:   uint32(res.CreatedAt),
+		UpdatedAt:   uint32(res.UpdatedAt),
 	}, nil
 }
 
-func (s *Task) CreateTask(ctx context.Context, req *pb.CreateTaskRequest) (*pb.CreateTaskReply, error) {
-	id, err := s.srv.CreateTask(kratosx.MustContext(ctx), &entity.Task{
+func (s *Task) CreateTask(ctx context.Context, req *task.CreateTaskRequest) (*task.CreateTaskReply, error) {
+	id, err := s.srv.CreateTask(core.MustContext(ctx), &entity.Task{
 		Title:       req.Title,
 		Description: req.Description,
 		IsUpdate:    req.IsUpdate,
@@ -121,31 +119,31 @@ func (s *Task) CreateTask(ctx context.Context, req *pb.CreateTaskRequest) (*pb.C
 	if err != nil {
 		return nil, err
 	}
-	return &pb.CreateTaskReply{Id: id}, err
+	return &task.CreateTaskReply{Id: id}, err
 }
 
-func (s *Task) UpdateTask(ctx context.Context, req *pb.UpdateTaskRequest) (*pb.UpdateTaskReply, error) {
-	err := s.srv.UpdateTask(kratosx.MustContext(ctx), &entity.Task{
-		BaseModel:   ktypes.BaseModel{Id: req.Id},
-		Title:       req.Title,
-		Description: req.Description,
-		IsUpdate:    req.IsUpdate,
-		Start:       req.Start,
-		End:         req.End,
-		Config:      req.Config,
+func (s *Task) UpdateTask(ctx context.Context, req *task.UpdateTaskRequest) (*task.UpdateTaskReply, error) {
+	err := s.srv.UpdateTask(core.MustContext(ctx), &entity.Task{
+		BaseTenantModel: model.BaseTenantModel{Id: req.Id},
+		Title:           req.Title,
+		Description:     req.Description,
+		IsUpdate:        req.IsUpdate,
+		Start:           req.Start,
+		End:             req.End,
+		Config:          req.Config,
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &pb.UpdateTaskReply{}, err
+	return &task.UpdateTaskReply{}, err
 }
 
-func (s *Task) DeleteTask(ctx context.Context, req *pb.DeleteTaskRequest) (*pb.DeleteTaskReply, error) {
-	return nil, s.srv.DeleteTask(kratosx.MustContext(ctx), req.Id)
+func (s *Task) DeleteTask(ctx context.Context, req *task.DeleteTaskRequest) (*task.DeleteTaskReply, error) {
+	return nil, s.srv.DeleteTask(core.MustContext(ctx), req.Id)
 }
 
-func (s *Task) ListTaskValue(ctx context.Context, req *pb.ListTaskValueRequest) (*pb.ListTaskValueReply, error) {
-	list, total, err := s.srv.ListTaskValue(kratosx.MustContext(ctx), &types.ListTaskValueRequest{
+func (s *Task) ListTaskValue(ctx context.Context, req *task.ListTaskValueRequest) (*task.ListTaskValueReply, error) {
+	list, total, err := s.srv.ListTaskValue(core.MustContext(ctx), &types.ListTaskValueRequest{
 		Page:     req.Page,
 		PageSize: req.PageSize,
 		TaskId:   req.TaskId,
@@ -154,90 +152,85 @@ func (s *Task) ListTaskValue(ctx context.Context, req *pb.ListTaskValueRequest) 
 	if err != nil {
 		return nil, err
 	}
-	reply := pb.ListTaskValueReply{Total: total}
+	reply := task.ListTaskValueReply{Total: total}
 	for _, item := range list {
-		reply.List = append(reply.List, &pb.ListTaskValueReply_Value{
+		reply.List = append(reply.List, &task.ListTaskValueReply_Value{
 			Id:        item.Id,
 			TaskId:    item.TaskId,
 			UserId:    item.UserId,
 			Value:     item.Value,
 			CreatedAt: uint32(item.CreatedAt),
 			UpdatedAt: uint32(item.UpdatedAt),
-			User: &pb.ListTaskValueReply_Value_User{
-				Id:        item.User.Id,
-				NickName:  item.User.NickName,
-				RealName:  item.User.RealName,
-				AvatarUrl: item.User.AvatarUrl,
-				Phone:     item.User.Phone,
-				Email:     item.User.Email,
+			User: &task.ListTaskValueReply_Value_User{
+				Id:       item.User.Id,
+				NickName: item.User.Nickname,
+				Username: &item.User.Username,
+				Avatar:   &item.User.Avatar,
 			},
 		})
 	}
 	return &reply, nil
 }
 
-func (s *Task) GetTaskValue(ctx context.Context, in *pb.GetTaskValueRequest) (*pb.GetTaskValueReply, error) {
-	task, err := s.srv.GetTaskValue(kratosx.MustContext(ctx), in.TaskId, in.UserId)
+func (s *Task) GetTaskValue(ctx context.Context, in *task.GetTaskValueRequest) (*task.GetTaskValueReply, error) {
+	res, err := s.srv.GetTaskValue(core.MustContext(ctx), in.TaskId, in.UserId)
 	if err != nil {
 		return nil, err
 	}
-	reply := pb.GetTaskValueReply{
-		Id:        task.Id,
-		TaskId:    task.TaskId,
-		UserId:    task.UserId,
-		Value:     task.Value,
-		CreatedAt: uint32(task.CreatedAt),
-		UpdatedAt: uint32(task.UpdatedAt),
-		User: &pb.GetTaskValueReply_User{
-			Id:        task.User.Id,
-			NickName:  task.User.NickName,
-			RealName:  task.User.RealName,
-			AvatarUrl: task.User.AvatarUrl,
-			Phone:     task.User.Phone,
-			Email:     task.User.Email,
+	reply := task.GetTaskValueReply{
+		Id:        res.Id,
+		TaskId:    res.TaskId,
+		UserId:    res.UserId,
+		Value:     res.Value,
+		CreatedAt: uint32(res.CreatedAt),
+		UpdatedAt: uint32(res.UpdatedAt),
+		User: &task.GetTaskValueReply_User{
+			Id:       res.User.Id,
+			Username: res.User.Username,
+			Avatar:   &res.User.Avatar,
 		},
 	}
 	return &reply, nil
 }
 
-func (s *Task) GetCurTaskValue(ctx context.Context, in *pb.GetCurTaskValueRequest) (*pb.GetCurTaskValueReply, error) {
-	task, err := s.srv.GetCurTaskValue(kratosx.MustContext(ctx), in.TaskId)
+func (s *Task) GetCurTaskValue(ctx context.Context, in *task.GetCurTaskValueRequest) (*task.GetCurTaskValueReply, error) {
+	res, err := s.srv.GetCurTaskValue(core.MustContext(ctx), in.TaskId)
 	if err != nil {
 		return nil, err
 	}
-	return &pb.GetCurTaskValueReply{
-		Id:        task.Id,
-		TaskId:    task.TaskId,
-		UserId:    task.UserId,
-		Value:     task.Value,
-		CreatedAt: uint32(task.CreatedAt),
-		UpdatedAt: uint32(task.UpdatedAt),
+	return &task.GetCurTaskValueReply{
+		Id:        res.Id,
+		TaskId:    res.TaskId,
+		UserId:    res.UserId,
+		Value:     res.Value,
+		CreatedAt: uint32(res.CreatedAt),
+		UpdatedAt: uint32(res.UpdatedAt),
 	}, nil
 }
 
-func (s *Task) CreateTaskValue(ctx context.Context, req *pb.CreateTaskValueRequest) (*pb.CreateTaskValueReply, error) {
-	id, err := s.srv.CreateTaskValue(kratosx.MustContext(ctx), &entity.TaskValue{
+func (s *Task) CreateTaskValue(ctx context.Context, req *task.CreateTaskValueRequest) (*task.CreateTaskValueReply, error) {
+	id, err := s.srv.CreateTaskValue(core.MustContext(ctx), &entity.TaskValue{
 		TaskId: req.TaskId,
 		Value:  req.Value,
 	})
-	return &pb.CreateTaskValueReply{Id: id}, err
+	return &task.CreateTaskValueReply{Id: id}, err
 }
 
-func (s *Task) ExportTaskValue(ctx context.Context, in *pb.ExportTaskValueRequest) (*pb.ExportTaskValueReply, error) {
-	id, err := s.srv.ExportValue(kratosx.MustContext(ctx), in.TaskId)
+func (s *Task) ExportTaskValue(ctx context.Context, in *task.ExportTaskValueRequest) (*task.ExportTaskValueReply, error) {
+	id, err := s.srv.ExportValue(core.MustContext(ctx), in.TaskId)
 	if err != nil {
-		return &pb.ExportTaskValueReply{}, err
+		return &task.ExportTaskValueReply{}, err
 	}
-	return &pb.ExportTaskValueReply{Id: id}, nil
+	return &task.ExportTaskValueReply{Id: id}, nil
 }
 
-func (s *Task) UpdateTaskValue(ctx context.Context, req *pb.UpdateTaskValueRequest) (*pb.UpdateTaskValueReply, error) {
-	return &pb.UpdateTaskValueReply{}, s.srv.UpdateTaskValue(kratosx.MustContext(ctx), &entity.TaskValue{
+func (s *Task) UpdateTaskValue(ctx context.Context, req *task.UpdateTaskValueRequest) (*task.UpdateTaskValueReply, error) {
+	return &task.UpdateTaskValueReply{}, s.srv.UpdateTaskValue(core.MustContext(ctx), &entity.TaskValue{
 		TaskId: req.TaskId,
 		Value:  req.Value,
 	})
 }
 
-func (s *Task) DeleteTaskValue(ctx context.Context, in *pb.DeleteTaskValueRequest) (*pb.DeleteTaskValueReply, error) {
-	return &pb.DeleteTaskValueReply{}, s.srv.DeleteValue(kratosx.MustContext(ctx), in.Id)
+func (s *Task) DeleteTaskValue(ctx context.Context, in *task.DeleteTaskValueRequest) (*task.DeleteTaskValueReply, error) {
+	return &task.DeleteTaskValueReply{}, s.srv.DeleteValue(core.MustContext(ctx), in.Id)
 }

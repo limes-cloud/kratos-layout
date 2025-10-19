@@ -3,8 +3,6 @@ FROM golang:alpine AS build
 #ENV GOPROXY=https://goproxy.cn,direct
 ENV GO111MODULE=on
 WORKDIR /go/cache
-ADD api/go.mod api/go.mod
-ADD api/go.sum api/go.sum
 ADD go.mod .
 ADD go.sum .
 RUN go mod download

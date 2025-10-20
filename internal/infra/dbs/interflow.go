@@ -29,6 +29,14 @@ func (t *Interflow) DeleteInterflowPerson(ctx core.Context, id uint32) error {
 	return ctx.DB().Where("id = ?", id).Delete(&entity.InterflowPerson{}).Error
 }
 
+func (r *Interflow) ListInterflowFormUserIds(ctx core.Context, uid uint32) ([]uint32, error) {
+	var ids []uint32
+	return ids, ctx.DB().Model(entity.Interflow{}).
+		Select("from_user_id").
+		Where("to_user_id = ?", uid).
+		Scan(&ids).Error
+}
+
 // ListInterflow 获取通知信息列表
 func (r *Interflow) ListInterflow(ctx core.Context, req *types.ListInterflowRequest) ([]*entity.Interflow, uint32, error) {
 	var (

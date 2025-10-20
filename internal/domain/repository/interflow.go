@@ -16,6 +16,8 @@ type InterflowRepository interface {
 	// DeleteInterflowPerson 删除通知信息
 	DeleteInterflowPerson(ctx core.Context, id uint32) error
 
+	ListInterflowFormUserIds(ctx core.Context, uid uint32) ([]uint32, error)
+
 	// ListInterflow 获取通知信息列表
 	ListInterflow(ctx core.Context, req *types.ListInterflowRequest) ([]*entity.Interflow, uint32, error)
 

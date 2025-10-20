@@ -18,6 +18,7 @@ message ListInterflowPersonReply {
     string username =2;
     string avatar = 3;
     string nickname = 4;
+    bool hasNotRead = 5;
   }
   repeated User list = 1;
 }

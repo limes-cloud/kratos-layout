@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/limes-cloud/kratosx/pkg/value"
 	"partyaffairs/internal/core"
 
 	"partyaffairs/api/errors"
@@ -28,6 +29,18 @@ func (srv *InterflowService) ListInterflowPerson(ctx core.Context) ([]*entity.In
 	var ids []uint32
 	for _, v := range list {
 		ids = append(ids, v.UserID)
+	}
+
+	// 判断当前用户是否在设置列表内
+	// 在这个列表内的，就获取聊天列表
+	if value.InList(ids, ctx.Auth().UserId) {
+		ids, err = srv.repo.ListInterflowFormUserIds(ctx, ctx.Auth().UserId)
+		if err != nil {
+			return nil, errors.ListError(err.Error())
+		}
+	}
+	if len(ids) == 0 {
+		return nil, nil
 	}
 
 	bucket, err := srv.user.ListUserMap(ctx, &types.ListUserRequest{

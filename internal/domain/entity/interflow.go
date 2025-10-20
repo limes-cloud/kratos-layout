@@ -13,8 +13,9 @@ type Interflow struct {
 
 type InterflowPerson struct {
 	model.CreateModel
-	UserID   uint32 `json:"userId" gorm:"column:user_id"`
-	Username string `json:"username" gorm:"column:-"`
-	Nickname string `json:"nickname" gorm:"column:-"`
-	Avatar   string `json:"avatar" gorm:"column:-"`
+	UserID     uint32 `json:"userId" gorm:"column:user_id"`
+	Username   string `json:"username" gorm:"column:-"`
+	Nickname   string `json:"nickname" gorm:"column:-"`
+	Avatar     string `json:"avatar" gorm:"column:-"`
+	HasNotRead bool   `json:"hasNotRead" gorm:"column:-"`
 }

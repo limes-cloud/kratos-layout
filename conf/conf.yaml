@@ -76,7 +76,7 @@ pool: #并非池配置
   maxBlockingTasks: 1000 #最大的并发任务
   nonblocking: true
 business:
-  aiBot:
-    secret: bce-v3/ALTAK-vXBk2DvNrk0ashSpsZ2jc/ee04a3d76a9dd2325a46e074c5a4c7bc1ebf493d
-    appid: 3c1f9bab-c352-43f9-a0a6-cad16c66c9b1
-    setting: { "name": "资助党建咨询AI助手","logo": "https://gimg3.baidu.com/topone/src=https%3A%2F%2Fbkimg.cdn.bcebos.com%2Fsmart%2F8326cffc1e178a82b90138118155648da97739124271-bkimg-process%2Cv_1%2Crw_1%2Crh_1%2Cmaxl_800%2Cpad_1%3Fx-bce-process%3Dimage%2Fresize%2Cm_pad%2Cw_348%2Ch_348%2Ccolor_ffffff\u0026refer=http%3A%2F%2Fwww.baidu.com\u0026app=2011\u0026size=w931\u0026n=0\u0026g=0n\u0026er=404\u0026q=75\u0026fmt=auto\u0026maxorilen2heic=2000000?sec=1728666000\u0026t=fe09e144ea94ccedec88400db060be55","desc": "你好同学，我是负责党建咨询的AI助手，请问有什么可以帮您？","guiding": [ { "type": "question","text": "你好，同学" } ] }
+    aiBot:
+      secret: bce-v3/ALTAK-vXBk2DvNrk0ashSpsZ2jc/ee04a3d76a9dd2325a46e074c5a4c7bc1ebf493d
+      appid: 3c1f9bab-c352-43f9-a0a6-cad16c66c9b1
+      setting: { "name": "资助党建咨询AI助手","logo": "https://gimg3.baidu.com/topone/src=https%3A%2F%2Fbkimg.cdn.bcebos.com%2Fsmart%2F8326cffc1e178a82b90138118155648da97739124271-bkimg-process%2Cv_1%2Crw_1%2Crh_1%2Cmaxl_800%2Cpad_1%3Fx-bce-process%3Dimage%2Fresize%2Cm_pad%2Cw_348%2Ch_348%2Ccolor_ffffff\u0026refer=http%3A%2F%2Fwww.baidu.com\u0026app=2011\u0026size=w931\u0026n=0\u0026g=0n\u0026er=404\u0026q=75\u0026fmt=auto\u0026maxorilen2heic=2000000?sec=1728666000\u0026t=fe09e144ea94ccedec88400db060be55","desc": "你好同学，我是负责党建咨询的AI助手，请问有什么可以帮您？","guiding": [ { "type": "question","text": "你好，同学" } ] }

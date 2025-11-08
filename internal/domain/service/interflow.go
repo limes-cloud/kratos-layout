@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/limes-cloud/kratosx/pkg/value"
+	"encoding/json"
 	"partyaffairs/internal/core"
 
 	"partyaffairs/api/errors"
@@ -20,30 +20,17 @@ func NewInterflowService(repo repository.InterflowRepository, user repository.Us
 }
 
 // ListInterflow 获取通知信息列表
-func (srv *InterflowService) ListInterflowPerson(ctx core.Context) ([]*entity.InterflowPerson, error) {
-	list, err := srv.repo.ListInterflowPerson(ctx)
+func (srv *InterflowService) ListInterflowHistory(ctx core.Context) ([]*entity.User, error) {
+
+	ids, err := srv.repo.ListInterflowFormUserIds(ctx, ctx.Auth().UserId)
 	if err != nil {
 		return nil, errors.ListError(err.Error())
-	}
-
-	var ids []uint32
-	for _, v := range list {
-		ids = append(ids, v.UserID)
-	}
-
-	// 判断当前用户是否在设置列表内
-	// 在这个列表内的，就获取聊天列表
-	if value.InList(ids, ctx.Auth().UserId) {
-		ids, err = srv.repo.ListInterflowFormUserIds(ctx, ctx.Auth().UserId)
-		if err != nil {
-			return nil, errors.ListError(err.Error())
-		}
 	}
 	if len(ids) == 0 {
 		return nil, nil
 	}
 
-	bucket, err := srv.user.ListUserMap(ctx, &types.ListUserRequest{
+	bucket, _, err := srv.user.ListUser(ctx, &types.ListUserRequest{
 		Page:     1,
 		PageSize: uint32(len(ids)),
 		In:       ids,
@@ -51,11 +38,33 @@ func (srv *InterflowService) ListInterflowPerson(ctx core.Context) ([]*entity.In
 	if err != nil {
 		return nil, errors.ListError(err.Error())
 	}
+	return bucket, nil
+}
+
+// ListInterflowClassify 获取资讯分组列表
+func (srv *InterflowService) ListInterflowClassify(ctx core.Context) ([]*entity.InterflowClassify, error) {
+	list, err := srv.repo.ListInterflowClassify(ctx)
+
 	for i, v := range list {
-		user := bucket[v.UserID]
-		list[i].Username = user.Username
-		list[i].Nickname = user.Nickname
-		list[i].Avatar = user.Avatar
+		var ids []uint32
+		_ = json.Unmarshal([]byte(v.Person), &ids)
+		if len(ids) == 0 {
+			continue
+		}
+		bucket, _, err := srv.user.ListUser(ctx, &types.ListUserRequest{
+			Page:     1,
+			PageSize: uint32(len(ids)),
+			In:       ids,
+		})
+		if err != nil {
+			return nil, errors.ListError(err.Error())
+		}
+		list[i].Users = bucket
+
+		//for _, bucketValue := range bucket {
+		//	v.Users = append(v.Users, bu)
+		//}
+
 	}
 
 	if err != nil {
@@ -64,18 +73,27 @@ func (srv *InterflowService) ListInterflowPerson(ctx core.Context) ([]*entity.In
 	return list, nil
 }
 
-// CreateInterflow 创建通知信息
-func (srv *InterflowService) CreateInterflowPerson(ctx core.Context, req *entity.InterflowPerson) (uint32, error) {
-	id, err := srv.repo.CreateInterflowPerson(ctx, req)
+// CreateInterflowClassify 创建资讯分组
+func (srv *InterflowService) CreateInterflowClassify(ctx core.Context, tg *entity.InterflowClassify) (uint32, error) {
+	id, err := srv.repo.CreateInterflowClassify(ctx, tg)
 	if err != nil {
 		return 0, errors.CreateError(err.Error())
 	}
 	return id, nil
 }
 
-// DeleteInterflow 删除通知信息
-func (srv *InterflowService) DeleteInterflowPerson(ctx core.Context, id uint32) error {
-	if err := srv.repo.DeleteInterflowPerson(ctx, id); err != nil {
+// UpdateInterflowClassify 更新资讯分组
+func (srv *InterflowService) UpdateInterflowClassify(ctx core.Context, tg *entity.InterflowClassify) error {
+	if err := srv.repo.UpdateInterflowClassify(ctx, tg); err != nil {
+		return errors.UpdateError(err.Error())
+	}
+	return nil
+}
+
+// DeleteInterflowClassify 删除资讯分组
+func (srv *InterflowService) DeleteInterflowClassify(ctx core.Context, id uint32) error {
+	err := srv.repo.DeleteInterflowClassify(ctx, id)
+	if err != nil {
 		return errors.DeleteError(err.Error())
 	}
 	return nil

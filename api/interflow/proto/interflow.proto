@@ -8,11 +8,10 @@ option java_outer_classname = "InterflowV1";
 
 import "validate/validate.proto";
 
-
-message ListInterflowPersonRequest {
+message ListInterflowHistoryRequest {
 }
 
-message ListInterflowPersonReply {
+message ListInterflowHistoryReply {
   message User{
     uint32 id = 1;
     string username =2;
@@ -23,20 +22,60 @@ message ListInterflowPersonReply {
   repeated User list = 1;
 }
 
-message CreateInterflowPersonRequest {
-  uint32 userId = 1[(validate.rules).uint32 = {gte: 1}];
+
+message ListInterflowClassifyRequest {
 }
 
-message CreateInterflowPersonReply {
+message ListInterflowClassifyReply {
+  message User{
+    uint32 id = 1;
+    string username =2;
+    string avatar = 3;
+    string nickname = 4;
+  }
+  message InterflowClassify {
+    uint32 id = 1;
+    string name = 2;
+    uint32 weight = 3;
+    string description = 6;
+    string person = 7;
+    repeated User users = 8;
+    uint32 createdAt = 4;
+    uint32 updatedAt = 5;
+  }
+
+  repeated InterflowClassify list = 2;
+}
+
+message CreateInterflowClassifyRequest {
+  string name = 1[(validate.rules).string = {min_len: 1}];
+  uint32 weight = 2;
+  string description = 4;
+  string person = 5;
+} 
+
+message CreateInterflowClassifyReply {
   uint32 id = 1;
 }
 
-message DeleteInterflowPersonRequest {
-  uint32 userId = 1[(validate.rules).uint32 = {gte: 1}];
+message UpdateInterflowClassifyRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gt: 0}];
+  string name = 2[(validate.rules).string = {min_len: 1}];
+  uint32 weight = 3;
+  string description = 4;
+  string person = 5;
 }
 
-message DeleteInterflowPersonReply{
+message UpdateInterflowClassifyReply {
 }
+
+message DeleteInterflowClassifyRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gte:0}];
+}
+
+message DeleteInterflowClassifyReply {
+}
+
 
 
 message ListInterflowRequest {

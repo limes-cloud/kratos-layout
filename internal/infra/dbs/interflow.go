@@ -13,20 +13,28 @@ func NewInterflow() *Interflow {
 	return &Interflow{}
 }
 
-// ListInterflowPerson 获取通知信息列表
-func (t *Interflow) ListInterflowPerson(ctx core.Context) ([]*entity.InterflowPerson, error) {
-	var list []*entity.InterflowPerson
-	return list, ctx.DB().Model(entity.InterflowPerson{}).Find(&list).Error
+// ListInterflowClassify 获取列表
+func (t *Interflow) ListInterflowClassify(ctx core.Context) ([]*entity.InterflowClassify, error) {
+	var (
+		list []*entity.InterflowClassify
+		fs   = []string{"*"}
+	)
+	return list, ctx.DB().Model(entity.InterflowClassify{}).Select(fs).Find(&list).Error
 }
 
-// CreateInterflowPerson 创建通知信息
-func (t *Interflow) CreateInterflowPerson(ctx core.Context, req *entity.InterflowPerson) (uint32, error) {
-	return req.Id, ctx.DB().Create(req).Error
+// CreateInterflowClassify 创建数据
+func (t *Interflow) CreateInterflowClassify(ctx core.Context, tg *entity.InterflowClassify) (uint32, error) {
+	return tg.Id, ctx.DB().Create(tg).Error
 }
 
-// DeleteInterflowPerson 删除通知信息
-func (t *Interflow) DeleteInterflowPerson(ctx core.Context, id uint32) error {
-	return ctx.DB().Where("id = ?", id).Delete(&entity.InterflowPerson{}).Error
+// UpdateInterflowClassify 更新数据
+func (t *Interflow) UpdateInterflowClassify(ctx core.Context, tg *entity.InterflowClassify) error {
+	return ctx.DB().Updates(tg).Error
+}
+
+// DeleteInterflowClassify 删除数据
+func (t *Interflow) DeleteInterflowClassify(ctx core.Context, id uint32) error {
+	return ctx.DB().Where("id = ?", id).Delete(&entity.InterflowClassify{}).Error
 }
 
 func (r *Interflow) ListInterflowFormUserIds(ctx core.Context, uid uint32) ([]uint32, error) {

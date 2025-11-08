@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+package partyaffairs.api.public;
+option go_package = "kratos-layout/api/public;public";
+option java_multiple_files = true;
+option java_package = "partyaffairs.api.public";
+option java_outer_classname = "PublicV1";
+
+import "validate/validate.proto";
+
+message GetPublicRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gte: 1}];
+}
+
+message GetPublicReply {
+  message Classify{
+    uint32 id = 1;
+    string name =2;
+  }
+  uint32 id = 1;
+  uint32 classifyId = 2;
+  string title = 3;
+  string description = 4;
+  string cover = 5;
+  string unit = 6;
+  string content = 7;
+  optional bool isTop = 8;
+  optional bool status = 9;
+  uint32 read = 10;
+  Classify classify = 11;
+  uint32 createdAt = 12;
+  uint32 updatedAt = 13;
+}
+
+message ListPublicRequest {
+  uint32 page = 1[(validate.rules).uint32 = {gte: 1}];
+  uint32 pageSize = 2[(validate.rules).uint32 = {gte: 1,lte:50}];
+  optional string order = 3[(validate.rules).string = {in: ["asc","desc"]}];
+  optional string orderBy = 4[(validate.rules).string = {in: ["id","is_top","created_at","updated_at"]}];
+  optional string title = 5[(validate.rules).string = {min_len: 1,max_len: 40}];
+  optional bool isTop = 6;
+  optional bool status = 7;
+  optional uint32 classifyId = 8;
+}
+
+message ListPublicReply {
+  message Classify{
+    uint32 id = 1;
+    string name =2;
+  }
+  message Public {
+    uint32 id = 1;
+    uint32 classifyId = 2;
+    string title = 3;
+    string description = 4;
+    string cover = 5;
+    string unit = 6;
+    optional bool isTop = 7;
+    optional bool status = 8;
+    uint32 read = 9;
+    Classify classify = 10;
+    uint32 createdAt = 11;
+    uint32 updatedAt = 12;
+  }
+  uint32 total = 1;
+  repeated Public list = 2;
+}
+
+message CreatePublicRequest {
+  uint32 classifyId = 1;
+  string title = 2[(validate.rules).string = {max_len: 40,min_len: 1}];
+  string description = 3[(validate.rules).string = {min_len: 1}];
+  string cover = 4[(validate.rules).string = {min_len: 1}];
+  string unit = 5[(validate.rules).string = {min_len: 1}];
+  string content = 6;
+  optional bool isTop = 7;
+  optional bool status = 8;
+  uint32 read = 9;
+}
+
+message CreatePublicReply {
+  uint32 id = 1;
+}
+
+message UpdatePublicRequest {
+  uint32 id = 1;
+  uint32 classifyId = 10;
+  string title = 2[(validate.rules).string = {max_len: 40}];
+  string description = 3;
+  string cover = 4;
+  string unit = 5;
+  string content = 6;
+  optional bool isTop = 7;
+  optional bool status = 8;
+  optional uint32 read = 9;
+}
+
+message UpdatePublicReply {
+}
+
+message DeletePublicRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gte: 1}];
+}
+
+message DeletePublicReply {
+}
+

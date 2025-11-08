@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package partyaffairs.api.public;
+option go_package = "kratos-layout/api/public;public";
+option java_multiple_files = true;
+option java_package = "partyaffairs.api.public";
+option java_outer_classname = "PublicV1";
+
+import "google/api/annotations.proto";
+import "api/public/proto/public.proto";
+import "api/public/proto/public_classify.proto";
+
+service Public{
+
+
+  // ListPublicClassify 获取资讯分组列表
+  rpc ListPublicClassify (ListPublicClassifyRequest) returns (ListPublicClassifyReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/public/classifies",
+    };
+  }
+
+  // CreatePublicClassify 创建资讯分组
+  rpc CreatePublicClassify (CreatePublicClassifyRequest) returns (CreatePublicClassifyReply) {
+    option (google.api.http) = {
+      post: "/partyaffairs/api/v1/public/classify",
+      body: "*"
+    };
+  }
+
+  // UpdatePublicClassify 更新资讯分组
+  rpc UpdatePublicClassify (UpdatePublicClassifyRequest) returns (UpdatePublicClassifyReply) {
+    option (google.api.http) = {
+      put: "/partyaffairs/api/v1/public/classify",
+      body: "*"
+    };
+  }
+
+  // DeletePublicClassify 删除资讯分组
+  rpc DeletePublicClassify (DeletePublicClassifyRequest) returns (DeletePublicClassifyReply) {
+    option (google.api.http) = {
+      delete: "/partyaffairs/api/v1/public/classify",
+    };
+  }
+  
+  // GetPublic 获取指定的咨询信息
+  rpc GetPublic (GetPublicRequest) returns (GetPublicReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/public",
+    };
+  }
+
+  // ListPublic 获取咨询信息列表
+  rpc ListPublic (ListPublicRequest) returns (ListPublicReply) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/publics",
+    };
+  }
+
+  // CreatePublic 创建咨询信息
+  rpc CreatePublic (CreatePublicRequest) returns (CreatePublicReply) {
+    option (google.api.http) = {
+      post: "/partyaffairs/api/v1/public",
+      body: "*"
+    };
+  }
+
+  // UpdatePublic 更新咨询信息
+  rpc UpdatePublic (UpdatePublicRequest) returns (UpdatePublicReply) {
+    option (google.api.http) = {
+      put: "/partyaffairs/api/v1/public",
+      body: "*"
+    };
+  }
+
+  // DeletePublic 删除咨询信息
+  rpc DeletePublic (DeletePublicRequest) returns (DeletePublicReply) {
+    option (google.api.http) = {
+      delete: "/partyaffairs/api/v1/public",
+    };
+  }
+
+}

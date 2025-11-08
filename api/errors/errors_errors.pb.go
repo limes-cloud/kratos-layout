@@ -116,18 +116,18 @@ func IsNotLoginError(err error) bool {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == ErrorReason_NotLoginError.String() && e.Code == 403
+	return e.Reason == ErrorReason_NotLoginError.String() && e.Code == 401
 }
 
 func NotLoginError(args ...any) *errors.Error {
 	switch len(args) {
 	case 0:
-		return errors.New(403, ErrorReason_NotLoginError.String(), "用户未登陆")
+		return errors.New(401, ErrorReason_NotLoginError.String(), "用户未登陆")
 	case 1:
-		return errors.New(403, ErrorReason_NotLoginError.String(), "用户未登陆:"+fmt.Sprint(args[0]))
+		return errors.New(401, ErrorReason_NotLoginError.String(), "用户未登陆:"+fmt.Sprint(args[0]))
 	default:
 		msg := fmt.Sprintf(fmt.Sprint(args[0]), args[1:]...)
-		return errors.New(403, ErrorReason_NotLoginError.String(), "用户未登陆:"+msg)
+		return errors.New(401, ErrorReason_NotLoginError.String(), "用户未登陆:"+msg)
 	}
 }
 

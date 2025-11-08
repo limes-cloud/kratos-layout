@@ -20,89 +20,137 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 const OperationInterflowCreateInterflow = "/partyaffairs.api.interflow.Interflow/CreateInterflow"
-const OperationInterflowCreateInterflowPerson = "/partyaffairs.api.interflow.Interflow/CreateInterflowPerson"
-const OperationInterflowDeleteInterflowPerson = "/partyaffairs.api.interflow.Interflow/DeleteInterflowPerson"
+const OperationInterflowCreateInterflowClassify = "/partyaffairs.api.interflow.Interflow/CreateInterflowClassify"
+const OperationInterflowDeleteInterflowClassify = "/partyaffairs.api.interflow.Interflow/DeleteInterflowClassify"
 const OperationInterflowListInterflow = "/partyaffairs.api.interflow.Interflow/ListInterflow"
-const OperationInterflowListInterflowPerson = "/partyaffairs.api.interflow.Interflow/ListInterflowPerson"
+const OperationInterflowListInterflowClassify = "/partyaffairs.api.interflow.Interflow/ListInterflowClassify"
+const OperationInterflowListInterflowHistory = "/partyaffairs.api.interflow.Interflow/ListInterflowHistory"
+const OperationInterflowUpdateInterflowClassify = "/partyaffairs.api.interflow.Interflow/UpdateInterflowClassify"
 
 type InterflowHTTPServer interface {
 	// CreateInterflow CreateInterflow 创建咨询信息
 	CreateInterflow(context.Context, *CreateInterflowRequest) (*CreateInterflowReply, error)
-	// CreateInterflowPerson CreateInterflowPerson 创建资料分组
-	CreateInterflowPerson(context.Context, *CreateInterflowPersonRequest) (*CreateInterflowPersonReply, error)
-	// DeleteInterflowPerson DeleteInterflowPerson 删除资料分组
-	DeleteInterflowPerson(context.Context, *DeleteInterflowPersonRequest) (*DeleteInterflowPersonReply, error)
+	// CreateInterflowClassify CreateInterflowClassify 创建资讯分组
+	CreateInterflowClassify(context.Context, *CreateInterflowClassifyRequest) (*CreateInterflowClassifyReply, error)
+	// DeleteInterflowClassify DeleteInterflowClassify 删除资讯分组
+	DeleteInterflowClassify(context.Context, *DeleteInterflowClassifyRequest) (*DeleteInterflowClassifyReply, error)
 	// ListInterflow ListInterflow 获取咨询信息列表
 	ListInterflow(context.Context, *ListInterflowRequest) (*ListInterflowReply, error)
-	// ListInterflowPerson ListInterflowPerson 获取资料分组列表
-	ListInterflowPerson(context.Context, *ListInterflowPersonRequest) (*ListInterflowPersonReply, error)
+	// ListInterflowClassify ListInterflowClassify 获取资讯分组列表
+	ListInterflowClassify(context.Context, *ListInterflowClassifyRequest) (*ListInterflowClassifyReply, error)
+	ListInterflowHistory(context.Context, *ListInterflowHistoryRequest) (*ListInterflowHistoryReply, error)
+	// UpdateInterflowClassify UpdateInterflowClassify 更新资讯分组
+	UpdateInterflowClassify(context.Context, *UpdateInterflowClassifyRequest) (*UpdateInterflowClassifyReply, error)
 }
 
 func RegisterInterflowHTTPServer(s *http.Server, srv InterflowHTTPServer) {
 	r := s.Route("/")
-	r.GET("/partyaffairs/api/v1/interflow/persons", _Interflow_ListInterflowPerson0_HTTP_Handler(srv))
-	r.POST("/partyaffairs/api/v1/interflow/person", _Interflow_CreateInterflowPerson0_HTTP_Handler(srv))
-	r.DELETE("/partyaffairs/api/v1/interflow/person", _Interflow_DeleteInterflowPerson0_HTTP_Handler(srv))
+	r.GET("/partyaffairs/api/v1/interflow/history", _Interflow_ListInterflowHistory0_HTTP_Handler(srv))
+	r.GET("/partyaffairs/api/v1/interflow/classifies", _Interflow_ListInterflowClassify0_HTTP_Handler(srv))
+	r.POST("/partyaffairs/api/v1/interflow/classify", _Interflow_CreateInterflowClassify0_HTTP_Handler(srv))
+	r.PUT("/partyaffairs/api/v1/interflow/classify", _Interflow_UpdateInterflowClassify0_HTTP_Handler(srv))
+	r.DELETE("/partyaffairs/api/v1/interflow/classify", _Interflow_DeleteInterflowClassify0_HTTP_Handler(srv))
 	r.GET("/partyaffairs/api/v1/interflows", _Interflow_ListInterflow0_HTTP_Handler(srv))
 	r.POST("/partyaffairs/api/v1/interflow", _Interflow_CreateInterflow0_HTTP_Handler(srv))
 }
 
-func _Interflow_ListInterflowPerson0_HTTP_Handler(srv InterflowHTTPServer) func(ctx http.Context) error {
+func _Interflow_ListInterflowHistory0_HTTP_Handler(srv InterflowHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in ListInterflowPersonRequest
+		var in ListInterflowHistoryRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationInterflowListInterflowPerson)
+		http.SetOperation(ctx, OperationInterflowListInterflowHistory)
 		h := ctx.Middleware(func(ctx context.Context, req any) (any, error) {
-			return srv.ListInterflowPerson(ctx, req.(*ListInterflowPersonRequest))
+			return srv.ListInterflowHistory(ctx, req.(*ListInterflowHistoryRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*ListInterflowPersonReply)
+		reply := out.(*ListInterflowHistoryReply)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _Interflow_CreateInterflowPerson0_HTTP_Handler(srv InterflowHTTPServer) func(ctx http.Context) error {
+func _Interflow_ListInterflowClassify0_HTTP_Handler(srv InterflowHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in CreateInterflowPersonRequest
+		var in ListInterflowClassifyRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationInterflowListInterflowClassify)
+		h := ctx.Middleware(func(ctx context.Context, req any) (any, error) {
+			return srv.ListInterflowClassify(ctx, req.(*ListInterflowClassifyRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*ListInterflowClassifyReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Interflow_CreateInterflowClassify0_HTTP_Handler(srv InterflowHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in CreateInterflowClassifyRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationInterflowCreateInterflowPerson)
+		http.SetOperation(ctx, OperationInterflowCreateInterflowClassify)
 		h := ctx.Middleware(func(ctx context.Context, req any) (any, error) {
-			return srv.CreateInterflowPerson(ctx, req.(*CreateInterflowPersonRequest))
+			return srv.CreateInterflowClassify(ctx, req.(*CreateInterflowClassifyRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*CreateInterflowPersonReply)
+		reply := out.(*CreateInterflowClassifyReply)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _Interflow_DeleteInterflowPerson0_HTTP_Handler(srv InterflowHTTPServer) func(ctx http.Context) error {
+func _Interflow_UpdateInterflowClassify0_HTTP_Handler(srv InterflowHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in DeleteInterflowPersonRequest
+		var in UpdateInterflowClassifyRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationInterflowDeleteInterflowPerson)
+		http.SetOperation(ctx, OperationInterflowUpdateInterflowClassify)
 		h := ctx.Middleware(func(ctx context.Context, req any) (any, error) {
-			return srv.DeleteInterflowPerson(ctx, req.(*DeleteInterflowPersonRequest))
+			return srv.UpdateInterflowClassify(ctx, req.(*UpdateInterflowClassifyRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*DeleteInterflowPersonReply)
+		reply := out.(*UpdateInterflowClassifyReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Interflow_DeleteInterflowClassify0_HTTP_Handler(srv InterflowHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in DeleteInterflowClassifyRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationInterflowDeleteInterflowClassify)
+		h := ctx.Middleware(func(ctx context.Context, req any) (any, error) {
+			return srv.DeleteInterflowClassify(ctx, req.(*DeleteInterflowClassifyRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*DeleteInterflowClassifyReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -150,10 +198,12 @@ func _Interflow_CreateInterflow0_HTTP_Handler(srv InterflowHTTPServer) func(ctx 
 
 type InterflowHTTPClient interface {
 	CreateInterflow(ctx context.Context, req *CreateInterflowRequest, opts ...http.CallOption) (rsp *CreateInterflowReply, err error)
-	CreateInterflowPerson(ctx context.Context, req *CreateInterflowPersonRequest, opts ...http.CallOption) (rsp *CreateInterflowPersonReply, err error)
-	DeleteInterflowPerson(ctx context.Context, req *DeleteInterflowPersonRequest, opts ...http.CallOption) (rsp *DeleteInterflowPersonReply, err error)
+	CreateInterflowClassify(ctx context.Context, req *CreateInterflowClassifyRequest, opts ...http.CallOption) (rsp *CreateInterflowClassifyReply, err error)
+	DeleteInterflowClassify(ctx context.Context, req *DeleteInterflowClassifyRequest, opts ...http.CallOption) (rsp *DeleteInterflowClassifyReply, err error)
 	ListInterflow(ctx context.Context, req *ListInterflowRequest, opts ...http.CallOption) (rsp *ListInterflowReply, err error)
-	ListInterflowPerson(ctx context.Context, req *ListInterflowPersonRequest, opts ...http.CallOption) (rsp *ListInterflowPersonReply, err error)
+	ListInterflowClassify(ctx context.Context, req *ListInterflowClassifyRequest, opts ...http.CallOption) (rsp *ListInterflowClassifyReply, err error)
+	ListInterflowHistory(ctx context.Context, req *ListInterflowHistoryRequest, opts ...http.CallOption) (rsp *ListInterflowHistoryReply, err error)
+	UpdateInterflowClassify(ctx context.Context, req *UpdateInterflowClassifyRequest, opts ...http.CallOption) (rsp *UpdateInterflowClassifyReply, err error)
 }
 
 type InterflowHTTPClientImpl struct {
@@ -177,11 +227,11 @@ func (c *InterflowHTTPClientImpl) CreateInterflow(ctx context.Context, in *Creat
 	return &out, err
 }
 
-func (c *InterflowHTTPClientImpl) CreateInterflowPerson(ctx context.Context, in *CreateInterflowPersonRequest, opts ...http.CallOption) (*CreateInterflowPersonReply, error) {
-	var out CreateInterflowPersonReply
-	pattern := "/partyaffairs/api/v1/interflow/person"
+func (c *InterflowHTTPClientImpl) CreateInterflowClassify(ctx context.Context, in *CreateInterflowClassifyRequest, opts ...http.CallOption) (*CreateInterflowClassifyReply, error) {
+	var out CreateInterflowClassifyReply
+	pattern := "/partyaffairs/api/v1/interflow/classify"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationInterflowCreateInterflowPerson))
+	opts = append(opts, http.Operation(OperationInterflowCreateInterflowClassify))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -190,11 +240,11 @@ func (c *InterflowHTTPClientImpl) CreateInterflowPerson(ctx context.Context, in 
 	return &out, err
 }
 
-func (c *InterflowHTTPClientImpl) DeleteInterflowPerson(ctx context.Context, in *DeleteInterflowPersonRequest, opts ...http.CallOption) (*DeleteInterflowPersonReply, error) {
-	var out DeleteInterflowPersonReply
-	pattern := "/partyaffairs/api/v1/interflow/person"
+func (c *InterflowHTTPClientImpl) DeleteInterflowClassify(ctx context.Context, in *DeleteInterflowClassifyRequest, opts ...http.CallOption) (*DeleteInterflowClassifyReply, error) {
+	var out DeleteInterflowClassifyReply
+	pattern := "/partyaffairs/api/v1/interflow/classify"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationInterflowDeleteInterflowPerson))
+	opts = append(opts, http.Operation(OperationInterflowDeleteInterflowClassify))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
 	if err != nil {
@@ -216,13 +266,39 @@ func (c *InterflowHTTPClientImpl) ListInterflow(ctx context.Context, in *ListInt
 	return &out, err
 }
 
-func (c *InterflowHTTPClientImpl) ListInterflowPerson(ctx context.Context, in *ListInterflowPersonRequest, opts ...http.CallOption) (*ListInterflowPersonReply, error) {
-	var out ListInterflowPersonReply
-	pattern := "/partyaffairs/api/v1/interflow/persons"
+func (c *InterflowHTTPClientImpl) ListInterflowClassify(ctx context.Context, in *ListInterflowClassifyRequest, opts ...http.CallOption) (*ListInterflowClassifyReply, error) {
+	var out ListInterflowClassifyReply
+	pattern := "/partyaffairs/api/v1/interflow/classifies"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationInterflowListInterflowPerson))
+	opts = append(opts, http.Operation(OperationInterflowListInterflowClassify))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *InterflowHTTPClientImpl) ListInterflowHistory(ctx context.Context, in *ListInterflowHistoryRequest, opts ...http.CallOption) (*ListInterflowHistoryReply, error) {
+	var out ListInterflowHistoryReply
+	pattern := "/partyaffairs/api/v1/interflow/history"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationInterflowListInterflowHistory))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *InterflowHTTPClientImpl) UpdateInterflowClassify(ctx context.Context, in *UpdateInterflowClassifyRequest, opts ...http.CallOption) (*UpdateInterflowClassifyReply, error) {
+	var out UpdateInterflowClassifyReply
+	pattern := "/partyaffairs/api/v1/interflow/classify"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationInterflowUpdateInterflowClassify))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

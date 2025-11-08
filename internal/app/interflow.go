@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"github.com/limes-cloud/kratosx/model"
 	"github.com/limes-cloud/kratosx/model/page"
 	"github.com/limes-cloud/kratosx/pkg/value"
 	"github.com/limes-cloud/manager/api/errors"
@@ -34,71 +35,68 @@ func init() {
 	})
 }
 
-// ListInterflowClassify 获取任务分组列表
-//func (s *Interflow) ListInterflowClassify(c context.Context, _ *interflow.ListInterflowClassifyRequest) (*interflow.ListInterflowClassifyReply, error) {
-//	list, err := s.srv.ListInterflowClassify(core.MustContext(c))
-//	if err != nil {
-//		return nil, err
-//	}
-//	reply := interflow.ListInterflowClassifyReply{}
-//	for _, item := range list {
-//		reply.List = append(reply.List, &interflow.ListInterflowClassifyReply_InterflowClassify{
-//			Id:        item.Id,
-//			Name:      item.Name,
-//			Weight:    item.Weight,
-//			CreatedAt: uint32(item.CreatedAt),
-//			UpdatedAt: uint32(item.UpdatedAt),
-//		})
-//	}
-//	return &reply, nil
-//}
-//
-//// CreateInterflowClassify 创建任务分组
-//func (s *Interflow) CreateInterflowClassify(c context.Context, req *interflow.CreateInterflowClassifyRequest) (*interflow.CreateInterflowClassifyReply, error) {
-//	id, err := s.srv.CreateInterflowClassify(core.MustContext(c), &entity.InterflowClassify{
-//		Name:   req.Name,
-//		Weight: req.Weight,
-//	})
-//	if err != nil {
-//		return nil, err
-//	}
-//	return &interflow.CreateInterflowClassifyReply{Id: id}, nil
-//}
-//
-//// UpdateInterflowClassify 更新任务分组
-//func (s *Interflow) UpdateInterflowClassify(c context.Context, req *interflow.UpdateInterflowClassifyRequest) (*interflow.UpdateInterflowClassifyReply, error) {
-//	if err := s.srv.UpdateInterflowClassify(core.MustContext(c), &entity.InterflowClassify{
-//		BaseTenantModel: model.BaseTenantModel{Id: req.Id},
-//
-//		Name:   req.Name,
-//		Weight: req.Weight,
-//	}); err != nil {
-//		return nil, err
-//	}
-//	return &interflow.UpdateInterflowClassifyReply{}, nil
-//}
-//
-//// DeleteInterflowClassify 删除任务分组
-//func (s *Interflow) DeleteInterflowClassify(c context.Context, req *interflow.DeleteInterflowClassifyRequest) (*interflow.DeleteInterflowClassifyReply, error) {
-//	err := s.srv.DeleteInterflowClassify(core.MustContext(c), req.Id)
-//	if err != nil {
-//		return nil, err
-//	}
-//	return &interflow.DeleteInterflowClassifyReply{}, nil
-//}
-
-func (s *Interflow) ListInterflowPerson(c context.Context, _ *interflow.ListInterflowPersonRequest) (*interflow.ListInterflowPersonReply, error) {
-	list, err := s.srv.ListInterflowPerson(core.MustContext(c))
+func (s *Interflow) ListInterflowHistory(c context.Context, _ *interflow.ListInterflowHistoryRequest) (*interflow.ListInterflowHistoryReply, error) {
+	list, err := s.srv.ListInterflowHistory(core.MustContext(c))
 	if err != nil {
 		return nil, err
 	}
 
-	reply := interflow.ListInterflowPersonReply{}
+	reply := interflow.ListInterflowHistoryReply{}
 	if err := value.Transform(list, &reply.List); err != nil {
 		return nil, errors.TransformError()
 	}
 
 	return &reply, nil
+}
+
+// ListInterflowClassify 获取任务分组列表
+func (s *Interflow) ListInterflowClassify(c context.Context, _ *interflow.ListInterflowClassifyRequest) (*interflow.ListInterflowClassifyReply, error) {
+	list, err := s.srv.ListInterflowClassify(core.MustContext(c))
+	if err != nil {
+		return nil, err
+	}
+	reply := interflow.ListInterflowClassifyReply{}
+	if err := value.Transform(list, &reply.List); err != nil {
+		return nil, err
+	}
+	return &reply, nil
+}
+
+// CreateInterflowClassify 创建任务分组
+func (s *Interflow) CreateInterflowClassify(c context.Context, req *interflow.CreateInterflowClassifyRequest) (*interflow.CreateInterflowClassifyReply, error) {
+	id, err := s.srv.CreateInterflowClassify(core.MustContext(c), &entity.InterflowClassify{
+		Name:        req.Name,
+		Weight:      req.Weight,
+		Description: req.Description,
+		Person:      req.Person,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &interflow.CreateInterflowClassifyReply{Id: id}, nil
+}
+
+// UpdateInterflowClassify 更新任务分组
+func (s *Interflow) UpdateInterflowClassify(c context.Context, req *interflow.UpdateInterflowClassifyRequest) (*interflow.UpdateInterflowClassifyReply, error) {
+	if err := s.srv.UpdateInterflowClassify(core.MustContext(c), &entity.InterflowClassify{
+		BaseTenantModel: model.BaseTenantModel{Id: req.Id},
+		Name:            req.Name,
+		Weight:          req.Weight,
+		Description:     req.Description,
+		Person:          req.Person,
+	}); err != nil {
+		return nil, err
+	}
+	return &interflow.UpdateInterflowClassifyReply{}, nil
+}
+
+// DeleteInterflowClassify 删除任务分组
+func (s *Interflow) DeleteInterflowClassify(c context.Context, req *interflow.DeleteInterflowClassifyRequest) (*interflow.DeleteInterflowClassifyReply, error) {
+	err := s.srv.DeleteInterflowClassify(core.MustContext(c), req.Id)
+	if err != nil {
+		return nil, err
+	}
+	return &interflow.DeleteInterflowClassifyReply{}, nil
 }
 
 // ListInterflow 获取资讯信息列表

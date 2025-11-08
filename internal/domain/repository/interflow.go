@@ -7,14 +7,17 @@ import (
 )
 
 type InterflowRepository interface {
-	// ListInterflowPerson 获取通知信息列表
-	ListInterflowPerson(ctx core.Context) ([]*entity.InterflowPerson, error)
+	// ListInterflowClassify 获取资讯分组列表
+	ListInterflowClassify(ctx core.Context) ([]*entity.InterflowClassify, error)
 
-	// CreateInterflowPerson 创建通知信息
-	CreateInterflowPerson(ctx core.Context, req *entity.InterflowPerson) (uint32, error)
+	// CreateInterflowClassify 创建资讯分组
+	CreateInterflowClassify(ctx core.Context, req *entity.InterflowClassify) (uint32, error)
 
-	// DeleteInterflowPerson 删除通知信息
-	DeleteInterflowPerson(ctx core.Context, id uint32) error
+	// UpdateInterflowClassify 更新资讯分组
+	UpdateInterflowClassify(ctx core.Context, req *entity.InterflowClassify) error
+
+	// DeleteInterflowClassify 删除资讯分组
+	DeleteInterflowClassify(ctx core.Context, id uint32) error
 
 	ListInterflowFormUserIds(ctx core.Context, uid uint32) ([]uint32, error)
 

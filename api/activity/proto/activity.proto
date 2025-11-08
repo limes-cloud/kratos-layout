@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package partyaffairs.api.activity;
-option go_package = "kratos-layout/api/activity;activity";
+option go_package = ".;activity";
 option java_multiple_files = true;
 option java_package = "partyaffairs.api.activity";
 

@@ -11,11 +11,11 @@ type Interflow struct {
 	Type       string `json:"type" gorm:"column:type"`
 }
 
-type InterflowPerson struct {
-	model.CreateModel
-	UserID     uint32 `json:"userId" gorm:"column:user_id"`
-	Username   string `json:"username" gorm:"column:-"`
-	Nickname   string `json:"nickname" gorm:"column:-"`
-	Avatar     string `json:"avatar" gorm:"column:-"`
-	HasNotRead bool   `json:"hasNotRead" gorm:"column:-"`
+type InterflowClassify struct {
+	Name        string  `json:"name" gorm:"column:name"`
+	Weight      uint32  `json:"weight" gorm:"column:weight"`
+	Description string  `json:"description" gorm:"column:description"`
+	Person      string  `json:"person" gorm:"column:person"`
+	Users       []*User `json:"users" gorm:"-"`
+	model.BaseTenantModel
 }

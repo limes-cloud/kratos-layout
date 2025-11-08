@@ -11,26 +11,39 @@ import "api/interflow/proto/interflow.proto";
 
 service Interflow{
 
-  // ListInterflowPerson 获取资料分组列表
-  rpc ListInterflowPerson (ListInterflowPersonRequest) returns (ListInterflowPersonReply) {
+  rpc ListInterflowHistory (ListInterflowHistoryRequest) returns (ListInterflowHistoryReply) {
     option (google.api.http) = {
-      get: "/partyaffairs/api/v1/interflow/persons",
+      get: "/partyaffairs/api/v1/interflow/history",
     };
   }
 
-  // CreateInterflowPerson 创建资料分组
-  rpc CreateInterflowPerson (CreateInterflowPersonRequest) returns (CreateInterflowPersonReply) {
-    option (google.api.http) = {
-      post: "/partyaffairs/api/v1/interflow/person",
+  // ListInterflowClassify 获取资讯分组列表
+  rpc ListInterflowClassify(ListInterflowClassifyRequest) returns(ListInterflowClassifyReply) {
+    option(google.api.http) = {
+      get: "/partyaffairs/api/v1/interflow/classifies"
+    };
+  }
+
+  // CreateInterflowClassify 创建资讯分组
+  rpc CreateInterflowClassify(CreateInterflowClassifyRequest) returns(CreateInterflowClassifyReply) {
+    option(google.api.http) = {
+      post: "/partyaffairs/api/v1/interflow/classify",
       body: "*"
     };
   }
 
+  // UpdateInterflowClassify 更新资讯分组
+  rpc UpdateInterflowClassify(UpdateInterflowClassifyRequest) returns(UpdateInterflowClassifyReply) {
+    option(google.api.http) = {
+      put: "/partyaffairs/api/v1/interflow/classify",
+      body: "*"
+    };
+  }
 
-  // DeleteInterflowPerson 删除资料分组
-  rpc DeleteInterflowPerson (DeleteInterflowPersonRequest) returns (DeleteInterflowPersonReply) {
-    option (google.api.http) = {
-      delete: "/partyaffairs/api/v1/interflow/person",
+  // DeleteInterflowClassify 删除资讯分组
+  rpc DeleteInterflowClassify(DeleteInterflowClassifyRequest) returns(DeleteInterflowClassifyReply) {
+    option(google.api.http) = {
+      delete: "/partyaffairs/api/v1/interflow/classify"
     };
   }
 

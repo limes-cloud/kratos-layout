@@ -15,7 +15,7 @@ enum ErrorReason {
   DatabaseError = 2[(errors.message)="数据库错误"];
   TransformError = 3[(errors.message)="数据转换失败"];
   ForbiddenError = 33[(errors.code)=403,(errors.message)="无接口权限"];
-  NotLoginError = 49[(errors.code)=403,(errors.message)="用户未登陆"];
+  NotLoginError = 49[(errors.code)=401,(errors.message)="用户未登陆"];
 
   GetError = 4[(errors.message)="获取数据失败"];
   ListError = 5[(errors.message)="获取列表数据失败"];

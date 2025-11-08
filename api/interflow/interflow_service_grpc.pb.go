@@ -19,23 +19,28 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Interflow_ListInterflowPerson_FullMethodName   = "/partyaffairs.api.interflow.Interflow/ListInterflowPerson"
-	Interflow_CreateInterflowPerson_FullMethodName = "/partyaffairs.api.interflow.Interflow/CreateInterflowPerson"
-	Interflow_DeleteInterflowPerson_FullMethodName = "/partyaffairs.api.interflow.Interflow/DeleteInterflowPerson"
-	Interflow_ListInterflow_FullMethodName         = "/partyaffairs.api.interflow.Interflow/ListInterflow"
-	Interflow_CreateInterflow_FullMethodName       = "/partyaffairs.api.interflow.Interflow/CreateInterflow"
+	Interflow_ListInterflowHistory_FullMethodName    = "/partyaffairs.api.interflow.Interflow/ListInterflowHistory"
+	Interflow_ListInterflowClassify_FullMethodName   = "/partyaffairs.api.interflow.Interflow/ListInterflowClassify"
+	Interflow_CreateInterflowClassify_FullMethodName = "/partyaffairs.api.interflow.Interflow/CreateInterflowClassify"
+	Interflow_UpdateInterflowClassify_FullMethodName = "/partyaffairs.api.interflow.Interflow/UpdateInterflowClassify"
+	Interflow_DeleteInterflowClassify_FullMethodName = "/partyaffairs.api.interflow.Interflow/DeleteInterflowClassify"
+	Interflow_ListInterflow_FullMethodName           = "/partyaffairs.api.interflow.Interflow/ListInterflow"
+	Interflow_CreateInterflow_FullMethodName         = "/partyaffairs.api.interflow.Interflow/CreateInterflow"
 )
 
 // InterflowClient is the client API for Interflow service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type InterflowClient interface {
-	// ListInterflowPerson 获取资料分组列表
-	ListInterflowPerson(ctx context.Context, in *ListInterflowPersonRequest, opts ...grpc.CallOption) (*ListInterflowPersonReply, error)
-	// CreateInterflowPerson 创建资料分组
-	CreateInterflowPerson(ctx context.Context, in *CreateInterflowPersonRequest, opts ...grpc.CallOption) (*CreateInterflowPersonReply, error)
-	// DeleteInterflowPerson 删除资料分组
-	DeleteInterflowPerson(ctx context.Context, in *DeleteInterflowPersonRequest, opts ...grpc.CallOption) (*DeleteInterflowPersonReply, error)
+	ListInterflowHistory(ctx context.Context, in *ListInterflowHistoryRequest, opts ...grpc.CallOption) (*ListInterflowHistoryReply, error)
+	// ListInterflowClassify 获取资讯分组列表
+	ListInterflowClassify(ctx context.Context, in *ListInterflowClassifyRequest, opts ...grpc.CallOption) (*ListInterflowClassifyReply, error)
+	// CreateInterflowClassify 创建资讯分组
+	CreateInterflowClassify(ctx context.Context, in *CreateInterflowClassifyRequest, opts ...grpc.CallOption) (*CreateInterflowClassifyReply, error)
+	// UpdateInterflowClassify 更新资讯分组
+	UpdateInterflowClassify(ctx context.Context, in *UpdateInterflowClassifyRequest, opts ...grpc.CallOption) (*UpdateInterflowClassifyReply, error)
+	// DeleteInterflowClassify 删除资讯分组
+	DeleteInterflowClassify(ctx context.Context, in *DeleteInterflowClassifyRequest, opts ...grpc.CallOption) (*DeleteInterflowClassifyReply, error)
 	// ListInterflow 获取咨询信息列表
 	ListInterflow(ctx context.Context, in *ListInterflowRequest, opts ...grpc.CallOption) (*ListInterflowReply, error)
 	// CreateInterflow 创建咨询信息
@@ -50,27 +55,45 @@ func NewInterflowClient(cc grpc.ClientConnInterface) InterflowClient {
 	return &interflowClient{cc}
 }
 
-func (c *interflowClient) ListInterflowPerson(ctx context.Context, in *ListInterflowPersonRequest, opts ...grpc.CallOption) (*ListInterflowPersonReply, error) {
-	out := new(ListInterflowPersonReply)
-	err := c.cc.Invoke(ctx, Interflow_ListInterflowPerson_FullMethodName, in, out, opts...)
+func (c *interflowClient) ListInterflowHistory(ctx context.Context, in *ListInterflowHistoryRequest, opts ...grpc.CallOption) (*ListInterflowHistoryReply, error) {
+	out := new(ListInterflowHistoryReply)
+	err := c.cc.Invoke(ctx, Interflow_ListInterflowHistory_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *interflowClient) CreateInterflowPerson(ctx context.Context, in *CreateInterflowPersonRequest, opts ...grpc.CallOption) (*CreateInterflowPersonReply, error) {
-	out := new(CreateInterflowPersonReply)
-	err := c.cc.Invoke(ctx, Interflow_CreateInterflowPerson_FullMethodName, in, out, opts...)
+func (c *interflowClient) ListInterflowClassify(ctx context.Context, in *ListInterflowClassifyRequest, opts ...grpc.CallOption) (*ListInterflowClassifyReply, error) {
+	out := new(ListInterflowClassifyReply)
+	err := c.cc.Invoke(ctx, Interflow_ListInterflowClassify_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *interflowClient) DeleteInterflowPerson(ctx context.Context, in *DeleteInterflowPersonRequest, opts ...grpc.CallOption) (*DeleteInterflowPersonReply, error) {
-	out := new(DeleteInterflowPersonReply)
-	err := c.cc.Invoke(ctx, Interflow_DeleteInterflowPerson_FullMethodName, in, out, opts...)
+func (c *interflowClient) CreateInterflowClassify(ctx context.Context, in *CreateInterflowClassifyRequest, opts ...grpc.CallOption) (*CreateInterflowClassifyReply, error) {
+	out := new(CreateInterflowClassifyReply)
+	err := c.cc.Invoke(ctx, Interflow_CreateInterflowClassify_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interflowClient) UpdateInterflowClassify(ctx context.Context, in *UpdateInterflowClassifyRequest, opts ...grpc.CallOption) (*UpdateInterflowClassifyReply, error) {
+	out := new(UpdateInterflowClassifyReply)
+	err := c.cc.Invoke(ctx, Interflow_UpdateInterflowClassify_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interflowClient) DeleteInterflowClassify(ctx context.Context, in *DeleteInterflowClassifyRequest, opts ...grpc.CallOption) (*DeleteInterflowClassifyReply, error) {
+	out := new(DeleteInterflowClassifyReply)
+	err := c.cc.Invoke(ctx, Interflow_DeleteInterflowClassify_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -99,12 +122,15 @@ func (c *interflowClient) CreateInterflow(ctx context.Context, in *CreateInterfl
 // All implementations must embed UnimplementedInterflowServer
 // for forward compatibility
 type InterflowServer interface {
-	// ListInterflowPerson 获取资料分组列表
-	ListInterflowPerson(context.Context, *ListInterflowPersonRequest) (*ListInterflowPersonReply, error)
-	// CreateInterflowPerson 创建资料分组
-	CreateInterflowPerson(context.Context, *CreateInterflowPersonRequest) (*CreateInterflowPersonReply, error)
-	// DeleteInterflowPerson 删除资料分组
-	DeleteInterflowPerson(context.Context, *DeleteInterflowPersonRequest) (*DeleteInterflowPersonReply, error)
+	ListInterflowHistory(context.Context, *ListInterflowHistoryRequest) (*ListInterflowHistoryReply, error)
+	// ListInterflowClassify 获取资讯分组列表
+	ListInterflowClassify(context.Context, *ListInterflowClassifyRequest) (*ListInterflowClassifyReply, error)
+	// CreateInterflowClassify 创建资讯分组
+	CreateInterflowClassify(context.Context, *CreateInterflowClassifyRequest) (*CreateInterflowClassifyReply, error)
+	// UpdateInterflowClassify 更新资讯分组
+	UpdateInterflowClassify(context.Context, *UpdateInterflowClassifyRequest) (*UpdateInterflowClassifyReply, error)
+	// DeleteInterflowClassify 删除资讯分组
+	DeleteInterflowClassify(context.Context, *DeleteInterflowClassifyRequest) (*DeleteInterflowClassifyReply, error)
 	// ListInterflow 获取咨询信息列表
 	ListInterflow(context.Context, *ListInterflowRequest) (*ListInterflowReply, error)
 	// CreateInterflow 创建咨询信息
@@ -116,14 +142,20 @@ type InterflowServer interface {
 type UnimplementedInterflowServer struct {
 }
 
-func (UnimplementedInterflowServer) ListInterflowPerson(context.Context, *ListInterflowPersonRequest) (*ListInterflowPersonReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListInterflowPerson not implemented")
+func (UnimplementedInterflowServer) ListInterflowHistory(context.Context, *ListInterflowHistoryRequest) (*ListInterflowHistoryReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListInterflowHistory not implemented")
 }
-func (UnimplementedInterflowServer) CreateInterflowPerson(context.Context, *CreateInterflowPersonRequest) (*CreateInterflowPersonReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateInterflowPerson not implemented")
+func (UnimplementedInterflowServer) ListInterflowClassify(context.Context, *ListInterflowClassifyRequest) (*ListInterflowClassifyReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListInterflowClassify not implemented")
 }
-func (UnimplementedInterflowServer) DeleteInterflowPerson(context.Context, *DeleteInterflowPersonRequest) (*DeleteInterflowPersonReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteInterflowPerson not implemented")
+func (UnimplementedInterflowServer) CreateInterflowClassify(context.Context, *CreateInterflowClassifyRequest) (*CreateInterflowClassifyReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateInterflowClassify not implemented")
+}
+func (UnimplementedInterflowServer) UpdateInterflowClassify(context.Context, *UpdateInterflowClassifyRequest) (*UpdateInterflowClassifyReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateInterflowClassify not implemented")
+}
+func (UnimplementedInterflowServer) DeleteInterflowClassify(context.Context, *DeleteInterflowClassifyRequest) (*DeleteInterflowClassifyReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteInterflowClassify not implemented")
 }
 func (UnimplementedInterflowServer) ListInterflow(context.Context, *ListInterflowRequest) (*ListInterflowReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListInterflow not implemented")
@@ -144,56 +176,92 @@ func RegisterInterflowServer(s grpc.ServiceRegistrar, srv InterflowServer) {
 	s.RegisterService(&Interflow_ServiceDesc, srv)
 }
 
-func _Interflow_ListInterflowPerson_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListInterflowPersonRequest)
+func _Interflow_ListInterflowHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListInterflowHistoryRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(InterflowServer).ListInterflowPerson(ctx, in)
+		return srv.(InterflowServer).ListInterflowHistory(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Interflow_ListInterflowPerson_FullMethodName,
+		FullMethod: Interflow_ListInterflowHistory_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InterflowServer).ListInterflowPerson(ctx, req.(*ListInterflowPersonRequest))
+		return srv.(InterflowServer).ListInterflowHistory(ctx, req.(*ListInterflowHistoryRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Interflow_CreateInterflowPerson_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateInterflowPersonRequest)
+func _Interflow_ListInterflowClassify_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListInterflowClassifyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(InterflowServer).CreateInterflowPerson(ctx, in)
+		return srv.(InterflowServer).ListInterflowClassify(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Interflow_CreateInterflowPerson_FullMethodName,
+		FullMethod: Interflow_ListInterflowClassify_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InterflowServer).CreateInterflowPerson(ctx, req.(*CreateInterflowPersonRequest))
+		return srv.(InterflowServer).ListInterflowClassify(ctx, req.(*ListInterflowClassifyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Interflow_DeleteInterflowPerson_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteInterflowPersonRequest)
+func _Interflow_CreateInterflowClassify_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateInterflowClassifyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(InterflowServer).DeleteInterflowPerson(ctx, in)
+		return srv.(InterflowServer).CreateInterflowClassify(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Interflow_DeleteInterflowPerson_FullMethodName,
+		FullMethod: Interflow_CreateInterflowClassify_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InterflowServer).DeleteInterflowPerson(ctx, req.(*DeleteInterflowPersonRequest))
+		return srv.(InterflowServer).CreateInterflowClassify(ctx, req.(*CreateInterflowClassifyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interflow_UpdateInterflowClassify_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateInterflowClassifyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterflowServer).UpdateInterflowClassify(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Interflow_UpdateInterflowClassify_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterflowServer).UpdateInterflowClassify(ctx, req.(*UpdateInterflowClassifyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interflow_DeleteInterflowClassify_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteInterflowClassifyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterflowServer).DeleteInterflowClassify(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Interflow_DeleteInterflowClassify_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterflowServer).DeleteInterflowClassify(ctx, req.(*DeleteInterflowClassifyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -242,16 +310,24 @@ var Interflow_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*InterflowServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "ListInterflowPerson",
-			Handler:    _Interflow_ListInterflowPerson_Handler,
+			MethodName: "ListInterflowHistory",
+			Handler:    _Interflow_ListInterflowHistory_Handler,
 		},
 		{
-			MethodName: "CreateInterflowPerson",
-			Handler:    _Interflow_CreateInterflowPerson_Handler,
+			MethodName: "ListInterflowClassify",
+			Handler:    _Interflow_ListInterflowClassify_Handler,
 		},
 		{
-			MethodName: "DeleteInterflowPerson",
-			Handler:    _Interflow_DeleteInterflowPerson_Handler,
+			MethodName: "CreateInterflowClassify",
+			Handler:    _Interflow_CreateInterflowClassify_Handler,
+		},
+		{
+			MethodName: "UpdateInterflowClassify",
+			Handler:    _Interflow_UpdateInterflowClassify_Handler,
+		},
+		{
+			MethodName: "DeleteInterflowClassify",
+			Handler:    _Interflow_DeleteInterflowClassify_Handler,
 		},
 		{
 			MethodName: "ListInterflow",

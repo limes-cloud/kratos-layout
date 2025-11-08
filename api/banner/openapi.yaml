@@ -117,6 +117,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+    /partyaffairs/api/visible-banners:
+        get:
+            tags:
+                - Banner
+            description: ListVisibleBanner 获取可见轮播图信息列表
+            operationId: Banner_ListVisibleBanner
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListBannerReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
 components:
     schemas:
         CreateBannerReply:
@@ -130,7 +149,7 @@ components:
             properties:
                 title:
                     type: string
-                src:
+                key:
                     type: string
                 path:
                     type: string
@@ -168,7 +187,7 @@ components:
                     format: uint32
                 title:
                     type: string
-                src:
+                key:
                     type: string
                 path:
                     type: string
@@ -210,7 +229,7 @@ components:
                     format: uint32
                 title:
                     type: string
-                src:
+                key:
                     type: string
                 path:
                     type: string

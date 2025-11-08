@@ -31,7 +31,7 @@ func Parse() middleware.Middleware {
 			}
 			token := md.Get(km.TokenKey)
 			if token == "" {
-				return handler(c, req)
+				return nil, errors.NotLoginError()
 			}
 
 			ctx := kratosx.MustContext(c)

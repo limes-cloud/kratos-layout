@@ -3,6 +3,7 @@ package service
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/limes-cloud/kratosx/pkg/value"
 	"partyaffairs/internal/core"
 
@@ -24,6 +25,15 @@ type TaskService struct {
 
 func NewTaskService(repo repository.TaskRepository, file repository.FileRepository, user repository.UserRepository) *TaskService {
 	return &TaskService{repo: repo, file: file, user: user}
+}
+
+// GetTaskPoints 获取任务积分
+func (u *TaskService) GetTaskPoints(ctx core.Context) (uint32, error) {
+	value, err := u.repo.GetPoints(ctx, ctx.Auth().UserId)
+	if err != nil {
+		return 0, errors.GetError(err.Error())
+	}
+	return value, nil
 }
 
 // GetTask 获取指定的公告
@@ -113,7 +123,7 @@ func (u *TaskService) ListTaskValue(ctx core.Context, req *types.ListTaskValueRe
 		for _, user := range users {
 			values = append(values, &entity.TaskValue{
 				TaskId: req.TaskId,
-				//UserId: user.Id,
+				// UserId: user.Id,
 				User: user,
 			})
 		}
@@ -143,7 +153,6 @@ func (u *TaskService) CreateTaskValue(ctx core.Context, task *entity.TaskValue) 
 
 // ExportValue 导出任务信息
 func (u *TaskService) ExportValue(ctx core.Context, id uint32) (uint32, error) {
-
 	task, err := u.repo.GetTask(ctx, id)
 	if err != nil {
 		return 0, errors.DatabaseError(err.Error())
@@ -234,7 +243,6 @@ func (u *TaskService) ExportValue(ctx core.Context, id uint32) (uint32, error) {
 		Files:   files,
 		Headers: headers,
 	})
-
 	if err != nil {
 		return 0, err
 	}

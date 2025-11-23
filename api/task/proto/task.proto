@@ -10,6 +10,7 @@ import "validate/validate.proto";
 message GetTaskReply{
   uint32 id = 1;
   string title = 2;
+  optional uint32 points = 10;
   string description = 3;
   optional bool isUpdate = 4;
   uint32 start = 5;
@@ -72,6 +73,7 @@ message CreateTaskRequest {
   string title = 1[(validate.rules).string = {min_len: 1}];
   string description = 2[(validate.rules).string = {min_len: 1}];
   optional bool isUpdate = 3;
+  optional uint32 points = 10;
   uint32 start = 4[(validate.rules).uint32 = {gt: 1}];
   uint32 end = 5[(validate.rules).uint32 = {gt: 1}];
   string config = 6[(validate.rules).string = {min_len: 1}];
@@ -82,6 +84,7 @@ message CreateTaskReply{
 }
 
 message UpdateTaskRequest {
+  optional uint32 points = 10;
   string title = 1;
   string description = 2;
   optional bool isUpdate = 3;
@@ -98,5 +101,12 @@ message DeleteTaskRequest{
 }
 
 message DeleteTaskReply{}
+
+
+message GetUserPointsRequest{}
+
+message GetUserPointsResponse{
+  uint32 points = 1;
+}
 
 

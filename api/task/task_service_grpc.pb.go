@@ -8,6 +8,7 @@ package task
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -19,6 +20,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	Task_GetUserPoints_FullMethodName   = "/partyaffairs.api.task.Task/GetUserPoints"
 	Task_ListTask_FullMethodName        = "/partyaffairs.api.task.Task/ListTask"
 	Task_ListClientTask_FullMethodName  = "/partyaffairs.api.task.Task/ListClientTask"
 	Task_GetTask_FullMethodName         = "/partyaffairs.api.task.Task/GetTask"
@@ -38,6 +40,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TaskClient interface {
+	GetUserPoints(ctx context.Context, in *GetUserPointsRequest, opts ...grpc.CallOption) (*GetUserPointsResponse, error)
 	ListTask(ctx context.Context, in *ListTaskRequest, opts ...grpc.CallOption) (*ListTaskReply, error)
 	ListClientTask(ctx context.Context, in *ListClientTaskRequest, opts ...grpc.CallOption) (*ListClientTaskReply, error)
 	GetTask(ctx context.Context, in *GetTaskRequest, opts ...grpc.CallOption) (*GetTaskReply, error)
@@ -59,6 +62,15 @@ type taskClient struct {
 
 func NewTaskClient(cc grpc.ClientConnInterface) TaskClient {
 	return &taskClient{cc}
+}
+
+func (c *taskClient) GetUserPoints(ctx context.Context, in *GetUserPointsRequest, opts ...grpc.CallOption) (*GetUserPointsResponse, error) {
+	out := new(GetUserPointsResponse)
+	err := c.cc.Invoke(ctx, Task_GetUserPoints_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *taskClient) ListTask(ctx context.Context, in *ListTaskRequest, opts ...grpc.CallOption) (*ListTaskReply, error) {
@@ -182,6 +194,7 @@ func (c *taskClient) DeleteTaskValue(ctx context.Context, in *DeleteTaskValueReq
 // All implementations must embed UnimplementedTaskServer
 // for forward compatibility
 type TaskServer interface {
+	GetUserPoints(context.Context, *GetUserPointsRequest) (*GetUserPointsResponse, error)
 	ListTask(context.Context, *ListTaskRequest) (*ListTaskReply, error)
 	ListClientTask(context.Context, *ListClientTaskRequest) (*ListClientTaskReply, error)
 	GetTask(context.Context, *GetTaskRequest) (*GetTaskReply, error)
@@ -199,45 +212,60 @@ type TaskServer interface {
 }
 
 // UnimplementedTaskServer must be embedded to have forward compatible implementations.
-type UnimplementedTaskServer struct {
+type UnimplementedTaskServer struct{}
+
+func (UnimplementedTaskServer) GetUserPoints(context.Context, *GetUserPointsRequest) (*GetUserPointsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserPoints not implemented")
 }
 
 func (UnimplementedTaskServer) ListTask(context.Context, *ListTaskRequest) (*ListTaskReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListTask not implemented")
 }
+
 func (UnimplementedTaskServer) ListClientTask(context.Context, *ListClientTaskRequest) (*ListClientTaskReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListClientTask not implemented")
 }
+
 func (UnimplementedTaskServer) GetTask(context.Context, *GetTaskRequest) (*GetTaskReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTask not implemented")
 }
+
 func (UnimplementedTaskServer) CreateTask(context.Context, *CreateTaskRequest) (*CreateTaskReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTask not implemented")
 }
+
 func (UnimplementedTaskServer) UpdateTask(context.Context, *UpdateTaskRequest) (*UpdateTaskReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateTask not implemented")
 }
+
 func (UnimplementedTaskServer) DeleteTask(context.Context, *DeleteTaskRequest) (*DeleteTaskReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteTask not implemented")
 }
+
 func (UnimplementedTaskServer) ListTaskValue(context.Context, *ListTaskValueRequest) (*ListTaskValueReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListTaskValue not implemented")
 }
+
 func (UnimplementedTaskServer) GetTaskValue(context.Context, *GetTaskValueRequest) (*GetTaskValueReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTaskValue not implemented")
 }
+
 func (UnimplementedTaskServer) ExportTaskValue(context.Context, *ExportTaskValueRequest) (*ExportTaskValueReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExportTaskValue not implemented")
 }
+
 func (UnimplementedTaskServer) GetCurTaskValue(context.Context, *GetCurTaskValueRequest) (*GetCurTaskValueReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCurTaskValue not implemented")
 }
+
 func (UnimplementedTaskServer) CreateTaskValue(context.Context, *CreateTaskValueRequest) (*CreateTaskValueReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTaskValue not implemented")
 }
+
 func (UnimplementedTaskServer) UpdateTaskValue(context.Context, *UpdateTaskValueRequest) (*UpdateTaskValueReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateTaskValue not implemented")
 }
+
 func (UnimplementedTaskServer) DeleteTaskValue(context.Context, *DeleteTaskValueRequest) (*DeleteTaskValueReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteTaskValue not implemented")
 }
@@ -252,6 +280,24 @@ type UnsafeTaskServer interface {
 
 func RegisterTaskServer(s grpc.ServiceRegistrar, srv TaskServer) {
 	s.RegisterService(&Task_ServiceDesc, srv)
+}
+
+func _Task_GetUserPoints_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserPointsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaskServer).GetUserPoints(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Task_GetUserPoints_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaskServer).GetUserPoints(ctx, req.(*GetUserPointsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Task_ListTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -495,6 +541,10 @@ var Task_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "partyaffairs.api.task.Task",
 	HandlerType: (*TaskServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetUserPoints",
+			Handler:    _Task_GetUserPoints_Handler,
+		},
 		{
 			MethodName: "ListTask",
 			Handler:    _Task_ListTask_Handler,

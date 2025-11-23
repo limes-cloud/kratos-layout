@@ -73,6 +73,10 @@ func (m *GetTaskReply) validate(all bool) error {
 
 	// no validation rules for UpdatedAt
 
+	if m.Points != nil {
+		// no validation rules for Points
+	}
+
 	if m.IsUpdate != nil {
 		// no validation rules for IsUpdate
 	}
@@ -878,6 +882,10 @@ func (m *CreateTaskRequest) validate(all bool) error {
 		// no validation rules for IsUpdate
 	}
 
+	if m.Points != nil {
+		// no validation rules for Points
+	}
+
 	if len(errors) > 0 {
 		return CreateTaskRequestMultiError(errors)
 	}
@@ -1101,6 +1109,10 @@ func (m *UpdateTaskRequest) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
+	}
+
+	if m.Points != nil {
+		// no validation rules for Points
 	}
 
 	if m.IsUpdate != nil {
@@ -1499,6 +1511,212 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = DeleteTaskReplyValidationError{}
+
+// Validate checks the field values on GetUserPointsRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetUserPointsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetUserPointsRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetUserPointsRequestMultiError, or nil if none found.
+func (m *GetUserPointsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetUserPointsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return GetUserPointsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetUserPointsRequestMultiError is an error wrapping multiple validation
+// errors returned by GetUserPointsRequest.ValidateAll() if the designated
+// constraints aren't met.
+type GetUserPointsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetUserPointsRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetUserPointsRequestMultiError) AllErrors() []error { return m }
+
+// GetUserPointsRequestValidationError is the validation error returned by
+// GetUserPointsRequest.Validate if the designated constraints aren't met.
+type GetUserPointsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetUserPointsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetUserPointsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetUserPointsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetUserPointsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetUserPointsRequestValidationError) ErrorName() string {
+	return "GetUserPointsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetUserPointsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetUserPointsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetUserPointsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetUserPointsRequestValidationError{}
+
+// Validate checks the field values on GetUserPointsResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetUserPointsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetUserPointsResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetUserPointsResponseMultiError, or nil if none found.
+func (m *GetUserPointsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetUserPointsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Points
+
+	if len(errors) > 0 {
+		return GetUserPointsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetUserPointsResponseMultiError is an error wrapping multiple validation
+// errors returned by GetUserPointsResponse.ValidateAll() if the designated
+// constraints aren't met.
+type GetUserPointsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetUserPointsResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetUserPointsResponseMultiError) AllErrors() []error { return m }
+
+// GetUserPointsResponseValidationError is the validation error returned by
+// GetUserPointsResponse.Validate if the designated constraints aren't met.
+type GetUserPointsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetUserPointsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetUserPointsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetUserPointsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetUserPointsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetUserPointsResponseValidationError) ErrorName() string {
+	return "GetUserPointsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetUserPointsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetUserPointsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetUserPointsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetUserPointsResponseValidationError{}
 
 // Validate checks the field values on ListTaskReply_Task with the rules
 // defined in the proto definition for this message. If any rules are

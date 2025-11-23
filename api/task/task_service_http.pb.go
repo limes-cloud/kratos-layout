@@ -8,30 +8,36 @@ package task
 
 import (
 	context "context"
+
 	http "github.com/go-kratos/kratos/v2/transport/http"
 	binding "github.com/go-kratos/kratos/v2/transport/http/binding"
 )
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the kratos package it is being compiled against.
-var _ = new(context.Context)
-var _ = binding.EncodeURL
+var (
+	_ = new(context.Context)
+	_ = binding.EncodeURL
+)
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationTaskCreateTask = "/partyaffairs.api.task.Task/CreateTask"
-const OperationTaskCreateTaskValue = "/partyaffairs.api.task.Task/CreateTaskValue"
-const OperationTaskDeleteTask = "/partyaffairs.api.task.Task/DeleteTask"
-const OperationTaskDeleteTaskValue = "/partyaffairs.api.task.Task/DeleteTaskValue"
-const OperationTaskExportTaskValue = "/partyaffairs.api.task.Task/ExportTaskValue"
-const OperationTaskGetCurTaskValue = "/partyaffairs.api.task.Task/GetCurTaskValue"
-const OperationTaskGetTask = "/partyaffairs.api.task.Task/GetTask"
-const OperationTaskGetTaskValue = "/partyaffairs.api.task.Task/GetTaskValue"
-const OperationTaskListClientTask = "/partyaffairs.api.task.Task/ListClientTask"
-const OperationTaskListTask = "/partyaffairs.api.task.Task/ListTask"
-const OperationTaskListTaskValue = "/partyaffairs.api.task.Task/ListTaskValue"
-const OperationTaskUpdateTask = "/partyaffairs.api.task.Task/UpdateTask"
-const OperationTaskUpdateTaskValue = "/partyaffairs.api.task.Task/UpdateTaskValue"
+const (
+	OperationTaskCreateTask      = "/partyaffairs.api.task.Task/CreateTask"
+	OperationTaskCreateTaskValue = "/partyaffairs.api.task.Task/CreateTaskValue"
+	OperationTaskDeleteTask      = "/partyaffairs.api.task.Task/DeleteTask"
+	OperationTaskDeleteTaskValue = "/partyaffairs.api.task.Task/DeleteTaskValue"
+	OperationTaskExportTaskValue = "/partyaffairs.api.task.Task/ExportTaskValue"
+	OperationTaskGetCurTaskValue = "/partyaffairs.api.task.Task/GetCurTaskValue"
+	OperationTaskGetTask         = "/partyaffairs.api.task.Task/GetTask"
+	OperationTaskGetTaskValue    = "/partyaffairs.api.task.Task/GetTaskValue"
+	OperationTaskGetUserPoints   = "/partyaffairs.api.task.Task/GetUserPoints"
+	OperationTaskListClientTask  = "/partyaffairs.api.task.Task/ListClientTask"
+	OperationTaskListTask        = "/partyaffairs.api.task.Task/ListTask"
+	OperationTaskListTaskValue   = "/partyaffairs.api.task.Task/ListTaskValue"
+	OperationTaskUpdateTask      = "/partyaffairs.api.task.Task/UpdateTask"
+	OperationTaskUpdateTaskValue = "/partyaffairs.api.task.Task/UpdateTaskValue"
+)
 
 type TaskHTTPServer interface {
 	CreateTask(context.Context, *CreateTaskRequest) (*CreateTaskReply, error)
@@ -42,6 +48,7 @@ type TaskHTTPServer interface {
 	GetCurTaskValue(context.Context, *GetCurTaskValueRequest) (*GetCurTaskValueReply, error)
 	GetTask(context.Context, *GetTaskRequest) (*GetTaskReply, error)
 	GetTaskValue(context.Context, *GetTaskValueRequest) (*GetTaskValueReply, error)
+	GetUserPoints(context.Context, *GetUserPointsRequest) (*GetUserPointsResponse, error)
 	ListClientTask(context.Context, *ListClientTaskRequest) (*ListClientTaskReply, error)
 	ListTask(context.Context, *ListTaskRequest) (*ListTaskReply, error)
 	ListTaskValue(context.Context, *ListTaskValueRequest) (*ListTaskValueReply, error)
@@ -51,6 +58,7 @@ type TaskHTTPServer interface {
 
 func RegisterTaskHTTPServer(s *http.Server, srv TaskHTTPServer) {
 	r := s.Route("/")
+	r.GET("/partyaffairs/api/v1/task/points", _Task_GetUserPoints0_HTTP_Handler(srv))
 	r.GET("/partyaffairs/api/v1/tasks", _Task_ListTask0_HTTP_Handler(srv))
 	r.GET("/partyaffairs/client/v1/tasks", _Task_ListClientTask0_HTTP_Handler(srv))
 	r.GET("/partyaffairs/client/v1/task", _Task_GetTask0_HTTP_Handler(srv))
@@ -65,6 +73,25 @@ func RegisterTaskHTTPServer(s *http.Server, srv TaskHTTPServer) {
 	r.POST("/partyaffairs/api/v1/task/value", _Task_CreateTaskValue0_HTTP_Handler(srv))
 	r.PUT("/partyaffairs/api/v1/task/value", _Task_UpdateTaskValue0_HTTP_Handler(srv))
 	r.DELETE("/partyaffairs/api/v1/task/value", _Task_DeleteTaskValue0_HTTP_Handler(srv))
+}
+
+func _Task_GetUserPoints0_HTTP_Handler(srv TaskHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetUserPointsRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationTaskGetUserPoints)
+		h := ctx.Middleware(func(ctx context.Context, req any) (any, error) {
+			return srv.GetUserPoints(ctx, req.(*GetUserPointsRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*GetUserPointsResponse)
+		return ctx.Result(200, reply)
+	}
 }
 
 func _Task_ListTask0_HTTP_Handler(srv TaskHTTPServer) func(ctx http.Context) error {
@@ -357,6 +384,7 @@ type TaskHTTPClient interface {
 	GetCurTaskValue(ctx context.Context, req *GetCurTaskValueRequest, opts ...http.CallOption) (rsp *GetCurTaskValueReply, err error)
 	GetTask(ctx context.Context, req *GetTaskRequest, opts ...http.CallOption) (rsp *GetTaskReply, err error)
 	GetTaskValue(ctx context.Context, req *GetTaskValueRequest, opts ...http.CallOption) (rsp *GetTaskValueReply, err error)
+	GetUserPoints(ctx context.Context, req *GetUserPointsRequest, opts ...http.CallOption) (rsp *GetUserPointsResponse, err error)
 	ListClientTask(ctx context.Context, req *ListClientTaskRequest, opts ...http.CallOption) (rsp *ListClientTaskReply, err error)
 	ListTask(ctx context.Context, req *ListTaskRequest, opts ...http.CallOption) (rsp *ListTaskReply, err error)
 	ListTaskValue(ctx context.Context, req *ListTaskValueRequest, opts ...http.CallOption) (rsp *ListTaskValueReply, err error)
@@ -468,6 +496,19 @@ func (c *TaskHTTPClientImpl) GetTaskValue(ctx context.Context, in *GetTaskValueR
 	pattern := "/partyaffairs/api/v1/task/value"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationTaskGetTaskValue))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *TaskHTTPClientImpl) GetUserPoints(ctx context.Context, in *GetUserPointsRequest, opts ...http.CallOption) (*GetUserPointsResponse, error) {
+	var out GetUserPointsResponse
+	pattern := "/partyaffairs/api/v1/task/points"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationTaskGetUserPoints))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

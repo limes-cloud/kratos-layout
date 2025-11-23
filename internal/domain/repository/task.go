@@ -7,6 +7,7 @@ import (
 )
 
 type TaskRepository interface {
+	GetPoints(ctx core.Context, id uint32) (uint32, error)
 	// GetTask 获取指定的任务
 	GetTask(ctx core.Context, id uint32) (*entity.Task, error)
 

@@ -3,6 +3,7 @@ package entity
 import "github.com/limes-cloud/kratosx/model"
 
 type Task struct {
+	Points      *uint32    `json:"points" gorm:"column:points"`
 	Title       string     `json:"title" gorm:"column:title"`
 	Description string     `json:"description" gorm:"column:description"`
 	IsUpdate    *bool      `json:"isUpdate" gorm:"column:is_update"`

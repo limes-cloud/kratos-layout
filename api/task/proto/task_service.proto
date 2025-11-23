@@ -13,6 +13,12 @@ import "google/api/annotations.proto";
 
 
 service Task {
+  rpc GetUserPoints (GetUserPointsRequest) returns (GetUserPointsResponse) {
+    option (google.api.http) = {
+      get: "/partyaffairs/api/v1/task/points",
+    };
+  }
+
   rpc ListTask (ListTaskRequest) returns (ListTaskReply) {
     option (google.api.http) = {
       get: "/partyaffairs/api/v1/tasks",

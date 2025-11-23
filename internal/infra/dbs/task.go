@@ -6,8 +6,7 @@ import (
 	"partyaffairs/internal/types"
 )
 
-type Task struct {
-}
+type Task struct{}
 
 func NewTask() *Task {
 	return &Task{}
@@ -16,6 +15,24 @@ func NewTask() *Task {
 func (u *Task) GetTask(ctx core.Context, id uint32) (*entity.Task, error) {
 	nc := entity.Task{}
 	return &nc, ctx.DB().First(&nc, "id=?", id).Error
+}
+
+func (u *Task) GetPoints(ctx core.Context, id uint32) (uint32, error) {
+	// 获取当前的完成的所有任务id
+	var ids []uint32
+	if err := ctx.DB().Model(&entity.TaskValue{}).
+		Select("task_id").
+		Where("user_id=?", id).
+		Scan(&ids).Error; err != nil {
+		return 0, err
+	}
+
+	// 获取任务对应的积分和
+	var count uint32 = 0
+	return count, ctx.DB().Model(&entity.Task{}).
+		Select("sum(points)").
+		Where("id in (?)", ids).
+		Scan(&count).Error
 }
 
 func (u *Task) ListTask(ctx core.Context, req *types.ListTaskRequest) ([]*entity.Task, uint32, error) {

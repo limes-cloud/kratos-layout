@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+
 	"github.com/limes-cloud/kratosx/model"
 	"partyaffairs/api/task"
 	"partyaffairs/internal/core"
@@ -30,6 +31,16 @@ func init() {
 		srv := NewTask()
 		task.RegisterTaskHTTPServer(hs, srv)
 	})
+}
+
+// GetUserPoints 获取任务列表
+func (s *Task) GetUserPoints(ctx context.Context, req *task.GetUserPointsRequest) (*task.GetUserPointsResponse, error) {
+	total, err := s.srv.GetTaskPoints(core.MustContext(ctx))
+	if err != nil {
+		return nil, err
+	}
+	reply := task.GetUserPointsResponse{Points: total}
+	return &reply, nil
 }
 
 // ListTask 获取任务列表
@@ -96,6 +107,7 @@ func (s *Task) GetTask(ctx context.Context, in *task.GetTaskRequest) (*task.GetT
 
 	return &task.GetTaskReply{
 		Id:          res.Id,
+		Points:      res.Points,
 		Title:       res.Title,
 		Description: res.Description,
 		IsUpdate:    res.IsUpdate,
@@ -111,6 +123,7 @@ func (s *Task) CreateTask(ctx context.Context, req *task.CreateTaskRequest) (*ta
 	id, err := s.srv.CreateTask(core.MustContext(ctx), &entity.Task{
 		Title:       req.Title,
 		Description: req.Description,
+		Points:      req.Points,
 		IsUpdate:    req.IsUpdate,
 		Start:       req.Start,
 		End:         req.End,
@@ -126,6 +139,7 @@ func (s *Task) UpdateTask(ctx context.Context, req *task.UpdateTaskRequest) (*ta
 	err := s.srv.UpdateTask(core.MustContext(ctx), &entity.Task{
 		BaseTenantModel: model.BaseTenantModel{Id: req.Id},
 		Title:           req.Title,
+		Points:          req.Points,
 		Description:     req.Description,
 		IsUpdate:        req.IsUpdate,
 		Start:           req.Start,

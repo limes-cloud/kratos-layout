@@ -30,7 +30,7 @@ func (u *Task) GetPoints(ctx core.Context, id uint32) (uint32, error) {
 	// 获取任务对应的积分和
 	var count uint32 = 0
 	return count, ctx.DB().Model(&entity.Task{}).
-		Select("sum(points)").
+		Select("COALESCE(SUM(points), 0)").
 		Where("id in (?)", ids).
 		Scan(&count).Error
 }

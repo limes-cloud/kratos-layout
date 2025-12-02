@@ -121,13 +121,14 @@ func (s *Task) GetTask(ctx context.Context, in *task.GetTaskRequest) (*task.GetT
 
 func (s *Task) CreateTask(ctx context.Context, req *task.CreateTaskRequest) (*task.CreateTaskReply, error) {
 	id, err := s.srv.CreateTask(core.MustContext(ctx), &entity.Task{
-		Title:       req.Title,
-		Description: req.Description,
-		Points:      req.Points,
-		IsUpdate:    req.IsUpdate,
-		Start:       req.Start,
-		End:         req.End,
-		Config:      req.Config,
+		BaseTenantModel: model.BaseTenantModel{TenantId: 1},
+		Title:           req.Title,
+		Description:     req.Description,
+		Points:          req.Points,
+		IsUpdate:        req.IsUpdate,
+		Start:           req.Start,
+		End:             req.End,
+		Config:          req.Config,
 	})
 	if err != nil {
 		return nil, err
@@ -137,7 +138,7 @@ func (s *Task) CreateTask(ctx context.Context, req *task.CreateTaskRequest) (*ta
 
 func (s *Task) UpdateTask(ctx context.Context, req *task.UpdateTaskRequest) (*task.UpdateTaskReply, error) {
 	err := s.srv.UpdateTask(core.MustContext(ctx), &entity.Task{
-		BaseTenantModel: model.BaseTenantModel{Id: req.Id},
+		BaseTenantModel: model.BaseTenantModel{Id: req.Id, TenantId: 1},
 		Title:           req.Title,
 		Points:          req.Points,
 		Description:     req.Description,
@@ -187,7 +188,7 @@ func (s *Task) ListTaskValue(ctx context.Context, req *task.ListTaskValueRequest
 }
 
 func (s *Task) GetTaskValue(ctx context.Context, in *task.GetTaskValueRequest) (*task.GetTaskValueReply, error) {
-	res, err := s.srv.GetTaskValue(core.MustContext(ctx), in.TaskId, in.UserId)
+	res, err := s.srv.GetTaskValue(core.MustContext(ctx, kratosx.WithSkipDBHook()), in.TaskId, in.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -208,7 +209,7 @@ func (s *Task) GetTaskValue(ctx context.Context, in *task.GetTaskValueRequest) (
 }
 
 func (s *Task) GetCurTaskValue(ctx context.Context, in *task.GetCurTaskValueRequest) (*task.GetCurTaskValueReply, error) {
-	res, err := s.srv.GetCurTaskValue(core.MustContext(ctx), in.TaskId)
+	res, err := s.srv.GetCurTaskValue(core.MustContext(ctx, kratosx.WithSkipDBHook()), in.TaskId)
 	if err != nil {
 		return nil, err
 	}
@@ -223,7 +224,7 @@ func (s *Task) GetCurTaskValue(ctx context.Context, in *task.GetCurTaskValueRequ
 }
 
 func (s *Task) CreateTaskValue(ctx context.Context, req *task.CreateTaskValueRequest) (*task.CreateTaskValueReply, error) {
-	id, err := s.srv.CreateTaskValue(core.MustContext(ctx), &entity.TaskValue{
+	id, err := s.srv.CreateTaskValue(core.MustContext(ctx, kratosx.WithSkipDBHook()), &entity.TaskValue{
 		TaskId: req.TaskId,
 		Value:  req.Value,
 	})
@@ -239,7 +240,7 @@ func (s *Task) ExportTaskValue(ctx context.Context, in *task.ExportTaskValueRequ
 }
 
 func (s *Task) UpdateTaskValue(ctx context.Context, req *task.UpdateTaskValueRequest) (*task.UpdateTaskValueReply, error) {
-	return &task.UpdateTaskValueReply{}, s.srv.UpdateTaskValue(core.MustContext(ctx), &entity.TaskValue{
+	return &task.UpdateTaskValueReply{}, s.srv.UpdateTaskValue(core.MustContext(ctx, kratosx.WithSkipDBHook()), &entity.TaskValue{
 		TaskId: req.TaskId,
 		Value:  req.Value,
 	})

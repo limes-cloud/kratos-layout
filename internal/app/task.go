@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 
+	"github.com/limes-cloud/kratosx"
 	"github.com/limes-cloud/kratosx/model"
 	"partyaffairs/api/task"
 	"partyaffairs/internal/core"

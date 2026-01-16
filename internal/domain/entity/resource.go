@@ -3,8 +3,8 @@ package entity
 import "github.com/limes-cloud/kratosx/model"
 
 type ResourceClassify struct {
-	Name   string `json:"name" gorm:"column:name"`
-	Weight uint32 `json:"weight" gorm:"column:weight"`
+	Name string `json:"name" gorm:"column:name"`
+	Logo string `json:"logo" gorm:"column:logo"`
 	model.BaseTenantModel
 }
 

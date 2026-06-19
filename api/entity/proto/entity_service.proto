@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package layout.api.entity;
+
+import "api/entity/proto/entity.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "./;entity";
+option java_multiple_files = true;
+option java_package = "layout.api.entity";
+
+service Entity {
+  // LoadEntity 载入全部系统的实体
+  rpc LoadEntity(google.protobuf.Empty) returns (LoadEntityReply) {
+    option (google.api.http) = {get: "/layout/api/entity/load"};
+  }
+
+  // ImportEntity 导入实体
+  rpc ImportEntity(ImportEntityRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/layout/api/entity/import"
+      body: "*"
+    };
+  }
+
+  // ListEntity 获取实体列表
+  rpc ListEntity(ListEntityRequest) returns (ListEntityReply) {
+    option (google.api.http) = {get: "/layout/api/entities"};
+  }
+
+  // CreateEntity 创建实体
+  rpc CreateEntity(CreateEntityRequest) returns (CreateEntityReply) {
+    option (google.api.http) = {
+      post: "/layout/api/entity"
+      body: "*"
+    };
+  }
+
+  // UpdateEntity 更新实体
+  rpc UpdateEntity(UpdateEntityRequest) returns (UpdateEntityReply) {
+    option (google.api.http) = {
+      put: "/layout/api/entity"
+      body: "*"
+    };
+  }
+
+  // DeleteEntity 删除实体
+  rpc DeleteEntity(DeleteEntityRequest) returns (DeleteEntityReply) {
+    option (google.api.http) = {delete: "/layout/api/entity"};
+  }
+
+  // RegisterEntity 注册应用实体
+  rpc RegisterEntity(RegisterEntityRequest) returns (RegisterEntityReply) {
+    option (google.api.http) = {
+      post: "/layout/api/entity/register"
+      body: "*"
+    };
+  }
+
+  // ListEntityField 获取实体字段列表
+  rpc ListEntityField(ListEntityFieldRequest) returns (ListEntityFieldReply) {
+    option (google.api.http) = {get: "/layout/api/entity/fields"};
+  }
+
+  // CreateEntityField 创建实体字段
+  rpc CreateEntityField(CreateEntityFieldRequest) returns (CreateEntityFieldReply) {
+    option (google.api.http) = {
+      post: "/layout/api/entity/field"
+      body: "*"
+    };
+  }
+
+  // UpdateEntityField 更新实体字段
+  rpc UpdateEntityField(UpdateEntityFieldRequest) returns (UpdateEntityFieldReply) {
+    option (google.api.http) = {
+      put: "/layout/api/entity/field"
+      body: "*"
+    };
+  }
+
+  // DeleteEntityField 删除实体字段
+  rpc DeleteEntityField(DeleteEntityFieldRequest) returns (DeleteEntityFieldReply) {
+    option (google.api.http) = {delete: "/layout/api/entity/field"};
+  }
+
+  // ListEntityRule 获取实体规则列表
+  rpc ListEntityRule(ListEntityRuleRequest) returns (ListEntityRuleReply) {
+    option (google.api.http) = {get: "/layout/api/entity/rules"};
+  }
+
+  // CreateEntityRule 创建实体规则
+  rpc CreateEntityRule(CreateEntityRuleRequest) returns (CreateEntityRuleReply) {
+    option (google.api.http) = {
+      post: "/layout/api/entity/rule"
+      body: "*"
+    };
+  }
+
+  // UpdateEntityRule 更新实体规则
+  rpc UpdateEntityRule(UpdateEntityRuleRequest) returns (UpdateEntityRuleReply) {
+    option (google.api.http) = {
+      put: "/layout/api/entity/rule"
+      body: "*"
+    };
+  }
+
+  // DeleteEntityRule 删除实体规则
+  rpc DeleteEntityRule(DeleteEntityRuleRequest) returns (DeleteEntityRuleReply) {
+    option (google.api.http) = {delete: "/layout/api/entity/rule"};
+  }
+}

@@ -1,10 +1,10 @@
 package entity
 
+import "github.com/limes-cloud/kratosx/model"
+
 type Dictionary struct {
-	Id          uint32  `json:"id" gorm:"id"`
-	Keyword     string  `json:"keyword" gorm:"keyword"`
-	Name        string  `json:"name" gorm:"name"`
-	Description *string `json:"description" gorm:"description"`
-	CreatedAt   int64   `json:"createdAt" gorm:"created_at"`
-	UpdatedAt   int64   `json:"updatedAt" gorm:"updated_at"`
+	Keyword     string  `json:"keyword" gorm:"column:keyword"`
+	Name        string  `json:"name" gorm:"column:name"`
+	Description *string `json:"description" gorm:"column:description"`
+	model.BaseModel
 }

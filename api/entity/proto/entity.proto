@@ -1,0 +1,312 @@
+syntax = "proto3";
+
+package layout.api.entity;
+
+import "validate/validate.proto";
+
+option go_package = "./;entity";
+option java_multiple_files = true;
+option java_package = "layout.api.entity";
+
+message ListEntityRequest {
+  uint32 page = 1 [(validate.rules).uint32 = {gte: 1}];
+  uint32 pageSize = 2 [(validate.rules).uint32 = {
+    gte: 1
+    lte: 50
+  }];
+  optional uint32 appId = 3 [(validate.rules).uint32 = {gte: 1}];
+  optional string order = 4 [(validate.rules).string = {
+    in: [
+      "asc",
+      "desc"
+    ]
+  }];
+  optional string orderBy = 5 [(validate.rules).string = {
+    in: [
+      "id",
+      "created_at",
+      "updated_at"
+    ]
+  }];
+  optional string name = 6;
+  optional string database = 7;
+}
+
+message ListEntityReply {
+  message Entity {
+    uint32 id = 1;
+    uint32 appId = 2;
+    string database = 3;
+    string name = 4;
+    string comment = 5;
+    uint32 createdAt = 6;
+    uint32 updatedAt = 7;
+  }
+  uint32 total = 1;
+  repeated Entity list = 2;
+}
+
+message LoadEntityReply {
+  message EntityField {
+    string name = 1;
+    string comment = 2;
+  }
+  message Entity {
+    string database = 1;
+    string name = 2;
+    string comment = 3;
+    repeated EntityField fields = 4;
+  }
+  uint32 total = 1;
+  repeated Entity list = 2;
+}
+
+message ImportEntityRequest {
+  message EntityField {
+    string name = 1;
+    string comment = 2;
+  }
+  message Entity {
+    string database = 1;
+    string name = 2;
+    string comment = 3;
+    repeated EntityField fields = 4;
+  }
+  uint32 appId = 1;
+  repeated Entity list = 2;
+}
+
+message CreateEntityRequest {
+  uint32 appId = 1 [(validate.rules).uint32 = {gte: 1}];
+  string database = 2 [(validate.rules).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  string name = 3 [(validate.rules).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  string comment = 4 [(validate.rules).string = {max_len: 128}];
+}
+
+message CreateEntityReply {
+  uint32 id = 1;
+}
+
+message UpdateEntityRequest {
+  uint32 id = 1 [(validate.rules).uint32 = {gte: 1}];
+  optional uint32 appId = 2 [(validate.rules).uint32 = {gte: 1}];
+  optional string database = 3 [(validate.rules).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  optional string name = 4 [(validate.rules).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  optional string comment = 5 [(validate.rules).string = {max_len: 128}];
+}
+
+message UpdateEntityReply {}
+
+message DeleteEntityRequest {
+  uint32 id = 1 [(validate.rules).uint32 = {gte: 1}];
+}
+
+message DeleteEntityReply {}
+
+message RegisterEntityField {
+  string name = 1 [(validate.rules).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  string comment = 2 [(validate.rules).string = {max_len: 128}];
+  uint32 index = 3;
+}
+
+message RegisterEntityRule {
+  string name = 1 [(validate.rules).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  optional bool status = 2;
+  string expression = 3;
+  string description = 4 [(validate.rules).string = {max_len: 128}];
+}
+
+message RegisterEntityNode {
+  string database = 1 [(validate.rules).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  string name = 2 [(validate.rules).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  string comment = 3 [(validate.rules).string = {max_len: 128}];
+  repeated RegisterEntityField fields = 4;
+  repeated RegisterEntityRule rules = 5;
+}
+
+message RegisterEntityRequest {
+  string appKeyword = 1 [(validate.rules).string = {min_len: 1}];
+  string mode = 2;
+  repeated RegisterEntityNode entities = 3;
+}
+
+message RegisterEntityReply {
+  uint32 created = 1;
+  uint32 updated = 2;
+  uint32 deleted = 3;
+}
+
+message ListEntityFieldRequest {
+  uint32 entityId = 1 [(validate.rules).uint32 = {gte: 1}];
+  optional string name = 2;
+}
+
+message EntityField {
+  uint32 id = 1;
+  uint32 entityId = 2;
+  string name = 3;
+  string comment = 4;
+  uint32 index = 5;
+  uint32 createdAt = 6;
+  uint32 updatedAt = 7;
+}
+
+message ListEntityFieldReply {
+  uint32 total = 1;
+  repeated EntityField list = 2;
+}
+
+message CreateEntityFieldRequest {
+  uint32 entityId = 1 [(validate.rules).uint32 = {gte: 1}];
+  string name = 2 [(validate.rules).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  string comment = 3 [(validate.rules).string = {max_len: 128}];
+  uint32 index = 4 [(validate.rules).uint32 = {gte: 0}];
+}
+
+message CreateEntityFieldReply {
+  uint32 id = 1;
+}
+
+message UpdateEntityFieldRequest {
+  uint32 id = 1 [(validate.rules).uint32 = {gt: 0}];
+  optional uint32 entityId = 2 [(validate.rules).uint32 = {gte: 1}];
+  optional string name = 3 [(validate.rules).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  optional string comment = 4 [(validate.rules).string = {max_len: 128}];
+  optional uint32 index = 5 [(validate.rules).uint32 = {gte: 0}];
+}
+
+message UpdateEntityFieldReply {}
+
+message DeleteEntityFieldRequest {
+  uint32 id = 1 [(validate.rules).uint32 = {gte: 1}];
+}
+
+message DeleteEntityFieldReply {}
+
+message ListEntityRuleRequest {
+  uint32 page = 1 [(validate.rules).uint32 = {gte: 1}];
+  uint32 pageSize = 2 [(validate.rules).uint32 = {
+    gte: 1
+    lte: 50
+  }];
+  optional string order = 3 [(validate.rules).string = {
+    in: [
+      "asc",
+      "desc"
+    ]
+  }];
+  optional string orderBy = 4 [(validate.rules).string = {
+    in: [
+      "id",
+      "created_at",
+      "updated_at"
+    ]
+  }];
+  optional uint32 entityId = 5 [(validate.rules).uint32 = {gte: 1}];
+  optional string name = 6;
+  optional bool status = 7;
+}
+
+message Condition {
+  string field = 1 [(validate.rules).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  string operator = 2 [(validate.rules).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  string value = 3 [(validate.rules).string = {max_len: 256}];
+}
+
+message ConditionGroup {
+  string logic = 1 [(validate.rules).string = {
+    in: [
+      "AND",
+      "OR"
+    ]
+  }];
+  repeated Condition conditions = 2;
+  repeated ConditionGroup groups = 3;
+}
+
+message EntityRule {
+  uint32 id = 1;
+  uint32 entityId = 2;
+  string name = 3;
+  string description = 4;
+  ConditionGroup expression = 5;
+  bool status = 6;
+  uint32 createdAt = 7;
+  uint32 updatedAt = 8;
+}
+
+message ListEntityRuleReply {
+  uint32 total = 1;
+  repeated EntityRule list = 2;
+}
+
+message CreateEntityRuleRequest {
+  uint32 entityId = 1 [(validate.rules).uint32 = {gte: 1}];
+  string name = 2 [(validate.rules).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  string description = 3 [(validate.rules).string = {max_len: 128}];
+  ConditionGroup expression = 4;
+  optional bool status = 5;
+}
+
+message CreateEntityRuleReply {
+  uint32 id = 1;
+}
+
+message UpdateEntityRuleRequest {
+  uint32 id = 1 [(validate.rules).uint32 = {gt: 0}];
+  optional uint32 entityId = 2 [(validate.rules).uint32 = {gte: 1}];
+  optional string name = 3 [(validate.rules).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  optional ConditionGroup expression = 4;
+  optional string description = 5 [(validate.rules).string = {max_len: 128}];
+  optional bool status = 6;
+}
+
+message UpdateEntityRuleReply {}
+
+message DeleteEntityRuleRequest {
+  uint32 id = 1 [(validate.rules).uint32 = {gte: 1}];
+}
+
+message DeleteEntityRuleReply {}

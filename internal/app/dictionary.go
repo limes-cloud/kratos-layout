@@ -6,11 +6,10 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/limes-cloud/kratosx"
-	"github.com/limes-cloud/kratosx/pkg/valx"
+	"github.com/limes-cloud/kratosx/pkg/value"
 
-	pb "layout/api/layout/dictionary/v1"
-	"layout/api/layout/errors"
-	"layout/internal/conf"
+	"layout/api/dictionary"
+	"layout/api/errors"
 	"layout/internal/domain/entity"
 	"layout/internal/domain/service"
 	"layout/internal/infra/dbs"
@@ -18,26 +17,26 @@ import (
 )
 
 type Dictionary struct {
-	pb.UnimplementedDictionaryServer
+	dictionary.UnimplementedDictionaryServer
 	srv *service.Dictionary
 }
 
-func NewDictionary(conf *conf.Config) *Dictionary {
+func NewDictionary() *Dictionary {
 	return &Dictionary{
-		srv: service.NewDictionary(conf, dbs.NewDictionary()),
+		srv: service.NewDictionary(dbs.NewDictionary()),
 	}
 }
 
 func init() {
-	register(func(c *conf.Config, hs *http.Server, gs *grpc.Server) {
-		app := NewDictionary(c)
-		pb.RegisterDictionaryHTTPServer(hs, app)
-		pb.RegisterDictionaryServer(gs, app)
+	register(func(hs *http.Server, gs *grpc.Server) {
+		app := NewDictionary()
+		dictionary.RegisterDictionaryHTTPServer(hs, app)
+		dictionary.RegisterDictionaryServer(gs, app)
 	})
 }
 
 // GetDictionary 获取指定的字典目录
-func (s *Dictionary) GetDictionary(c context.Context, req *pb.GetDictionaryRequest) (*pb.GetDictionaryReply, error) {
+func (s *Dictionary) GetDictionary(c context.Context, req *dictionary.GetDictionaryRequest) (*dictionary.GetDictionaryReply, error) {
 	ctx := kratosx.MustContext(c)
 	result, err := s.srv.GetDictionary(ctx, &types.GetDictionaryRequest{
 		Id:      req.Id,
@@ -47,8 +46,8 @@ func (s *Dictionary) GetDictionary(c context.Context, req *pb.GetDictionaryReque
 		return nil, err
 	}
 
-	reply := pb.GetDictionaryReply{}
-	if err = valx.Transform(result, &reply); err != nil {
+	reply := dictionary.GetDictionaryReply{}
+	if err = value.Transform(result, &reply); err != nil {
 		ctx.Logger().Warnw("msg", "reply transform err", "err", err.Error())
 		return nil, errors.TransformError()
 	}
@@ -57,7 +56,7 @@ func (s *Dictionary) GetDictionary(c context.Context, req *pb.GetDictionaryReque
 }
 
 // ListDictionary 获取字典目录列表
-func (s *Dictionary) ListDictionary(c context.Context, req *pb.ListDictionaryRequest) (*pb.ListDictionaryReply, error) {
+func (s *Dictionary) ListDictionary(c context.Context, req *dictionary.ListDictionaryRequest) (*dictionary.ListDictionaryReply, error) {
 	ctx := kratosx.MustContext(c)
 
 	result, total, err := s.srv.ListDictionary(ctx, &types.ListDictionaryRequest{
@@ -72,8 +71,8 @@ func (s *Dictionary) ListDictionary(c context.Context, req *pb.ListDictionaryReq
 		return nil, err
 	}
 
-	reply := pb.ListDictionaryReply{Total: total}
-	if err = valx.Transform(result, &reply.List); err != nil {
+	reply := dictionary.ListDictionaryReply{Total: total}
+	if err = value.Transform(result, &reply.List); err != nil {
 		ctx.Logger().Warnw("msg", "reply transform err", "err", err.Error())
 		return nil, errors.TransformError()
 	}
@@ -82,13 +81,13 @@ func (s *Dictionary) ListDictionary(c context.Context, req *pb.ListDictionaryReq
 }
 
 // CreateDictionary 创建字典目录
-func (s *Dictionary) CreateDictionary(c context.Context, req *pb.CreateDictionaryRequest) (*pb.CreateDictionaryReply, error) {
+func (s *Dictionary) CreateDictionary(c context.Context, req *dictionary.CreateDictionaryRequest) (*dictionary.CreateDictionaryReply, error) {
 	var (
 		ctx = kratosx.MustContext(c)
 		ent = entity.Dictionary{}
 	)
 
-	if err := valx.Transform(req, &ent); err != nil {
+	if err := value.Transform(req, &ent); err != nil {
 		ctx.Logger().Warnw("msg", "req transform err", "err", err.Error())
 		return nil, errors.TransformError()
 	}
@@ -98,17 +97,17 @@ func (s *Dictionary) CreateDictionary(c context.Context, req *pb.CreateDictionar
 		return nil, err
 	}
 
-	return &pb.CreateDictionaryReply{Id: id}, nil
+	return &dictionary.CreateDictionaryReply{Id: id}, nil
 }
 
 // UpdateDictionary 更新字典目录
-func (s *Dictionary) UpdateDictionary(c context.Context, req *pb.UpdateDictionaryRequest) (*pb.UpdateDictionaryReply, error) {
+func (s *Dictionary) UpdateDictionary(c context.Context, req *dictionary.UpdateDictionaryRequest) (*dictionary.UpdateDictionaryReply, error) {
 	var (
 		ctx = kratosx.MustContext(c)
 		ent = entity.Dictionary{}
 	)
 
-	if err := valx.Transform(req, &ent); err != nil {
+	if err := value.Transform(req, &ent); err != nil {
 		ctx.Logger().Warnw("msg", "req transform err", "err", err.Error())
 		return nil, errors.TransformError()
 	}
@@ -117,14 +116,14 @@ func (s *Dictionary) UpdateDictionary(c context.Context, req *pb.UpdateDictionar
 		return nil, err
 	}
 
-	return &pb.UpdateDictionaryReply{}, nil
+	return &dictionary.UpdateDictionaryReply{}, nil
 }
 
 // DeleteDictionary 删除字典目录
-func (s *Dictionary) DeleteDictionary(c context.Context, req *pb.DeleteDictionaryRequest) (*pb.DeleteDictionaryReply, error) {
+func (s *Dictionary) DeleteDictionary(c context.Context, req *dictionary.DeleteDictionaryRequest) (*dictionary.DeleteDictionaryReply, error) {
 	err := s.srv.DeleteDictionary(kratosx.MustContext(c), req.Id)
 	if err != nil {
 		return nil, err
 	}
-	return &pb.DeleteDictionaryReply{}, nil
+	return &dictionary.DeleteDictionaryReply{}, nil
 }

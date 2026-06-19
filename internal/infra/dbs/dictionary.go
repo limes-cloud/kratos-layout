@@ -1,10 +1,8 @@
 package dbs
 
 import (
-	"fmt"
-
 	"github.com/limes-cloud/kratosx"
-	"google.golang.org/protobuf/proto"
+	"github.com/limes-cloud/kratosx/model/page"
 
 	"layout/internal/domain/entity"
 	"layout/internal/types"
@@ -26,7 +24,7 @@ func (r Dictionary) ListDictionary(ctx kratosx.Context, req *types.ListDictionar
 		fs    = []string{"*"}
 	)
 
-	db := ctx.DB().Select(fs)
+	db := ctx.DB().Model(entity.Dictionary{}).Select(fs)
 
 	if req.Keyword != nil {
 		db = db.Where("keyword = ?", *req.Keyword)
@@ -39,23 +37,22 @@ func (r Dictionary) ListDictionary(ctx kratosx.Context, req *types.ListDictionar
 		return nil, 0, err
 	}
 
-	if req.OrderBy == nil || *req.OrderBy == "" {
-		req.OrderBy = proto.String("id")
-	}
-	if req.Order == nil || *req.Order == "" {
-		req.Order = proto.String("asc")
-	}
-	db = db.Order(fmt.Sprintf("%s %s", *req.OrderBy, *req.Order))
-	if *req.OrderBy != "id" {
-		db = db.Order("id asc")
-	}
+	db = page.SearchScopes(db, &page.Search{
+		Page:     req.Page,
+		PageSize: req.PageSize,
+		Order:    req.Order,
+		OrderBy:  req.OrderBy,
+	})
 
 	return es, uint32(total), db.Find(&es).Error
 }
 
 // CreateDictionary 创建数据
 func (r Dictionary) CreateDictionary(ctx kratosx.Context, ent *entity.Dictionary) (uint32, error) {
-	return ent.Id, ctx.DB().Create(ent).Error
+	if err := ctx.DB().Create(ent).Error; err != nil {
+		return 0, err
+	}
+	return ent.Id, nil
 }
 
 func (r Dictionary) GetDictionaryByKeyword(ctx kratosx.Context, keyword string) (*entity.Dictionary, error) {

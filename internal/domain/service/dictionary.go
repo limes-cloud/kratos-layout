@@ -2,21 +2,21 @@ package service
 
 import (
 	"github.com/limes-cloud/kratosx"
+	"github.com/limes-cloud/kratosx/library/db/gormtranserror"
+	"gorm.io/gorm"
 
-	"layout/api/layout/errors"
-	"layout/internal/conf"
+	"layout/api/errors"
 	"layout/internal/domain/entity"
 	"layout/internal/domain/repository"
 	"layout/internal/types"
 )
 
 type Dictionary struct {
-	conf *conf.Config
 	repo repository.Dictionary
 }
 
-func NewDictionary(conf *conf.Config, repo repository.Dictionary) *Dictionary {
-	return &Dictionary{conf: conf, repo: repo}
+func NewDictionary(repo repository.Dictionary) *Dictionary {
+	return &Dictionary{repo: repo}
 }
 
 // GetDictionary 获取指定字典
@@ -31,6 +31,9 @@ func (u *Dictionary) GetDictionary(ctx kratosx.Context, req *types.GetDictionary
 		ent, err = u.repo.GetDictionaryByKeyword(ctx, *req.Keyword)
 	} else {
 		return nil, errors.ParamsError()
+	}
+	if gormtranserror.Is(err, gorm.ErrRecordNotFound) {
+		return nil, errors.GetError("数据不存在")
 	}
 	if err != nil {
 		return nil, errors.GetError(err.Error())

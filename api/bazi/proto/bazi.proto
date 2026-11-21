@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package tianji.api.bazi;
+
+import "validate/validate.proto";
+
+option go_package = "./;bazi";
+
+message BaziRequest {
+  string name = 1 [(validate.rules).string = {min_len: 1}];
+  string gender = 2 [(validate.rules).string = {
+    in: [
+      "M",
+      "F"
+    ]
+  }];
+  int32 year = 3 [(validate.rules).int32 = {
+    gte: 1000
+    lte: 2100
+  }];
+  int32 month = 4 [(validate.rules).int32 = {
+    gte: 1
+    lte: 12
+  }];
+  int32 day = 5 [(validate.rules).int32 = {
+    gte: 1
+    lte: 31
+  }];
+  int32 hour = 6 [(validate.rules).int32 = {
+    gte: 0
+    lte: 23
+  }];
+  int32 minute = 7 [(validate.rules).int32 = {
+    gte: 0
+    lte: 59
+  }];
+  string location = 8; // 出生地点（如"北京"），留空则不修正真太阳时
+  bool isLunar = 9; // true=农历输入，false=公历输入（默认）
+  bool lunarLeap = 10; // 农历闰月（仅 isLunar=true 时有效）
+}
+
+message Pillar {
+  string stem = 1; // 天干
+  string branch = 2; // 地支
+  string sound = 3; // 纳音
+  string tenStar = 4; // 十神
+  string terrain = 5; // 地势（日主对本柱地支）
+  string selfSeat = 6; // 自坐（本柱天干对本柱地支）
+  string hiddenStems = 7; // 藏干（如"甲丙戊 枭比食"）
+  string xukong = 8; // 空亡
+  string shensha = 9; // 神煞
+}
+
+message DecadeFortune {
+  string sixtyCycle = 1; // 大运干支
+  int32 startAge = 2;
+  int32 endAge = 3;
+  string startYear = 4; // 起运干支年
+}
+
+message AnnualFortune {
+  int32 calYear = 1; // 公历年
+  string sixtyCycle = 2;
+  int32 age = 3;
+  string tenStar = 4; // 与日干的十神关系
+}
+
+message WuxingScore {
+  double wood  = 1; // 木占比(0~1)
+  double fire  = 2; // 火占比
+  double earth = 3; // 土占比
+  double metal = 4; // 金占比
+  double water = 5; // 水占比
+}
+
+message BaziReportResponse {
+  string md = 1; // Markdown 格式的八字命盘报告
+}
+
+message BaziResponse {
+  string name = 1;
+  string gender = 2;
+  string zodiac = 3; // 生肖
+  string lunarDate = 4; // 农历日期
+  string solarTerm = 5; // 节气信息
+  WuxingScore wuxing = 17; // 五行衰旺占比
+
+  Pillar yearPillar = 6;
+  Pillar monthPillar = 7;
+  Pillar dayPillar = 8;
+  Pillar hourPillar = 9;
+
+  string fetalOrigin = 10; // 胎元
+  string ownSign = 11; // 命宫
+  string bodySign = 12; // 身宫
+  string strength = 13; // 旺相休囚死
+
+  string childLimit = 14; // 童限描述
+  repeated DecadeFortune decadeFortunes = 15;
+  repeated AnnualFortune annualFortunes = 16;
+}

@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package tianji.api.bazi;
+
+import "api/bazi/proto/bazi.proto";
+import "google/api/annotations.proto";
+
+option go_package = "./;bazi";
+
+service Bazi {
+  // Calculate 计算八字命盘
+  rpc Calculate(BaziRequest) returns (BaziResponse) {
+    option (google.api.http) = {
+      post: "/tianji/api/bazi/calculate"
+      body: "*"
+    };
+  }
+
+  // Report 生成八字命盘 Markdown 报告
+  rpc Report(BaziRequest) returns (BaziReportResponse) {
+    option (google.api.http) = {
+      post: "/tianji/api/bazi/report"
+      body: "*"
+    };
+  }
+}

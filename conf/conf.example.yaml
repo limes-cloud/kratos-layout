@@ -1,0 +1,30 @@
+name: tianji
+env: TEST
+server:
+  http:
+    host: 127.0.0.1
+    port: 7013
+    timeout: 60s
+    formatResponse: true
+    marshal:
+      emitUnpopulated: true
+      useProtoNames: true
+  grpc:
+    host: 127.0.0.1
+    port: 8013
+    timeout: 60s
+log:
+  level: 0
+  caller: true
+  output:
+    - stdout
+    - file
+  file:
+    name: ./tmp/runtime/output.log
+    maxSize: 1
+    maxBackup: 5
+    maxAge: 1
+    compress: false
+business:
+  chunkSize: 1
+  defaultMaxSize: 10

@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package layout.api.dictionary;
+package tianji.api.dictionary;
 
 import "validate/validate.proto";
 
 option go_package = "./;dictionary";
 option java_multiple_files = true;
-option java_package = "layout.api.dictionary";
+option java_package = "tianji.api.dictionary";
 
 message GetDictionaryRequest {
   optional uint32 id = 1 [(validate.rules).uint32 = {gte: 1}];

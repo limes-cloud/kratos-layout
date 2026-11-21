@@ -8,12 +8,12 @@ import (
 	"github.com/limes-cloud/kratosx"
 	"github.com/limes-cloud/kratosx/pkg/value"
 
-	"layout/api/dictionary"
-	"layout/api/errors"
-	"layout/internal/domain/entity"
-	"layout/internal/domain/service"
-	"layout/internal/infra/dbs"
-	"layout/internal/types"
+	"tianji/api/dictionary"
+	"tianji/api/errors"
+	"tianji/internal/domain/entity"
+	"tianji/internal/domain/service"
+	"tianji/internal/infra/dbs"
+	"tianji/internal/types"
 )
 
 type Dictionary struct {

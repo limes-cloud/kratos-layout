@@ -5,10 +5,10 @@ import (
 	"github.com/limes-cloud/kratosx/library/db/gormtranserror"
 	"gorm.io/gorm"
 
-	"layout/api/errors"
-	"layout/internal/domain/entity"
-	"layout/internal/domain/repository"
-	"layout/internal/types"
+	"tianji/api/errors"
+	"tianji/internal/domain/entity"
+	"tianji/internal/domain/repository"
+	"tianji/internal/types"
 )
 
 type Dictionary struct {

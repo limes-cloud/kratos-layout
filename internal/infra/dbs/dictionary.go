@@ -4,8 +4,8 @@ import (
 	"github.com/limes-cloud/kratosx"
 	"github.com/limes-cloud/kratosx/model/page"
 
-	"layout/internal/domain/entity"
-	"layout/internal/types"
+	"tianji/internal/domain/entity"
+	"tianji/internal/types"
 )
 
 type Dictionary struct {

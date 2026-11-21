@@ -1,29 +1,29 @@
 syntax = "proto3";
 
-package layout.api.dictionary;
+package tianji.api.dictionary;
 
 import "api/dictionary/proto/dictionary.proto";
 import "google/api/annotations.proto";
 
 option go_package = "./;dictionary";
 option java_multiple_files = true;
-option java_package = "layout.api.dictionary";
+option java_package = "tianji.api.dictionary";
 
 service Dictionary {
   // GetDictionary 获取指定的字典目录
   rpc GetDictionary(GetDictionaryRequest) returns (GetDictionaryReply) {
-    option (google.api.http) = {get: "/layout/api/dictionary"};
+    option (google.api.http) = {get: "/tianji/api/dictionary"};
   }
 
   // ListDictionary 获取字典目录列表
   rpc ListDictionary(ListDictionaryRequest) returns (ListDictionaryReply) {
-    option (google.api.http) = {get: "/layout/api/dictionaries"};
+    option (google.api.http) = {get: "/tianji/api/dictionaries"};
   }
 
   // CreateDictionary 创建字典目录
   rpc CreateDictionary(CreateDictionaryRequest) returns (CreateDictionaryReply) {
     option (google.api.http) = {
-      post: "/layout/api/dictionary"
+      post: "/tianji/api/dictionary"
       body: "*"
     };
   }
@@ -31,13 +31,13 @@ service Dictionary {
   // UpdateDictionary 更新字典目录
   rpc UpdateDictionary(UpdateDictionaryRequest) returns (UpdateDictionaryReply) {
     option (google.api.http) = {
-      put: "/layout/api/dictionary"
+      put: "/tianji/api/dictionary"
       body: "*"
     };
   }
 
   // DeleteDictionary 删除字典目录
   rpc DeleteDictionary(DeleteDictionaryRequest) returns (DeleteDictionaryReply) {
-    option (google.api.http) = {delete: "/layout/api/dictionary"};
+    option (google.api.http) = {delete: "/tianji/api/dictionary"};
   }
 }

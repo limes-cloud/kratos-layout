@@ -71,21 +71,21 @@ type EntityHTTPServer interface {
 
 func RegisterEntityHTTPServer(s *http.Server, srv EntityHTTPServer) {
 	r := s.Route("/")
-	r.GET("/layout/api/entity/load", _Entity_LoadEntity0_HTTP_Handler(srv))
-	r.POST("/layout/api/entity/import", _Entity_ImportEntity0_HTTP_Handler(srv))
-	r.GET("/layout/api/entities", _Entity_ListEntity0_HTTP_Handler(srv))
-	r.POST("/layout/api/entity", _Entity_CreateEntity0_HTTP_Handler(srv))
-	r.PUT("/layout/api/entity", _Entity_UpdateEntity0_HTTP_Handler(srv))
-	r.DELETE("/layout/api/entity", _Entity_DeleteEntity0_HTTP_Handler(srv))
-	r.POST("/layout/api/entity/register", _Entity_RegisterEntity0_HTTP_Handler(srv))
-	r.GET("/layout/api/entity/fields", _Entity_ListEntityField0_HTTP_Handler(srv))
-	r.POST("/layout/api/entity/field", _Entity_CreateEntityField0_HTTP_Handler(srv))
-	r.PUT("/layout/api/entity/field", _Entity_UpdateEntityField0_HTTP_Handler(srv))
-	r.DELETE("/layout/api/entity/field", _Entity_DeleteEntityField0_HTTP_Handler(srv))
-	r.GET("/layout/api/entity/rules", _Entity_ListEntityRule0_HTTP_Handler(srv))
-	r.POST("/layout/api/entity/rule", _Entity_CreateEntityRule0_HTTP_Handler(srv))
-	r.PUT("/layout/api/entity/rule", _Entity_UpdateEntityRule0_HTTP_Handler(srv))
-	r.DELETE("/layout/api/entity/rule", _Entity_DeleteEntityRule0_HTTP_Handler(srv))
+	r.GET("/tianji/api/entity/load", _Entity_LoadEntity0_HTTP_Handler(srv))
+	r.POST("/tianji/api/entity/import", _Entity_ImportEntity0_HTTP_Handler(srv))
+	r.GET("/tianji/api/entities", _Entity_ListEntity0_HTTP_Handler(srv))
+	r.POST("/tianji/api/entity", _Entity_CreateEntity0_HTTP_Handler(srv))
+	r.PUT("/tianji/api/entity", _Entity_UpdateEntity0_HTTP_Handler(srv))
+	r.DELETE("/tianji/api/entity", _Entity_DeleteEntity0_HTTP_Handler(srv))
+	r.POST("/tianji/api/entity/register", _Entity_RegisterEntity0_HTTP_Handler(srv))
+	r.GET("/tianji/api/entity/fields", _Entity_ListEntityField0_HTTP_Handler(srv))
+	r.POST("/tianji/api/entity/field", _Entity_CreateEntityField0_HTTP_Handler(srv))
+	r.PUT("/tianji/api/entity/field", _Entity_UpdateEntityField0_HTTP_Handler(srv))
+	r.DELETE("/tianji/api/entity/field", _Entity_DeleteEntityField0_HTTP_Handler(srv))
+	r.GET("/tianji/api/entity/rules", _Entity_ListEntityRule0_HTTP_Handler(srv))
+	r.POST("/tianji/api/entity/rule", _Entity_CreateEntityRule0_HTTP_Handler(srv))
+	r.PUT("/tianji/api/entity/rule", _Entity_UpdateEntityRule0_HTTP_Handler(srv))
+	r.DELETE("/tianji/api/entity/rule", _Entity_DeleteEntityRule0_HTTP_Handler(srv))
 }
 
 func _Entity_LoadEntity0_HTTP_Handler(srv EntityHTTPServer) func(ctx http.Context) error {
@@ -425,7 +425,7 @@ func NewEntityHTTPClient(client *http.Client) EntityHTTPClient {
 
 func (c *EntityHTTPClientImpl) CreateEntity(ctx context.Context, in *CreateEntityRequest, opts ...http.CallOption) (*CreateEntityReply, error) {
 	var out CreateEntityReply
-	pattern := "/layout/api/entity"
+	pattern := "/tianji/api/entity"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationEntityCreateEntity))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -438,7 +438,7 @@ func (c *EntityHTTPClientImpl) CreateEntity(ctx context.Context, in *CreateEntit
 
 func (c *EntityHTTPClientImpl) CreateEntityField(ctx context.Context, in *CreateEntityFieldRequest, opts ...http.CallOption) (*CreateEntityFieldReply, error) {
 	var out CreateEntityFieldReply
-	pattern := "/layout/api/entity/field"
+	pattern := "/tianji/api/entity/field"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationEntityCreateEntityField))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -451,7 +451,7 @@ func (c *EntityHTTPClientImpl) CreateEntityField(ctx context.Context, in *Create
 
 func (c *EntityHTTPClientImpl) CreateEntityRule(ctx context.Context, in *CreateEntityRuleRequest, opts ...http.CallOption) (*CreateEntityRuleReply, error) {
 	var out CreateEntityRuleReply
-	pattern := "/layout/api/entity/rule"
+	pattern := "/tianji/api/entity/rule"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationEntityCreateEntityRule))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -464,7 +464,7 @@ func (c *EntityHTTPClientImpl) CreateEntityRule(ctx context.Context, in *CreateE
 
 func (c *EntityHTTPClientImpl) DeleteEntity(ctx context.Context, in *DeleteEntityRequest, opts ...http.CallOption) (*DeleteEntityReply, error) {
 	var out DeleteEntityReply
-	pattern := "/layout/api/entity"
+	pattern := "/tianji/api/entity"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationEntityDeleteEntity))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -477,7 +477,7 @@ func (c *EntityHTTPClientImpl) DeleteEntity(ctx context.Context, in *DeleteEntit
 
 func (c *EntityHTTPClientImpl) DeleteEntityField(ctx context.Context, in *DeleteEntityFieldRequest, opts ...http.CallOption) (*DeleteEntityFieldReply, error) {
 	var out DeleteEntityFieldReply
-	pattern := "/layout/api/entity/field"
+	pattern := "/tianji/api/entity/field"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationEntityDeleteEntityField))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -490,7 +490,7 @@ func (c *EntityHTTPClientImpl) DeleteEntityField(ctx context.Context, in *Delete
 
 func (c *EntityHTTPClientImpl) DeleteEntityRule(ctx context.Context, in *DeleteEntityRuleRequest, opts ...http.CallOption) (*DeleteEntityRuleReply, error) {
 	var out DeleteEntityRuleReply
-	pattern := "/layout/api/entity/rule"
+	pattern := "/tianji/api/entity/rule"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationEntityDeleteEntityRule))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -503,7 +503,7 @@ func (c *EntityHTTPClientImpl) DeleteEntityRule(ctx context.Context, in *DeleteE
 
 func (c *EntityHTTPClientImpl) ImportEntity(ctx context.Context, in *ImportEntityRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
 	var out emptypb.Empty
-	pattern := "/layout/api/entity/import"
+	pattern := "/tianji/api/entity/import"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationEntityImportEntity))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -516,7 +516,7 @@ func (c *EntityHTTPClientImpl) ImportEntity(ctx context.Context, in *ImportEntit
 
 func (c *EntityHTTPClientImpl) ListEntity(ctx context.Context, in *ListEntityRequest, opts ...http.CallOption) (*ListEntityReply, error) {
 	var out ListEntityReply
-	pattern := "/layout/api/entities"
+	pattern := "/tianji/api/entities"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationEntityListEntity))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -529,7 +529,7 @@ func (c *EntityHTTPClientImpl) ListEntity(ctx context.Context, in *ListEntityReq
 
 func (c *EntityHTTPClientImpl) ListEntityField(ctx context.Context, in *ListEntityFieldRequest, opts ...http.CallOption) (*ListEntityFieldReply, error) {
 	var out ListEntityFieldReply
-	pattern := "/layout/api/entity/fields"
+	pattern := "/tianji/api/entity/fields"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationEntityListEntityField))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -542,7 +542,7 @@ func (c *EntityHTTPClientImpl) ListEntityField(ctx context.Context, in *ListEnti
 
 func (c *EntityHTTPClientImpl) ListEntityRule(ctx context.Context, in *ListEntityRuleRequest, opts ...http.CallOption) (*ListEntityRuleReply, error) {
 	var out ListEntityRuleReply
-	pattern := "/layout/api/entity/rules"
+	pattern := "/tianji/api/entity/rules"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationEntityListEntityRule))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -555,7 +555,7 @@ func (c *EntityHTTPClientImpl) ListEntityRule(ctx context.Context, in *ListEntit
 
 func (c *EntityHTTPClientImpl) LoadEntity(ctx context.Context, in *emptypb.Empty, opts ...http.CallOption) (*LoadEntityReply, error) {
 	var out LoadEntityReply
-	pattern := "/layout/api/entity/load"
+	pattern := "/tianji/api/entity/load"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationEntityLoadEntity))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -568,7 +568,7 @@ func (c *EntityHTTPClientImpl) LoadEntity(ctx context.Context, in *emptypb.Empty
 
 func (c *EntityHTTPClientImpl) RegisterEntity(ctx context.Context, in *RegisterEntityRequest, opts ...http.CallOption) (*RegisterEntityReply, error) {
 	var out RegisterEntityReply
-	pattern := "/layout/api/entity/register"
+	pattern := "/tianji/api/entity/register"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationEntityRegisterEntity))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -581,7 +581,7 @@ func (c *EntityHTTPClientImpl) RegisterEntity(ctx context.Context, in *RegisterE
 
 func (c *EntityHTTPClientImpl) UpdateEntity(ctx context.Context, in *UpdateEntityRequest, opts ...http.CallOption) (*UpdateEntityReply, error) {
 	var out UpdateEntityReply
-	pattern := "/layout/api/entity"
+	pattern := "/tianji/api/entity"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationEntityUpdateEntity))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -594,7 +594,7 @@ func (c *EntityHTTPClientImpl) UpdateEntity(ctx context.Context, in *UpdateEntit
 
 func (c *EntityHTTPClientImpl) UpdateEntityField(ctx context.Context, in *UpdateEntityFieldRequest, opts ...http.CallOption) (*UpdateEntityFieldReply, error) {
 	var out UpdateEntityFieldReply
-	pattern := "/layout/api/entity/field"
+	pattern := "/tianji/api/entity/field"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationEntityUpdateEntityField))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -607,7 +607,7 @@ func (c *EntityHTTPClientImpl) UpdateEntityField(ctx context.Context, in *Update
 
 func (c *EntityHTTPClientImpl) UpdateEntityRule(ctx context.Context, in *UpdateEntityRuleRequest, opts ...http.CallOption) (*UpdateEntityRuleReply, error) {
 	var out UpdateEntityRuleReply
-	pattern := "/layout/api/entity/rule"
+	pattern := "/tianji/api/entity/rule"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationEntityUpdateEntityRule))
 	opts = append(opts, http.PathTemplate(pattern))

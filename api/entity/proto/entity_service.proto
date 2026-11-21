@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package layout.api.entity;
+package tianji.api.entity;
 
 import "api/entity/proto/entity.proto";
 import "google/api/annotations.proto";
@@ -8,31 +8,31 @@ import "google/protobuf/empty.proto";
 
 option go_package = "./;entity";
 option java_multiple_files = true;
-option java_package = "layout.api.entity";
+option java_package = "tianji.api.entity";
 
 service Entity {
   // LoadEntity 载入全部系统的实体
   rpc LoadEntity(google.protobuf.Empty) returns (LoadEntityReply) {
-    option (google.api.http) = {get: "/layout/api/entity/load"};
+    option (google.api.http) = {get: "/tianji/api/entity/load"};
   }
 
   // ImportEntity 导入实体
   rpc ImportEntity(ImportEntityRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      post: "/layout/api/entity/import"
+      post: "/tianji/api/entity/import"
       body: "*"
     };
   }
 
   // ListEntity 获取实体列表
   rpc ListEntity(ListEntityRequest) returns (ListEntityReply) {
-    option (google.api.http) = {get: "/layout/api/entities"};
+    option (google.api.http) = {get: "/tianji/api/entities"};
   }
 
   // CreateEntity 创建实体
   rpc CreateEntity(CreateEntityRequest) returns (CreateEntityReply) {
     option (google.api.http) = {
-      post: "/layout/api/entity"
+      post: "/tianji/api/entity"
       body: "*"
     };
   }
@@ -40,33 +40,33 @@ service Entity {
   // UpdateEntity 更新实体
   rpc UpdateEntity(UpdateEntityRequest) returns (UpdateEntityReply) {
     option (google.api.http) = {
-      put: "/layout/api/entity"
+      put: "/tianji/api/entity"
       body: "*"
     };
   }
 
   // DeleteEntity 删除实体
   rpc DeleteEntity(DeleteEntityRequest) returns (DeleteEntityReply) {
-    option (google.api.http) = {delete: "/layout/api/entity"};
+    option (google.api.http) = {delete: "/tianji/api/entity"};
   }
 
   // RegisterEntity 注册应用实体
   rpc RegisterEntity(RegisterEntityRequest) returns (RegisterEntityReply) {
     option (google.api.http) = {
-      post: "/layout/api/entity/register"
+      post: "/tianji/api/entity/register"
       body: "*"
     };
   }
 
   // ListEntityField 获取实体字段列表
   rpc ListEntityField(ListEntityFieldRequest) returns (ListEntityFieldReply) {
-    option (google.api.http) = {get: "/layout/api/entity/fields"};
+    option (google.api.http) = {get: "/tianji/api/entity/fields"};
   }
 
   // CreateEntityField 创建实体字段
   rpc CreateEntityField(CreateEntityFieldRequest) returns (CreateEntityFieldReply) {
     option (google.api.http) = {
-      post: "/layout/api/entity/field"
+      post: "/tianji/api/entity/field"
       body: "*"
     };
   }
@@ -74,25 +74,25 @@ service Entity {
   // UpdateEntityField 更新实体字段
   rpc UpdateEntityField(UpdateEntityFieldRequest) returns (UpdateEntityFieldReply) {
     option (google.api.http) = {
-      put: "/layout/api/entity/field"
+      put: "/tianji/api/entity/field"
       body: "*"
     };
   }
 
   // DeleteEntityField 删除实体字段
   rpc DeleteEntityField(DeleteEntityFieldRequest) returns (DeleteEntityFieldReply) {
-    option (google.api.http) = {delete: "/layout/api/entity/field"};
+    option (google.api.http) = {delete: "/tianji/api/entity/field"};
   }
 
   // ListEntityRule 获取实体规则列表
   rpc ListEntityRule(ListEntityRuleRequest) returns (ListEntityRuleReply) {
-    option (google.api.http) = {get: "/layout/api/entity/rules"};
+    option (google.api.http) = {get: "/tianji/api/entity/rules"};
   }
 
   // CreateEntityRule 创建实体规则
   rpc CreateEntityRule(CreateEntityRuleRequest) returns (CreateEntityRuleReply) {
     option (google.api.http) = {
-      post: "/layout/api/entity/rule"
+      post: "/tianji/api/entity/rule"
       body: "*"
     };
   }
@@ -100,13 +100,13 @@ service Entity {
   // UpdateEntityRule 更新实体规则
   rpc UpdateEntityRule(UpdateEntityRuleRequest) returns (UpdateEntityRuleReply) {
     option (google.api.http) = {
-      put: "/layout/api/entity/rule"
+      put: "/tianji/api/entity/rule"
       body: "*"
     };
   }
 
   // DeleteEntityRule 删除实体规则
   rpc DeleteEntityRule(DeleteEntityRuleRequest) returns (DeleteEntityRuleReply) {
-    option (google.api.http) = {delete: "/layout/api/entity/rule"};
+    option (google.api.http) = {delete: "/tianji/api/entity/rule"};
   }
 }

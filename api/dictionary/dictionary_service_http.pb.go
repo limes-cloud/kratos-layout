@@ -40,11 +40,11 @@ type DictionaryHTTPServer interface {
 
 func RegisterDictionaryHTTPServer(s *http.Server, srv DictionaryHTTPServer) {
 	r := s.Route("/")
-	r.GET("/layout/api/dictionary", _Dictionary_GetDictionary0_HTTP_Handler(srv))
-	r.GET("/layout/api/dictionaries", _Dictionary_ListDictionary0_HTTP_Handler(srv))
-	r.POST("/layout/api/dictionary", _Dictionary_CreateDictionary0_HTTP_Handler(srv))
-	r.PUT("/layout/api/dictionary", _Dictionary_UpdateDictionary0_HTTP_Handler(srv))
-	r.DELETE("/layout/api/dictionary", _Dictionary_DeleteDictionary0_HTTP_Handler(srv))
+	r.GET("/tianji/api/dictionary", _Dictionary_GetDictionary0_HTTP_Handler(srv))
+	r.GET("/tianji/api/dictionaries", _Dictionary_ListDictionary0_HTTP_Handler(srv))
+	r.POST("/tianji/api/dictionary", _Dictionary_CreateDictionary0_HTTP_Handler(srv))
+	r.PUT("/tianji/api/dictionary", _Dictionary_UpdateDictionary0_HTTP_Handler(srv))
+	r.DELETE("/tianji/api/dictionary", _Dictionary_DeleteDictionary0_HTTP_Handler(srv))
 }
 
 func _Dictionary_GetDictionary0_HTTP_Handler(srv DictionaryHTTPServer) func(ctx http.Context) error {
@@ -166,7 +166,7 @@ func NewDictionaryHTTPClient(client *http.Client) DictionaryHTTPClient {
 
 func (c *DictionaryHTTPClientImpl) CreateDictionary(ctx context.Context, in *CreateDictionaryRequest, opts ...http.CallOption) (*CreateDictionaryReply, error) {
 	var out CreateDictionaryReply
-	pattern := "/layout/api/dictionary"
+	pattern := "/tianji/api/dictionary"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationDictionaryCreateDictionary))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -179,7 +179,7 @@ func (c *DictionaryHTTPClientImpl) CreateDictionary(ctx context.Context, in *Cre
 
 func (c *DictionaryHTTPClientImpl) DeleteDictionary(ctx context.Context, in *DeleteDictionaryRequest, opts ...http.CallOption) (*DeleteDictionaryReply, error) {
 	var out DeleteDictionaryReply
-	pattern := "/layout/api/dictionary"
+	pattern := "/tianji/api/dictionary"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationDictionaryDeleteDictionary))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -192,7 +192,7 @@ func (c *DictionaryHTTPClientImpl) DeleteDictionary(ctx context.Context, in *Del
 
 func (c *DictionaryHTTPClientImpl) GetDictionary(ctx context.Context, in *GetDictionaryRequest, opts ...http.CallOption) (*GetDictionaryReply, error) {
 	var out GetDictionaryReply
-	pattern := "/layout/api/dictionary"
+	pattern := "/tianji/api/dictionary"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationDictionaryGetDictionary))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -205,7 +205,7 @@ func (c *DictionaryHTTPClientImpl) GetDictionary(ctx context.Context, in *GetDic
 
 func (c *DictionaryHTTPClientImpl) ListDictionary(ctx context.Context, in *ListDictionaryRequest, opts ...http.CallOption) (*ListDictionaryReply, error) {
 	var out ListDictionaryReply
-	pattern := "/layout/api/dictionaries"
+	pattern := "/tianji/api/dictionaries"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationDictionaryListDictionary))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -218,7 +218,7 @@ func (c *DictionaryHTTPClientImpl) ListDictionary(ctx context.Context, in *ListD
 
 func (c *DictionaryHTTPClientImpl) UpdateDictionary(ctx context.Context, in *UpdateDictionaryRequest, opts ...http.CallOption) (*UpdateDictionaryReply, error) {
 	var out UpdateDictionaryReply
-	pattern := "/layout/api/dictionary"
+	pattern := "/tianji/api/dictionary"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationDictionaryUpdateDictionary))
 	opts = append(opts, http.PathTemplate(pattern))

@@ -1,4 +1,4 @@
-module layout
+module tianji
 
 go 1.24.6
 
@@ -8,12 +8,13 @@ require (
 	go.uber.org/automaxprocs v1.5.3
 	google.golang.org/protobuf v1.36.7
 	gorm.io/gorm v1.30.1
-	layout/api v0.0.0
+	tianji/api v0.0.0
 )
 
 require (
 	dario.cat/mergo v1.0.0 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/6tail/tyme4go v1.5.0 // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
@@ -112,4 +113,4 @@ require (
 	gorm.io/driver/sqlserver v1.6.1 // indirect
 )
 
-replace layout/api v0.0.0 => ./api
+replace tianji/api v0.0.0 => ./api

@@ -31,6 +31,10 @@ Thumbs.db
 *.key
 *.log
 bin/
+conf/conf.yaml
+internal/conf/conf.yaml
+*.local.yaml
+*.local.yml
 
 # Develop tools
 .vscode/

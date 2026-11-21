@@ -11,12 +11,12 @@ import (
 	"github.com/limes-cloud/kratosx/pkg/value"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	apientity "layout/api/entity"
-	"layout/api/errors"
-	"layout/internal/domain/entity"
-	"layout/internal/domain/service"
-	"layout/internal/infra/dbs"
-	"layout/internal/types"
+	apientity "tianji/api/entity"
+	"tianji/api/errors"
+	"tianji/internal/domain/entity"
+	"tianji/internal/domain/service"
+	"tianji/internal/infra/dbs"
+	"tianji/internal/types"
 )
 
 type Entity struct {

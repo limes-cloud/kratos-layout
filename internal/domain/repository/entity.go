@@ -3,8 +3,8 @@ package repository
 import (
 	"github.com/limes-cloud/kratosx"
 
-	"layout/internal/domain/entity"
-	"layout/internal/types"
+	"tianji/internal/domain/entity"
+	"tianji/internal/types"
 )
 
 type Entity interface {

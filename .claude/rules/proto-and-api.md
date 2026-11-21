@@ -122,7 +122,7 @@ service ConversationService {
 2. `xxx_service.proto` 必须 import 对应的 `xxx.proto`（使用完整相对路径）
 3. `xxx_service.proto` 必须 import `google/api/annotations.proto` 以定义 HTTP 路由
 4. HTTP 路由通过 `google.api.http` 注解定义
-5. 字段命名使用 snake_case（proto 规范），生成 Go 代码自动转为 CamelCase
+5. 字段命名使用**小驼峰（lowerCamelCase）**，与 manager 项目保持一致（如 `uniqueDevice`、`isLunar`）；不使用 proto 默认的 snake_case
 6. 时间戳使用 `int64`（Unix 毫秒），不使用 `google.protobuf.Timestamp`
 7. 同一 `proto/` 目录下的所有文件必须使用相同的 `package` 和 `go_package`
 8. RPC 请求/响应消息命名必须使用 `<MethodName>Request` 和 `<MethodName>Response`；不要使用 `<MethodName>Reply`

@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package layout.api.entity;
+package tianji.api.entity;
 
 import "validate/validate.proto";
 
 option go_package = "./;entity";
 option java_multiple_files = true;
-option java_package = "layout.api.entity";
+option java_package = "tianji.api.entity";
 
 message ListEntityRequest {
   uint32 page = 1 [(validate.rules).uint32 = {gte: 1}];
